@@ -1,5 +1,5 @@
 # MIDAS
-A deep generative model for single-cell mosaic integration and knowledge transfer.
+A deep generative model for mosaic integration and knowledge transfer of single-cell multimodal data.
 
 
 
