@@ -1,7 +1,5 @@
 # MIDAS
 
-# MIDAS
-
 A deep generative model for <ins>M</ins>osaic <ins>I</ins>ntegration and knowle<ins>D</ins>ge tr<ins>A</ins>n<ins>S</ins>fer of single-cell multimodal data.
 
 ## File/folder instruction
