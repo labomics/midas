@@ -1,0 +1,244 @@
+[default]
+dim_c = 32
+dims_enc_s = [16, 16]
+dims_enc_chr = [128, 32]
+dims_enc_x = [1024, 128]
+dims_discriminator = [128, 64]
+norm = "ln"
+drop = 0.2
+
+
+[large]
+dim_c = 64
+dims_enc_s = [16, 16]
+dims_enc_chr = [512, 128]
+dims_enc_x = [1024, 256]
+dims_discriminator = [128, 64]
+norm = "ln"
+drop = 0.2
+
+
+
+# [atlas.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [atlas_no_tea.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [atlas_no_dogma.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+
+
+
+
+# [asap_cite.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [000_000_1.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [000_111_1.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [111_000_1.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [000_111_0.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [000_110_0.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [000_101_0.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [000_011_0.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [111_000_0.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [ct_cp_tp.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+
+# [ct_tp.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [ct_t.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_chr = [128, 32]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+# [t_tp.default]
+# dim_c = 32
+# dims_enc_s = [16, 16]
+# dims_enc_x = [512, 128]
+# dims_discriminator = [128, 64]
+# norm = "ln"
+# drop = 0.2
+
+
+
+
+
+
+
+
+
+# # old
+
+# [hbm.default]
+# dim_z = 32
+# enc = [512, 128]
+# dec = [128, 512]
+# norm = "ln"
+# drop = 0.5
+
+# [hbm.default_500]
+# dim_z = 20
+# enc = [256, 128]
+# dec = [128, 256]
+# norm = false
+# drop = false
+
+# [hbm.compact]
+# dim_z = 20
+# enc = [128, 64]
+# dec = [64, 128]
+# norm = false
+# drop = false
+
+# [hbm.large]
+# dim_z = 20
+# enc = [256, 128]
+# dec = [128, 256]
+# norm = false
+# drop = false
+
+
+
+
+
+
+# [snare.default]
+# dim_z = 30
+# enc = [3200, 1600, 800, 400]
+# dec = [400, 800, 1600, 3200]
+# norm = false
+# drop = false
+
+
+
+
+
+# [simu.default]
+# dim_z = 10
+# enc = [256, 128]
+# dec = [128, 256]
+# norm = false
+# drop = false
