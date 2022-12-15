@@ -4,7 +4,7 @@ A deep generative model for **M**osaic **I**ntegration and knowle**D**ge tr**A**
 
 ## File/folder instruction
 
-| File/directory | Description                                                 |
+| File/folder | Description                                                 |
 | -------------- | ----------------------------------------------------------- |
 | `comparison/`  | Scripts for algorithm comparison and qualitative evaluation |
 | `configs/`     | Dataset configuration and MIDAS model configuration         |
