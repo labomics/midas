@@ -4,15 +4,17 @@ A deep generative model for **M**osaic **I**ntegration and knowle**D**ge tr**A**
 
 ## File/folder instruction
 
-*   `comparison/`: scripts for algorithm comparison and qualitative evaluation
-*   `configs/`: dataset configuration and MIDAS model configuration
-*   `eval/`: scripts for quantitative evaluation
-*   `functions/`: pytorch functions for MIDAS
-*   `modules/`: pytorch models and dataloader for MIDAS
-*   `preprocess/`: scripts for data preprocessing
-*   `utils/`: commonly used functions
-*   `README.md`: this file
-*   `run.py`: script for MIDAS training and inference
+| File/directory | Description                                                 |
+| -------------- | ----------------------------------------------------------- |
+| `comparison/`  | Scripts for algorithm comparison and qualitative evaluation |
+| `configs/`     | Dataset configuration and MIDAS model configuration         |
+| `eval/`        | Scripts for quantitative evaluation                         |
+| `functions/`   | PyTorch functions for MIDAS                                 |
+| `modules/`     | PyTorch models and dataloader for MIDAS                     |
+| `preprocess/`  | Scripts for data preprocessing                              |
+| `utils/`       | Commonly used functions                                     |
+| `README.md`    | This file                                                   |
+| `run.py`       | Script for MIDAS training and inference                     |
 
 ## Requirements
 
