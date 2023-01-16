@@ -191,8 +191,8 @@ dim_plot <- function(obj, w, h, reduction = NULL, split.by = NULL, group.by = NU
     }
 
     if (!is.null(title)) {
-        plt <- plt + ggtitle(title)
-        title_margin <- 5
+        plt <- plt + ggtitle(title) + theme(plot.title = element_text(face = "plain", size = 40))
+        title_margin <- 8
     } else {
         plt <- plt + theme(plot.title = element_blank())
         title_margin <- 0
@@ -203,7 +203,7 @@ dim_plot <- function(obj, w, h, reduction = NULL, split.by = NULL, group.by = NU
     }
 
     if (border) {
-        plt <- plt + theme(panel.border = element_rect(color = "black", size = 1),
+        plt <- plt + theme(panel.border = element_rect(color = "black", linewidth = 1),
                            axis.ticks.length = unit(0, "pt"), plot.margin = margin(title_margin, 0, 0, 0))
     }
 
