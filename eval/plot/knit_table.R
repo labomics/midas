@@ -508,7 +508,7 @@ scIB_knit_table <- function(
     cir_legend_dat$colors <- NULL
     cir_maximum_x <- max(cir_legend_dat$x0)
   
-    cir_title_data <- data_frame(xmin = cir_minimum_x, 
+    cir_title_data <- tibble(xmin = cir_minimum_x, 
                                  xmax = cir_maximum_x, 
                                  ymin = leg_max_y -1, 
                                  ymax = leg_max_y,

@@ -10,9 +10,10 @@ library(gdata)
 source("knit_table.R")
 
 parser <- ArgumentParser()
-parser$add_argument("--fig", type = "integer", default = 1)
+parser$add_argument("--fig", type = "integer", default = 10)
 o <- parser$parse_known_args()[[1]]
 
+method <- "midas"
 if (o$fig == 1) {
     # dogma scib (main)
     dataset <- "dogma"
@@ -94,14 +95,114 @@ if (o$fig == 8) {
     img_head <- "sFig5_"
 }
 
+
+
+# comparing mosaic methods
+if (o$fig == 9) {
+    # dogma mosaic, scib
+    method <- "scmomat"
+    dataset <- "dogma"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 10) {
+    # teadog mosaic, scib
+    method <- "scmomat"
+    dataset <- "teadog"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 11) {
+    # dogma mosaic, scib
+    method <- "stabmap"
+    dataset <- "dogma"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 12) {
+    # teadog mosaic, scib
+    method <- "stabmap"
+    dataset <- "teadog"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 13) {
+    # dogma mosaic, scib
+    method <- "scvaeit"
+    dataset <- "dogma"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 14) {
+    # teadog mosaic, scib
+    method <- "scvaeit"
+    dataset <- "teadog"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 15) {
+    # dogma mosaic, scib
+    method <- "midas"
+    dataset <- "dogma"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 16) {
+    # teadog mosaic, scib
+    method <- "midas"
+    dataset <- "teadog"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+
 init <- ifelse(transfer, "sp_00003699", "sp_00001899")
 
 if (sota & !mosaic) {
     xls_metrics_path <- paste0("data/scib_metrics_sota_",        dataset, "_e0_", init, "_sorted.xlsx")
 } else if (!sota & mosaic) {
-    xls_metrics_path <- paste0("data/scib_metrics_mosaic_",      dataset, "_e0_", init, "_sorted.xlsx")
+    if (method == "midas") {
+        xls_metrics_path <- paste0("data/scib_metrics_mosaic_",      dataset, "_e0_", init, "_sorted.xlsx")
+    } else {
+        xls_metrics_path <- paste0("data/scib_metrics_mosaic_", dataset, "_", method, "_sorted.xlsx")
+    }
 } else {
-    xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_", dataset, "_e0_", init, "_sorted.xlsx")
+    if (dataset == "dogma" & !transfer) {
+         xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_", dataset, "_e0_", init, "_sorted+less_mod.xlsx")
+    } else {
+        xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_", dataset, "_e0_", init, "_sorted.xlsx")
+    }
 }
 
 if (scmib) {
@@ -162,7 +263,7 @@ metrics_tab[, "Method"] <- str_replace_all(metrics_tab[, "Method"], c(
     "pca\\+wnn" = "PCA + WNN",
     "scanorama_feat\\+wnn" = "Scanorama-feat + WNN",
     "liger\\+wnn" = "LIGER + WNN",
-    "mofa" = "MOFA"
+    "mofa" = "MOFA+"
 ))
 metrics_tab[, "Task"] <- str_replace_all(metrics_tab[, "Task"], c(
     "dogma_|teadog_|_transfer" = ""

@@ -91,6 +91,16 @@ def load_tsv(filename):
     return data
 
 
+def convert_tensor_to_list(data):
+    """
+    Covert a 2D tensor `data` to a 2D list
+    """
+    if th.is_tensor(data):
+        return [list(line) for line in list(data.cpu().detach().numpy())]
+    else:
+        return [list(line) for line in list(data)]
+
+
 def save_list_to_csv(data, filename, delimiter=','):
     """
     Save a 2D list `data` into a `.csv` file named as `filename`
@@ -216,13 +226,6 @@ def copy_dict(src_dict):
 def get_num(s):
     # return int(path.splitext(s)[0])
     return int(''.join(filter(str.isdigit, s)))
-
-
-def convert_tensor_to_list(data):
-    """
-    Covert a 2D tensor `data` to a 2D list
-    """
-    return [list(line) for line in list(data.cpu().detach().numpy())]
 
 
 def get_dict(keys, values):

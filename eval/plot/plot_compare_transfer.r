@@ -100,6 +100,7 @@ scale_fill_brewer(palette = "Paired") +
   theme(
     panel.background = element_rect(fill = "white"), # Set background color to white
     panel.grid.major.y = element_line(color = "#A8BAC4", size = 0.3), # Set the color and the width of the grid lines for the horizontal axis
+    panel.grid.major.x = element_blank(),
     axis.ticks.length = unit(0, "mm"), # Remove tick marks by setting their length to 0
     # axis.title = element_blank(), # Remove the title for both axes
     # axis.line.y.left = element_line(color = "black"), # Only left line of the vertical axis is painted in black
@@ -132,8 +133,8 @@ w <- 12
 h <- 3
 plt_size(w, h)
 p
-ggsave(plot = p, file = pj(outdir, "5_model_transfer_score.png"), width = w, height = h, limitsize = F)
-ggsave(plot = p, file = pj(outdir, "5_model_transfer_score.pdf"), width = w, height = h, limitsize = F)
+ggsave(plot = p, file = pj(outdir, "5c_model_transfer_score.png"), width = w, height = h, limitsize = F)
+ggsave(plot = p, file = pj(outdir, "5c_model_transfer_score.pdf"), width = w, height = h, limitsize = F)
 
 library(reshape)
 lb <- as.data.frame(read.xls("data/label_transfer.xlsx"))
@@ -182,6 +183,7 @@ scale_fill_brewer(palette = "Set1") +
   theme(
     panel.background = element_rect(fill = "white"), # Set background color to white
     panel.grid.major.y = element_line(color = "#A8BAC4", size = 0.3), # Set the color and the width of the grid lines for the horizontal axis
+    panel.grid.major.x = element_blank(),
     axis.ticks.length = unit(0, "mm"), # Remove tick marks by setting their length to 0
     # axis.title = element_blank(), # Remove the title for both axes
     # axis.line.y.left = element_line(color = "black"), # Only left line of the vertical axis is painted in black
@@ -199,8 +201,8 @@ p
 
 outdir <- "../../paper/5"
 mkdir(outdir, remove_old = F)
-ggsave(plot = p, file = pj(outdir, "5_label_transfer_score.png"), width = w, height = h, limitsize = F)
-ggsave(plot = p, file = pj(outdir, "5_label_transfer_score.pdf"), width = w, height = h, limitsize = F)
+ggsave(plot = p, file = pj(outdir, "5e_label_transfer_score.png"), width = w, height = h, limitsize = F)
+ggsave(plot = p, file = pj(outdir, "5e_label_transfer_score.pdf"), width = w, height = h, limitsize = F)
 
 if (scmib_midas) {
     group_batch <- c("iLISI_feat",  "graph_conn_feat",  "kBET_feat", "iLISI_embed", "graph_conn_embed", "kBET_embed")

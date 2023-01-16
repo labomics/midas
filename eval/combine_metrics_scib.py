@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[50]:
+# In[71]:
 
 
 import os
@@ -18,7 +18,7 @@ import copy
 import re
 
 
-# In[51]:
+# In[72]:
 
 
 parser = argparse.ArgumentParser()
@@ -29,8 +29,11 @@ parser.add_argument('--tasks', type=str, nargs='+',  default=["teadog_full", "te
     "teadog_paired_abc", "teadog_paired_ab",  "teadog_paired_ac", "teadog_paired_bc",
     "teadog_single_full", "teadog_single"])
 parser.add_argument('--method', type=str, default='midas_embed')
+# parser.add_argument('--method', type=str, default='scmomat')
+# parser.add_argument('--method', type=str, default='scvaeit')
+# parser.add_argument('--method', type=str, default='stabmap')
 parser.add_argument('--mosaic', type=int, default=1)
-parser.add_argument('--sota', type=int, default=1)
+parser.add_argument('--sota', type=int, default=0)
 parser.add_argument('--experiment', type=str, default='e0')
 parser.add_argument('--model', type=str, default='default')
 parser.add_argument('--init_model', type=str, default='sp_00001899')
@@ -38,24 +41,28 @@ o, _ = parser.parse_known_args()  # for python interactive
 # o = parser.parse_args()
 
 
-# In[52]:
+# In[73]:
 
 
-# midas_embed results
+# mosaic results
 df_batch_bio_embed = {}
 if o.mosaic == 0:
     o.tasks = [o.tasks[0]]
 for task in o.tasks:
-    df_batch_bio_embed[task] = pd.read_excel(pj("result", "comparison", task, o.method, o.experiment, o.init_model, "metrics_batch_bio.xlsx"))
+    if o.method == "midas_embed":
+        fp = pj("result", "comparison", task, o.method, o.experiment, o.init_model, "metrics_batch_bio.xlsx")
+    else:
+        fp = pj("result", "comparison", task, o.method, "metrics_batch_bio.xlsx")
+    df_batch_bio_embed[task] = pd.read_excel(fp)
     df_batch_bio_embed[task].rename(index={0: task}, inplace=True)
 df_batch_bio_embed_cat = pd.concat(df_batch_bio_embed.values(), axis=0)
 
 df_batch_bio_embed_cat["Task"] = df_batch_bio_embed_cat.index
-df_batch_bio_embed_cat.rename(index={i: "midas_embed" for i in df_batch_bio_embed_cat.index}, inplace=True)
+df_batch_bio_embed_cat.rename(index={i: o.method for i in df_batch_bio_embed_cat.index}, inplace=True)
 df_batch_bio_embed_cat
 
 
-# In[53]:
+# In[74]:
 
 
 # sota results
@@ -90,7 +97,7 @@ else:
     df_cat = df_batch_bio_embed_cat
 
 
-# In[54]:
+# In[75]:
 
 
 df_mean_cat = copy.deepcopy(df_cat)
@@ -102,7 +109,7 @@ df_mean_cat_sorted = df_mean_cat.sort_values("overall_score", ascending=False, i
 df_mean_cat_sorted
 
 
-# In[55]:
+# In[76]:
 
 
 # df_norm = copy.deepcopy(df)
@@ -120,7 +127,7 @@ df_mean_cat_sorted
 # df_norm_cat
 
 
-# In[56]:
+# In[77]:
 
 
 out_dir = pj("eval", "plot", "data")
@@ -131,6 +138,10 @@ elif o.sota == 0:
     ms = "_mosaic_"
 else:
     ms = "_sota+mosaic_"
-df_mean_cat_sorted.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.experiment+"_"+o.init_model+"_sorted.xlsx"))
-df_mean_cat.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.experiment+"_"+o.init_model+"_unsorted.xlsx"))
+if o.method == "midas_embed":
+    df_mean_cat_sorted.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.experiment+"_"+o.init_model+"_sorted.xlsx"))
+    df_mean_cat.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.experiment+"_"+o.init_model+"_unsorted.xlsx"))
+else:
+    df_mean_cat_sorted.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.method+"_sorted.xlsx"))
+    df_mean_cat.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.method+"_unsorted.xlsx"))
 

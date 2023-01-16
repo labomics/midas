@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[10]:
 
 
 import os
@@ -20,20 +20,21 @@ import pandas as pd
 import re
 
 
-# In[ ]:
+# In[11]:
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--task', type=str, default='dogma_full')
+parser.add_argument('--task', type=str, default='teadog_single')
 parser.add_argument('--experiment', type=str, default='e0')
 parser.add_argument('--model', type=str, default='default')
-parser.add_argument('--init_model', type=str, default='sp_latest')
-parser.add_argument('--method', type=str, default='midas_embed')
+parser.add_argument('--init_model', type=str, default='sp_00001899')
+parser.add_argument('--method', type=str, default='stabmap')
+# parser.add_argument('--method', type=str, default='midas_embed')
 o, _ = parser.parse_known_args()  # for python interactive
 # o = parser.parse_args()
 
 
-# In[ ]:
+# In[12]:
 
 
 if "midas" in o.method:
@@ -52,7 +53,7 @@ for k, v in model_config.items():
 o.s_joint, o.combs, *_ = utils.gen_all_batch_ids(o.s_joint, o.combs)
 
 
-# In[ ]:
+# In[13]:
 
 
 # Load cell type labels
@@ -64,7 +65,7 @@ labels = np.array(labels)
 print(np.unique(labels))
 
 
-# In[ ]:
+# In[14]:
 
 
 # Load predicted latent variables
@@ -73,10 +74,10 @@ o.pred_dir = pj("result", o.task, o.experiment, o.model, "predict", o.init_model
 pred = utils.load_predicted(o)
 
 
-# In[ ]:
+# In[15]:
 
 
-if o.method in ["midas_embed", "mofa"]:
+if o.method in ["midas_embed", "mofa", "scmomat", "stabmap", "scvaeit"]:
     output_type = "embed"
 elif o.method in [
     "midas_feat+wnn", 
@@ -94,7 +95,7 @@ else:
     assert False, o.method+": invalid method!"
 
 
-# In[ ]:
+# In[16]:
 
 
 embed = "X_emb"
@@ -106,7 +107,7 @@ subsample = 0.5
 verbose = False
 
 
-# In[ ]:
+# In[17]:
 
 
 c = pred["z"]["joint"][:, :o.dim_c]
@@ -119,10 +120,18 @@ if o.method == "midas_embed":
     adata.obs[batch_key] = adata.obs[batch_key].astype("category")
     adata.obs[label_key] = labels
     adata.obs[label_key] = adata.obs[label_key].astype("category")
-elif o.method == "mofa":
+elif o.method in ["mofa", "stabmap"]:
     adata = ad.AnnData(c*0)
-    mofa_embed = utils.load_csv(pj(result_dir, "embeddings.csv"))
-    adata.obsm[embed] = np.array(mofa_embed)[1:, 1:].astype(np.float32)
+    embeddings = utils.load_csv(pj(result_dir, "embeddings.csv"))
+    adata.obsm[embed] = np.array(embeddings)[1:, 1:].astype(np.float32)
+    adata.obs[batch_key] = s.astype(str)
+    adata.obs[batch_key] = adata.obs[batch_key].astype("category")
+    adata.obs[label_key] = labels
+    adata.obs[label_key] = adata.obs[label_key].astype("category")
+elif o.method in ["scmomat", "scvaeit"]:
+    adata = ad.AnnData(c*0)
+    embeddings = utils.load_csv(pj(result_dir, "embeddings.csv"))
+    adata.obsm[embed] = np.array(embeddings).astype(np.float32)
     adata.obs[batch_key] = s.astype(str)
     adata.obs[batch_key] = adata.obs[batch_key].astype("category")
     adata.obs[label_key] = labels
@@ -154,7 +163,7 @@ results = {}
 
 print('clustering...')
 res_max, nmi_max, nmi_all = scib.clustering.opt_louvain(adata, label_key=label_key,
-    cluster_key=cluster_key, function=me.nmi, plot=False, verbose=verbose, inplace=True)
+    cluster_key=cluster_key, function=me.nmi, use_rep=embed, verbose=verbose, inplace=True)
 
 results['NMI'] = me.nmi(adata, group1=cluster_key, group2=label_key, method='arithmetic')
 print("NMI: " + str(results['NMI']))
@@ -174,12 +183,12 @@ print("il_score_f1: " + str(results['il_score_f1']))
 results['graph_conn'] = me.graph_connectivity(adata, label_key=label_key)
 print("graph_conn: " + str(results['graph_conn']))
 
-results['cLISI'] = me.clisi_graph(adata, batch_key=batch_key, label_key=label_key, 
+results['cLISI'] = me.clisi_graph(adata, batch_key=batch_key, label_key=label_key, type_="knn",
     subsample=subsample*100, n_cores=1, verbose=verbose)
 print("cLISI: " + str(results['cLISI']))
 
-results['iLISI'] = me.ilisi_graph(adata, batch_key=batch_key, subsample=subsample*100,
-    n_cores=1, verbose=verbose)
+results['iLISI'] = me.ilisi_graph(adata, batch_key=batch_key, type_="knn",
+    subsample=subsample*100, n_cores=1, verbose=verbose)
 print("iLISI: " + str(results['iLISI']))
 
 results = {k: float(v) for k, v in results.items()}
