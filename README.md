@@ -414,7 +414,7 @@ CUDA_VISIBLE_DEVICES=5 py run.py --exp e0 --task atlas_no_dogma
 CUDA_VISIBLE_DEVICES=1 py run.py --task atlas_no_dogma  --act predict_all_latent_bc --init_model sp_latest &
 ```
 
-### Mosaic integration with less modalities
+### Mosaic integration with fewer modalities
 
 The goal of this experiment is to generate the baseline for transfer learning comparison.
 
