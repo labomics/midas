@@ -26,7 +26,7 @@
       - [Generating training data for MIDAS](#generating-training-data-for-midas-2)
       - [Training MIDAS](#training-midas-2)
       - [Inferring latent variables, and generating imputed and batch corrected counts](#inferring-latent-variables-and-generating-imputed-and-batch-corrected-counts-2)
-    - [Mosaic integration with less modalities](#mosaic-integration-with-less-modalities)
+    - [Mosaic integration with fewer modalities](#mosaic-integration-with-fewer-modalities)
       - [Generating training data for MIDAS](#generating-training-data-for-midas-3)
       - [Training MIDAS](#training-midas-3)
       - [Inferring latent variables, and generating imputed and batch corrected counts](#inferring-latent-variables-and-generating-imputed-and-batch-corrected-counts-3)
@@ -41,7 +41,6 @@
       - [Evaluation](#evaluation-3)
 
 ## File description
-
 
 | File or directory | Description                                                 |
 | ------------------- | ------------------------------------------------------------- |
