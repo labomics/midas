@@ -4,12 +4,12 @@ library(RColorBrewer)
 library(patchwork)
 
 parser <- ArgumentParser()
-parser$add_argument("--task", type = "character", default = "dogma_single_full_transfer")
+parser$add_argument("--task", type = "character", default = "teadog_full")
 parser$add_argument("--method", type = "character", default = "midas_embed")
 parser$add_argument("--experiment", type = "character", default = "e0")
 parser$add_argument("--model", type = "character", default = "default")
-parser$add_argument("--init_model", type = "character", default = "sp_00003699")
-parser$add_argument("--load_saved", type = "logical", default = F)
+parser$add_argument("--init_model", type = "character", default = "sp_00001899")
+parser$add_argument("--load_saved", type = "integer", default = 0)
 o <- parser$parse_known_args()[[1]]
 
 data_name <- strsplit(o$task, split = "_")[[1]][1]
@@ -210,7 +210,7 @@ obj_joint <- RenameCells(obj_joint, add.cell.id = "joint")
 obj_joint
 objs[["joint"]] <- obj_joint
 
-if (o$load_saved) {
+if (o$load_saved == 1) {
     obj_merged <- LoadH5Seurat(pj(output_dir, "obj_vis.h5seurat"), reductions = c("cUMAP", "uUMAP"))
 } else {
     obj_merged <- merge(objs[[1]], y = unlist(objs[-1]), merge.dr = c("c", "u"))
@@ -273,7 +273,7 @@ for (m in names(objs)) {
         }
 
         p <- p + NoLegend() +
-            theme(panel.border = element_rect(color = "black", size = 1),
+            theme(panel.border = element_rect(color = "black", linewidth = 1),
             axis.ticks.length = unit(0, "pt"), plot.margin = margin(0, 0, 0, 0)) +
             labs(colour = "Cell type")
 
@@ -344,7 +344,7 @@ for (m in names(objs)) {
         }
 
         p <- p  + NoLegend() + 
-            theme(panel.border = element_rect(color = "black", size = 1),
+            theme(panel.border = element_rect(color = "black", linewidth = 1),
             axis.ticks.length = unit(0, "pt"), plot.margin = margin(0, 0, 0, 0)) +
             scale_colour_manual(values = cols, drop = FALSE) +
             labs(colour = "Sample")

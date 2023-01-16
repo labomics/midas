@@ -138,7 +138,7 @@ plts <- foreach(task = tasks) %dopar% {
 
     p <- p + ggtitle(task_name_map[[task]]) + theme(plot.title = element_text(face = "plain", size = 30))
     p <- p + NoLegend() + NoAxes() +
-        theme(panel.border = element_rect(color = "black", size = 1),
+        theme(panel.border = element_rect(color = "black", linewidth = 1),
         axis.ticks.length = unit(0, "pt"), plot.margin = margin(0, 0, 20, 0)) +
         scale_colour_manual(values = cols, drop = FALSE) +
         labs(colour = "Cell type")
@@ -227,7 +227,7 @@ p <- DimPlot(obj, reduction = "c.umap", group.by = "highlight", repel = T,
 
 p <- p + ggtitle("dogma-full (atlas)") + theme(plot.title = element_text(face = "plain", size = 30))
 p <- p + NoLegend() + NoAxes() +
-    theme(panel.border = element_rect(color = "black", size = 1),
+    theme(panel.border = element_rect(color = "black", linewidth = 1),
     axis.ticks.length = unit(0, "pt"), plot.margin = margin(0, 0, 20, 20)) +
     scale_colour_manual(values = cols, drop = FALSE) +
     labs(colour = "Cell type")

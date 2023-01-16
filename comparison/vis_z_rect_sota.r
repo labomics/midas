@@ -81,7 +81,7 @@ for (method in names(dirs)) {
             save_path = pj(output_dir, paste(method, "merged_label", sep = "_")))
     }
 
-    p1 <- p1 + labs(colour = "Sample")
+    p1 <- p1 + labs(colour = "Batch")
     p2 <- p2 + labs(colour = "Cell type")
 
     if (is.null(plt_c_b)) {

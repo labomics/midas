@@ -143,7 +143,7 @@ for (s in subset_names) {
           gsub("p8_0", "CITE_P8", s)))))))))))))))))))))))))))
     p <- p + ggtitle(s_) + theme(plot.title = element_text(face = "plain", hjust = 0.5, size = 25))
     p <- p  + NoLegend() + NoAxes() +
-        theme(panel.border = element_rect(color = "black", size = 1),
+        theme(panel.border = element_rect(color = "black", linewidth = 1),
         axis.ticks.length = unit(0, "pt"), plot.margin = margin(0, 0, 20, 0)) +
         labs(colour = "Cell type")
     if (!is_label) {
