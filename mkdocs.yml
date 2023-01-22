@@ -1,2 +1,3 @@
 theme: readthedocs
-site_name: sc-midas
+site_name: midas
+site_url: https://sc-midas.readthedocs.io/en/latest/
