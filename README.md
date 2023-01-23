@@ -1,6 +1,6 @@
 # MIDAS
 
-Please see the [instruction](https://sc-midas.readthedocs.io/en/latest/) for reproducing the manuscript results.
+Please see the [**instruction**](https://sc-midas-docs.readthedocs.io/en/latest/) for reproducing the manuscript results.
 
 ## File description
 
