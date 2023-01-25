@@ -4,7 +4,7 @@ Please see the [**instruction**](https://sc-midas-docs.readthedocs.io/en/latest/
 
 <p align="left">
     <img src="images/midas.png" width="800"/><br/>
-    MIDAS turns mosaic data into imputed and batch-corrected data to support single-cell multimodal analysis.
+    <i>MIDAS turns mosaic data into imputed and batch-corrected data to support single-cell multimodal analysis.</i>
 </p>
 
 ## File description
