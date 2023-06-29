@@ -1,4 +1,4 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 
 base_dir <- "data/raw/atac+rna+adt/dogma/dig_ctrl"
 frag_path <- pj(base_dir, "GSM5065530_DIG_CTRL_fragments.tsv.gz")

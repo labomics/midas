@@ -34,19 +34,23 @@ class SCT(nn.Module):
 
         # Modality encoders q(z|x^m)
         x_encs = {}
-        x_shared_enc = MLP(o.dims_enc_x+[o.dim_z*2], hid_norm=o.norm, hid_drop=o.drop)
-        for m in o.ref_mods:
-            x_indiv_enc = MLP([o.dims_h[m], o.dims_enc_x[0]], out_trans='mish', norm=o.norm,
-                              drop=o.drop)
-            x_encs[m] = nn.Sequential(x_indiv_enc, x_shared_enc)
+        if len(o.dims_enc_x) > 0:
+            x_shared_enc = MLP(o.dims_enc_x+[o.dim_z*2], hid_norm=o.norm, hid_drop=o.drop)
+            for m in o.ref_mods:
+                x_indiv_enc = MLP([o.dims_h[m], o.dims_enc_x[0]], out_trans='mish', norm=o.norm,
+                                drop=o.drop)
+                x_encs[m] = nn.Sequential(x_indiv_enc, x_shared_enc)
+        else:
+            for m in o.ref_mods:
+                x_encs[m] = MLP([o.dims_h[m], o.dim_z*2], hid_norm=o.norm, hid_drop=o.drop)
         self.x_encs = nn.ModuleDict(x_encs)
         # Modality decoder p(x^m|c, b)
         self.x_dec = MLP([o.dim_z]+o.dims_dec_x+[sum(o.dims_h.values())], hid_norm=o.norm,
                          hid_drop=o.drop)
 
-        # Subject encoder q(z|s)
+        # Batch encoder q(z|s)
         self.s_enc = MLP([o.dim_s]+o.dims_enc_s+[o.dim_z*2], hid_norm=o.norm, hid_drop=o.drop)
-        # Subject decoder p(s|b)
+        # Batch decoder p(s|b)
         self.s_dec = MLP([o.dim_b]+o.dims_dec_s+[o.dim_s], hid_norm=o.norm, hid_drop=o.drop)
 
         # Chromosome encoders and decoders
@@ -213,7 +217,27 @@ class Discriminator(nn.Module):
                 prob = s_r_pre.softmax(dim=1)
                 mask = nn.functional.one_hot(s.squeeze(1), num_classes=o.dims_s[m])
                 self.prob = (prob * mask).sum(1).mean().item()
-        loss = sum(loss_dict.values()) / c_all["joint"].size(0) * 30
+        loss = sum(loss_dict.values()) / c_all["joint"].size(0)
+
+        if o.experiment == "bio_ib_0":
+            loss = loss * 0
+        elif o.experiment == "bio_ib_10":
+            loss = loss * 10
+        elif o.experiment == "bio_ib_15":
+            loss = loss * 15
+        elif o.experiment == "bio_ib_20":
+            loss = loss * 20
+        elif o.experiment == "bio_ib_25":
+            loss = loss * 25
+        elif o.experiment == "bio_ib_40":
+            loss = loss * 40
+        elif o.experiment == "bio_ib_50":
+            loss = loss * 50
+        elif o.experiment == "bio_ib_100":
+            loss = loss * 100
+        else:
+            loss = loss * 30
+
 
         return loss
 
@@ -234,6 +258,18 @@ class LossCalculator(nn.Module):
         self.gaussian_loss = nn.GaussianNLLLoss(full=True, reduction='sum')
         # self.enc_s = MLP([o.dim_s]+o.dims_enc_s+[o.dim_b*2], hid_norm=o.norm, hid_drop=o.drop)
 
+        self.tech_ib_coef = 4
+        if o.experiment == "tech_ib_0":
+            self.tech_ib_coef = 0
+        elif o.experiment == "tech_ib_1":
+            self.tech_ib_coef = 1
+        elif o.experiment == "tech_ib_2":
+            self.tech_ib_coef = 2
+        elif o.experiment == "tech_ib_8":
+            self.tech_ib_coef = 8
+        elif o.experiment == "tech_ib_16":
+            self.tech_ib_coef = 16
+
         # self.i = 0
 
 
@@ -244,18 +280,26 @@ class LossCalculator(nn.Module):
         e = inputs["e"]
 
         loss_recon = self.calc_recon_loss(x, s, e, x_r_pre, s_r_pre)
-        # loss_jsd_s = self.calc_jsd_s_loss(s_r_pre)
         loss_kld_z = self.calc_kld_z_loss(z_mu, z_logvar)
-        if o.experiment in ["no_kl", "no_kl_ad"]:
-            loss_kld_z = loss_kld_z * 0
-        # loss_topo = self.calc_topology_loss(x_pp, z_x_mu, z_x_logvar, z_s_mu, z_s_logvar) * 500
-        loss_topo = self.calc_consistency_loss(z_uni) * 50
-        # loss_mi = self.calc_mi_loss(b, s) * 0
+
+        loss_mod = self.calc_mod_align_loss(z_uni)
+        if o.experiment == "mod_0":
+            loss_mod = loss_mod * 0
+        elif o.experiment == "mod_10":
+            loss_mod = loss_mod * 10
+        elif o.experiment == "mod_20":
+            loss_mod = loss_mod * 20
+        elif o.experiment == "mod_100":
+            loss_mod = loss_mod * 100
+        elif o.experiment == "mod_200":
+            loss_mod = loss_mod * 200
+        else:
+            loss_mod = loss_mod * 50
 
         if o.debug == 1:
             print("recon: %.3f\tkld_z: %.3f\ttopo: %.3f" % (loss_recon.item(),
-                loss_kld_z.item(), loss_topo.item()))
-        return loss_recon + loss_kld_z + loss_topo
+                loss_kld_z.item(), loss_mod.item()))
+        return loss_recon + loss_kld_z + loss_mod
 
 
     def calc_recon_loss(self, x, s, e, x_r_pre, s_r_pre):
@@ -271,7 +315,20 @@ class LossCalculator(nn.Module):
             else:
                 losses[m] = (self.pois_loss(x_r_pre[m], x[m]) * e[m]).sum()
         if s_r_pre is not None:
-            losses["s"] = self.cross_entropy_loss(s_r_pre, s.squeeze(1)).sum() * 1000
+ 
+            s_coef = 1000
+            if o.experiment == "s_coef_1":
+                s_coef = 1
+            elif o.experiment == "s_coef_200":
+                s_coef = 200
+            elif o.experiment == "s_coef_500":
+                s_coef = 500
+            elif o.experiment == "s_coef_2000":
+                s_coef = 2000
+            elif o.experiment == "s_coef_5000":
+                s_coef = 5000
+
+            losses["s"] = self.cross_entropy_loss(s_r_pre, s.squeeze(1)).sum() * (self.tech_ib_coef + s_coef)
         # print(losses)
         return sum(losses.values()) / s.size(0)
 
@@ -282,8 +339,7 @@ class LossCalculator(nn.Module):
         logvar_c, logvar_b = logvar.split([o.dim_c, o.dim_b], dim=1)
         kld_c_loss = self.calc_kld_loss(mu_c, logvar_c)
         kld_b_loss = self.calc_kld_loss(mu_b, logvar_b)
-        beta = 5
-        kld_z_loss = kld_c_loss + beta * kld_b_loss
+        kld_z_loss = kld_c_loss + (1 + self.tech_ib_coef) * kld_b_loss
         return kld_z_loss
 
 
@@ -291,7 +347,7 @@ class LossCalculator(nn.Module):
         return (-0.5 * (1 + logvar - mu.pow(2) - logvar.exp())).sum() / mu.size(0)
 
 
-    def calc_consistency_loss(self, z_uni):
+    def calc_mod_align_loss(self, z_uni):
         z_uni_stack = th.stack(list(z_uni.values()), dim=0)  # M * N * K
         z_uni_mean = z_uni_stack.mean(0, keepdim=True)  # 1 * N * K
         return ((z_uni_stack - z_uni_mean)**2).sum() / z_uni_stack.size(1)

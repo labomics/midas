@@ -1,4 +1,4 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 
 
 parser <- ArgumentParser()
@@ -7,7 +7,7 @@ o <- parser$parse_args()
 # o <- parser$parse_known_args()[[1]]  # for python interactive
 task <- o$task
 
-config <- parseTOML("configs/data.toml")[[task]]
+config <- parseTOML("configs/data.toml")[[gsub("_vd.*|_vt.*", "", task)]]
 combs <- config$combs
 comb_ratios <- config$comb_ratios
 mods_ <- unique(unlist(combs))
@@ -20,7 +20,6 @@ for (mod in c("atac", "rna", "adt")) {
 
 adt_genes <- get_adt_genes()
 
-
 input_dirs <- pj(config$raw_data_dirs, "seurat")
 task_dir <- pj("data", "processed", task)
 mkdir(task_dir, remove_old = T)
@@ -30,12 +29,53 @@ output_feat_dir <- pj(task_dir, "feat")
 mkdir(output_feat_dir, remove_old = T)
 
 for (dataset_id in seq_along(input_dirs)) {
-    subset_id <- toString(strtoi(dataset_id) - 1)
+    subset_id <- toString(dataset_id - 1)
     output_dir <- pj(task_dir, paste0("subset_", subset_id))
     mkdir(pj(output_dir, "mat"), remove_old = T)
     mkdir(pj(output_dir, "mask"), remove_old = T)
 }
 
+if (grepl("_vd", task)) { # varying sequencing depths
+    library(scuttle)
+    if (grepl("_vd02", task)) {
+        depth_factors <- c(0.02, 0.02, 1, 1)
+    } else if (grepl("_vd05", task)) {
+        depth_factors <- c(0.05, 0.05, 1, 1)
+    } else if (grepl("_vd1", task)) {
+        depth_factors <- c(0.1, 0.1, 1, 1)
+    } else if (grepl("_vd2", task)) {
+        depth_factors <- c(0.2, 0.2, 1, 1)
+    } else if (grepl("_vd4", task)) {
+        depth_factors <- c(0.4, 0.4, 1, 1)
+    } else if (grepl("_vd5", task)) {
+        depth_factors <- c(0.5, 0.5, 1, 1)
+    } else if (grepl("_vd6", task)) {
+        depth_factors <- c(0.6, 0.6, 1, 1)
+    } else if (grepl("_vd8", task)) {
+        depth_factors <- c(0.8, 0.8, 1, 1)
+    } else {
+        stop(paste0(task, ": Invalid task"))
+    }
+}
+
+if (grepl("_vt", task)) { # varying cell types
+    if (grepl("_vt1", task)) {
+        missing_types <- c("other T", "B", "CD4 T", "CD8 T")
+    } else if (grepl("_vt2", task)) {
+        missing_types <- c("other T", "B", "CD8 T", "CD4 T")
+    } else {
+        missing_types <- c("other T", "CD8 T", "NK", "B")
+    }
+    label_dirs <- pj(config$raw_data_dirs, "label_seurat")
+    cell_mask_list <- list()
+    fn <- paste0("l1_", tail(strsplit(task, split = "_")[[1]], 1), ".csv")
+    for (i in seq_along(label_dirs)) {
+        l1 <- read.csv(pj(label_dirs[i], "l1.csv"), header = T)[, 2]
+        mask <- l1 != missing_types[i]
+        write.csv(l1[mask], file = pj(label_dirs[i], fn))
+        cell_mask_list[[toString(i - 1)]] <- mask
+    }
+}
 
 merge_counts <- function(mod) {
 
@@ -195,6 +235,12 @@ merge_counts <- function(mod) {
         output_mat_dir <- pj(output_dir, "mat")
 
         mat <- t(data.matrix(sc_split[[subset_id]][[mod]]@counts))  # N * D
+        if (grepl("_vd", task)) {
+            mat <- as.matrix(downsampleMatrix(mat, prop = depth_factors[strtoi(subset_id) + 1], bycol=F))
+        }
+        if (grepl("_vt", task)) {
+            mat <- mat[cell_mask_list[[subset_id]], ]
+        }
         # Save count data
         write.csv(mat, file = pj(output_mat_dir, paste0(mod, ".csv")))
         # Save cell IDs
@@ -306,6 +352,12 @@ merge_frags <- function() {
         output_mat_dir <- pj(output_dir, "mat")
 
         mat <- t(data.matrix(sc_split[[subset_id]][[mod]]@counts)[feat_sorted, ])  # N * D
+        if (grepl("_vd", task)) {
+            mat <- as.matrix(downsampleMatrix(mat, prop = depth_factors[strtoi(subset_id) + 1], bycol=F))
+        }
+        if (grepl("_vt", task)) {
+            mat <- mat[cell_mask_list[[subset_id]], ]
+        }
         # Save count data
         write.csv(mat, file = pj(output_mat_dir, paste0(mod, ".csv")))
         # Save cell IDs

@@ -20,4 +20,3 @@ Please see the [**instruction**](https://sc-midas-docs.readthedocs.io/en/latest/
 | `utils/`          | Commonly used functions                                     |
 | `README.md`       | This file                                                   |
 | `run.py`          | Script for MIDAS training and inference                     |
-

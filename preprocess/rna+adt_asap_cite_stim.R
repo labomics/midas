@@ -1,4 +1,4 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 
 base_dir <- "data/raw/rna+adt/asap/PBMC_stimulation/cite_stim"
 rna_path <- pj(base_dir, "GSM4732115_CD28_CD3_stim_CITE_GEX")

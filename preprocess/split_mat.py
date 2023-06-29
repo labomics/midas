@@ -1,6 +1,6 @@
 # Split csv matrix into csv vectors for pytorch traning
 import os
-os.chdir("/root/workspace/code/sc-transformer/")
+os.chdir("/root/workspace/code/midas/")
 import os.path as path
 from os.path import join as pj
 import argparse

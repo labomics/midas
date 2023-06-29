@@ -601,16 +601,22 @@ def get_pred_dirs(o, joint_latent, mod_latent, impute, batch_correct, translate,
                 dirs[subset_id]["x"][m] = pj(subset_dir, "x", m)
     return dirs
 
-def gen_data_config(task):
+
+def gen_data_config(task, reference=''):
     if "continual" in task:
+        assert reference != '', "Reference must be specified!"
         data_config = load_toml("configs/data.toml")[re.sub("_continual", "", task)]
-        data_config_ref = load_toml("configs/data.toml")["atlas_no_dogma"]
+        data_config_ref = load_toml("configs/data.toml")[reference]
         data_config["raw_data_dirs"] += data_config_ref["raw_data_dirs"]
         data_config["raw_data_frags"] += data_config_ref["raw_data_frags"]
         data_config["combs"] += data_config_ref["combs"]
         data_config["comb_ratios"] += data_config_ref["comb_ratios"]
         data_config["s_joint"] += [[v[0]+len(data_config["s_joint"])] for v in data_config_ref["s_joint"]]
     else:
-        cfg_task = re.sub("_atlas|_generalize|_transfer|_ref_.*", "", task)
+        cfg_task = re.sub("_vd.*|_vt.*|_atlas|_generalize|_transfer|_ref_.*", "", task)
         data_config = load_toml("configs/data.toml")[cfg_task]
     return data_config
+
+
+def rename_label(label_list):
+    return [re.sub(" cell.*", "", l) for l in label_list]

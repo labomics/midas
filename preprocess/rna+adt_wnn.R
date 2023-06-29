@@ -1,4 +1,4 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 
 base_dir <- "data/raw/rna+adt/wnn"
 

@@ -46,3 +46,28 @@ done
 #     done
 
 # done
+
+
+
+cd data/processed
+
+
+tasks=(bm)
+
+# src_dir=$PWD
+src_dir=/dev/shm/processed
+
+for task in "${tasks[@]}"; do
+
+    mkdir -p ${task}_continual
+
+    for i in {0..2}; do
+        ln -sfn $src_dir/${task}_transfer/subset_$i $PWD/${task}_continual/subset_$i
+    done
+
+    ln -sfn $src_dir/atlas/feat $PWD/${task}_continual/feat
+    for i in {0..26}; do
+        ln -sfn $src_dir/atlas/subset_$i $PWD/${task}_continual/subset_$((i + 3))
+    done
+
+done

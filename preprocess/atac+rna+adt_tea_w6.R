@@ -1,4 +1,4 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 
 base_dir <- "data/raw/atac+rna+adt/tea/TEA-seq/w6"
 frag_path <- pj(base_dir, "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz")

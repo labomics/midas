@@ -27,6 +27,8 @@ parser.add_argument('--reference', type=str, default='',
     help="Choose a reference task")
 parser.add_argument('--experiment', type=str, default='e0',
     help="Choose an experiment")
+parser.add_argument('--rf_experiment', type=str, default='',
+    help="Choose a reference experiment")
 parser.add_argument('--model', type=str, default='default',
     help="Choose a model configuration")
 # parser.add_argument('--data', type=str, default='sup',
@@ -50,6 +52,8 @@ parser.add_argument('--input_mods', type=str, nargs='+', default=[],
 ## Training
 parser.add_argument('--epoch_num', type=int, default=2000,
     help='Number of epochs to train')
+parser.add_argument('--batch_size', type=int, default=-1,
+    help='Number of samples in a mini-batch')
 parser.add_argument('--lr', type=float, default=1e-4,
     help='Learning rate')
 parser.add_argument('--grad_clip', type=float, default=-1,
@@ -58,6 +62,10 @@ parser.add_argument('--s_drop_rate', type=float, default=0.1,
     help="Probility of dropping out subject ID during training")
 parser.add_argument('--drop_s', type=int, default=0,
     help="Force to drop s")
+parser.add_argument('--map_ref', type=int, default=0,
+    help="Map query onto reference for transfer learning")
+parser.add_argument('--sample_ref', type=int, default=1,
+    help="Sample from reference for reference mapping")
 parser.add_argument('--seed', type=int, default=0,
     help="Set the random seed to reproduce the results")
 parser.add_argument('--use_shm', type=int, default=0,
@@ -163,16 +171,27 @@ def load_data_config():
         _, _, o.mods = get_dims_x(ref=0)
         o.dims_x, o.dims_chr, o.ref_mods = get_dims_x(ref=1)
     o.mod_num = len(o.mods)
+
+    if o.rf_experiment == '':
+        o.rf_experiment = o.experiment
     
     global data_config
-    data_config = utils.gen_data_config(o.task)
+    data_config = utils.gen_data_config(o.task, o.reference)
     for k, v in data_config.items():
         vars(o)[k] = v
+    if o.batch_size > 0:
+        o.N = o.batch_size
 
     o.s_joint, o.combs, o.s, o.dims_s = utils.gen_all_batch_ids(o.s_joint, o.combs)
-    
-    o.continual = True if "continual" in o.task else False
-    if o.reference != '' and o.continual == False:  # transfer learning
+
+    if "continual" in o.task:
+        o.continual = True
+        o.dim_s_query = len(utils.load_toml("configs/data.toml")[re.sub("_continual", "", o.task)]["s_joint"])
+        o.dim_s_ref = len(utils.load_toml("configs/data.toml")[o.reference]["s_joint"])
+    else:
+        o.continual = False
+
+    if o.reference != '' and o.continual == False and o.map_ref == 1:  # map query onto reference for transfer learning
 
         o.dims_s = {k: v + 1 for k, v in o.dims_s.items()}
         
@@ -235,7 +254,7 @@ def init_model():
             benchmark.update(savepoint_toml['benchmark'])
             o.ref_epoch_num = savepoint_toml["o"]["ref_epoch_num"]
         else:
-            fpath = pj("result", o.reference, o.experiment, o.model, "train", o.init_model)
+            fpath = pj("result", o.reference, o.rf_experiment, o.model, "train", o.init_model)
             benchmark.update(utils.load_toml(fpath+".toml")['benchmark'])
             o.ref_epoch_num = benchmark["epoch_id_start"]
     else:
@@ -325,7 +344,7 @@ def get_dataloaders(split, train_ratio=None):
 
 
 def get_dataloader(subset, split, train_ratio=None):
-    dataset = MultimodalDataset(o.task, o.data_dir, subset, split, train_ratio=train_ratio)
+    dataset = MultimodalDataset(o.task, o.reference, o.data_dir, subset, split, train_ratio=train_ratio)
     shuffle = True if split == "train" else False
     data_loader = th.utils.data.DataLoader(dataset, batch_size=o.N, shuffle=shuffle,
                                            num_workers=64, pin_memory=True)
@@ -337,7 +356,7 @@ def get_dataloader(subset, split, train_ratio=None):
 def get_dataloader_cat(split, train_ratio=None):
     datasets = []
     for subset in range(len(o.s)):
-        datasets.append(MultimodalDataset(o.task, o.data_dir, subset, split, train_ratio=train_ratio))
+        datasets.append(MultimodalDataset(o.task, o.reference, o.data_dir, subset, split, train_ratio=train_ratio))
         print("Subset: %d, modalities %s: %s size: %d" %  (subset, str(o.combs[subset]), split,
             datasets[subset].size))
     dataset_cat = th.utils.data.dataset.ConcatDataset(datasets)
@@ -354,6 +373,7 @@ def test():
 
 
 def run_epoch(data_loader, split, epoch_id=0):
+    start_time = time.time()
     if split == "train":
         net.train()
         discriminator.train()
@@ -363,16 +383,19 @@ def run_epoch(data_loader, split, epoch_id=0):
     else:
         assert False, "Invalid split: %s" % split
 
-    loss_total = 0
+    losses = []
     for i, data in enumerate(data_loader):
-        loss = run_iter(split, epoch_id, data)
-        loss_total += loss
+        loss = run_iter(split, epoch_id, i, data)
+        losses.append(loss)
         if o.print_iters > 0 and (i+1) % o.print_iters == 0:
-            print('%s\tepoch: %d/%d\tBatch: %d/%d\t%s_loss: %.3f'.expandtabs(3) % 
+            print('%s\tepoch: %d/%d\tBatch: %d/%d\t%s_loss: %.2f'.expandtabs(3) % 
                   (o.task, epoch_id+1, o.epoch_num, i+1, len(data_loader), split, loss))
-    loss_avg = loss_total / len(data_loader)
-    print('%s\tepoch: %d/%d\t%s_loss: %.3f\n'.expandtabs(3) % 
-          (o.task, epoch_id+1, o.epoch_num, split, loss_avg))
+    loss_avg = np.nanmean(losses)
+    epoch_time = (time.time() - start_time) / 3600 / 24
+    elapsed_time = epoch_time * (epoch_id+1)
+    total_time = epoch_time * o.epoch_num
+    print('%s\t%s\tepoch: %d/%d\t%s_loss: %.2f\ttime: %.2f/%.2f\n'.expandtabs(3) % 
+          (o.task, o.experiment, epoch_id+1, o.epoch_num, split, loss_avg, elapsed_time, total_time))
     benchmark[split+'_loss'].append((float(epoch_id), float(loss_avg)))
     return loss_avg
 
@@ -391,67 +414,89 @@ def run_epoch(data_loader, split, epoch_id=0):
 #     for subset, data_loader in data_loaders.items():
 #         losses[subset] = 0
 #         for i, data in enumerate(data_loader):
-#             loss = run_iter(split, epoch_id, data)
+#             loss = run_iter(split, epoch_id, i, data)
 #             losses[subset] += loss
 #             if o.print_iters > 0 and (i+1) % o.print_iters == 0:
-#                 print('Epoch: %d/%d, subset: %s, Batch: %d/%d, %s loss: %.3f' % (epoch_id+1,
+#                 print('Epoch: %d/%d, subset: %s, Batch: %d/%d, %s loss: %.2f' % (epoch_id+1,
 #                 o.epoch_num, str(subset), i+1, len(data_loader), split, loss))
 #         losses[subset] /= len(data_loader)
-#         print('Epoch: %d/%d, subset: %d, %s loss: %.3f' % (epoch_id+1, o.epoch_num, subset, 
+#         print('Epoch: %d/%d, subset: %d, %s loss: %.2f' % (epoch_id+1, o.epoch_num, subset, 
 #             split, losses[subset]))
 #     loss_avg = sum(losses.values()) / len(losses.keys())
-#     print('Epoch: %d/%d, %s loss: %.3f\n' % (epoch_id+1, o.epoch_num, split, loss_avg))
+#     print('Epoch: %d/%d, %s loss: %.2f\n' % (epoch_id+1, o.epoch_num, split, loss_avg))
 #     benchmark[split+'_loss'].append((float(epoch_id), float(loss_avg)))
 #     return loss_avg
 
 
-def run_iter(split, epoch_id, inputs):
-    inputs = utils.convert_tensors_to_cuda(inputs)
+def run_iter(split, epoch_id, iter_id, inputs):
+
     if split == "train":
-        with autograd.set_detect_anomaly(o.debug == 1):
-            loss_net, c_all = forward_net(inputs)
-            discriminator.epoch = epoch_id - o.ref_epoch_num
-            K = 3
-            for _ in range(K):
-                loss_disc = forward_disc(utils.detach_tensors(c_all), inputs["s"])
-                update_disc(loss_disc)
-            # c = models.CheckBP('c')(c)
-            loss_adv = forward_disc(c_all, inputs["s"])
-            loss_adv = -loss_adv
-            loss = loss_net + loss_adv
-            update_net(loss)
-            
-            # print("loss_net: %.3f\tloss_adv: %.3f\tprob: %.4f".expandtabs(3) %
-            #       (loss_net.item(), loss_adv.item(), discriminator.prob))
-
-        # Additionally train the discriminator after the last training subset, for transfer learning
-        if o.reference != '' and o.continual == False and inputs["s"]["joint"][0, 0].item() == o.dim_s - 2:
-            
-            # Randomly load c inferred from the reference dataset
-            c_all_ref = {}
-            subset_ids_sampled = {m: random.choice(ids) for m, ids in o.subset_ids_ref.items()}
-            for m, subset_id in subset_ids_sampled.items():
-                z_dir = pj("result", o.reference, o.experiment, o.model, "predict", o.init_model,
-                        "subset_"+str(subset_id), "z", m)
-                filename = random.choice(utils.get_filenames(z_dir, "csv"))
-                z = th.from_numpy(np.array(utils.load_csv(pj(z_dir, filename)), dtype=np.float32))
-                # z = th.tensor(utils.load_csv(pj(z_dir, filename)), dtype=th.float32)
-                c_all_ref[m] = z[:, :o.dim_c]
-            c_all_ref = utils.convert_tensors_to_cuda(c_all_ref)
-
-            # Generate s for the reference dataset, which is treated as the last subset
-            s_ref = {}
-            tmp = inputs["s"]["joint"]
-            for m, d in o.dims_s.items():
-                s_ref[m] = th.full((c_all_ref[m].size(0), 1), d-1, dtype=tmp.dtype, device=tmp.device)
-
+        skip = False
+        if o.continual and o.sample_ref == 1:
+            subset_id_ref = inputs["s"]["joint"][0, 0].item() - o.dim_s_query
+            cycle_id = iter_id // o.dim_s
+            if subset_id_ref >= 0 and subset_id_ref != (cycle_id % o.dim_s_ref):
+                skip = True
+        
+        if skip:
+            return np.nan
+        else:
+            inputs = utils.convert_tensors_to_cuda(inputs)
             with autograd.set_detect_anomaly(o.debug == 1):
+                loss_net, c_all = forward_net(inputs)
+                discriminator.epoch = epoch_id - o.ref_epoch_num
+                K = 3
+                if o.experiment == "k_1":
+                    K = 1
+                elif o.experiment == "k_2":
+                    K = 2
+                elif o.experiment == "k_4":
+                    K = 4
+                elif o.experiment == "k_5":
+                    K = 5
+
                 for _ in range(K):
-                    loss_disc = forward_disc(c_all_ref, s_ref)
+                    loss_disc = forward_disc(utils.detach_tensors(c_all), inputs["s"])
                     update_disc(loss_disc)
+                # c = models.CheckBP('c')(c)
+                loss_adv = forward_disc(c_all, inputs["s"])
+                loss_adv = -loss_adv
+                loss = loss_net + loss_adv
+                update_net(loss)
+                
+                # print("loss_net: %.3f\tloss_adv: %.3f\tprob: %.4f".expandtabs(3) %
+                #       (loss_net.item(), loss_adv.item(), discriminator.prob))
+
+            # If we want to map query onto reference for transfer learning, then we take the reference as an additional batch
+            # and train the discriminator after the last training subset
+            if o.reference != '' and o.continual == False and o.map_ref == 1 and inputs["s"]["joint"][0, 0].item() == o.dim_s - 2:
+                
+                # Randomly load c inferred from the reference dataset
+                c_all_ref = {}
+                subset_ids_sampled = {m: random.choice(ids) for m, ids in o.subset_ids_ref.items()}
+                for m, subset_id in subset_ids_sampled.items():
+                    z_dir = pj("result", o.reference, o.rf_experiment, o.model, "predict", o.init_model,
+                            "subset_"+str(subset_id), "z", m)
+                    filename = random.choice(utils.get_filenames(z_dir, "csv"))
+                    z = th.from_numpy(np.array(utils.load_csv(pj(z_dir, filename)), dtype=np.float32))
+                    # z = th.tensor(utils.load_csv(pj(z_dir, filename)), dtype=th.float32)
+                    c_all_ref[m] = z[:, :o.dim_c]
+                c_all_ref = utils.convert_tensors_to_cuda(c_all_ref)
+
+                # Generate s for the reference dataset, which is treated as the last subset
+                s_ref = {}
+                tmp = inputs["s"]["joint"]
+                for m, d in o.dims_s.items():
+                    s_ref[m] = th.full((c_all_ref[m].size(0), 1), d-1, dtype=tmp.dtype, device=tmp.device)
+
+                with autograd.set_detect_anomaly(o.debug == 1):
+                    for _ in range(K):
+                        loss_disc = forward_disc(c_all_ref, s_ref)
+                        update_disc(loss_disc)
             
     else:
         with th.no_grad():
+            inputs = utils.convert_tensors_to_cuda(inputs)
             loss_net, c_all = forward_net(inputs)
             loss_adv = forward_disc(c_all, inputs["s"])
             loss_adv = -loss_adv

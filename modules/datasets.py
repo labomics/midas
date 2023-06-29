@@ -12,10 +12,10 @@ import re
 
 class MultimodalDataset(Dataset):
 
-    def __init__(self, task, data_dir, subset=0, split="train", comb=None, train_ratio=None):
+    def __init__(self, task, reference, data_dir, subset=0, split="train", comb=None, train_ratio=None):
         super(MultimodalDataset, self).__init__()
         
-        config = utils.gen_data_config(task)
+        config = utils.gen_data_config(task, reference)
         for kw, arg in config.items():
             setattr(self, kw, arg)
 
@@ -79,7 +79,7 @@ class MultimodalDataset(Dataset):
 
 class MultiDatasetSampler(th.utils.data.sampler.Sampler):
 
-    def __init__(self, dataset, batch_size=1, shuffle=True):
+    def __init__(self, dataset, batch_size=1, shuffle=True, max_dataset_size=10000):
         self.dataset = dataset
         self.batch_size = batch_size
         if shuffle:
@@ -88,6 +88,7 @@ class MultiDatasetSampler(th.utils.data.sampler.Sampler):
             self.Sampler = th.utils.data.sampler.SequentialSampler
         self.number_of_datasets = len(dataset.datasets)
         self.largest_dataset_size = max([cur_dataset.size for cur_dataset in dataset.datasets])
+        self.largest_dataset_size = min(self.largest_dataset_size, max_dataset_size)
 
     def __len__(self):
         return self.batch_size * math.ceil(self.largest_dataset_size / self.batch_size) * len(self.dataset.datasets)

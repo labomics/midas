@@ -1,4 +1,4 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 
 base_dir <- "data/raw/atac+rna/10x_multiome_arc1_3k"
 count_path <- pj(base_dir, "pbmc_granulocyte_sorted_3k_filtered_feature_bc_matrix.h5")
