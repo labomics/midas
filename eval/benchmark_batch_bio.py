@@ -5,7 +5,7 @@
 
 
 import os
-os.chdir("/root/workspace/code/sc-transformer/")
+os.chdir("/root/workspace/code/midas/")
 from os.path import join as pj
 import argparse
 import sys
@@ -28,8 +28,8 @@ parser.add_argument('--task', type=str, default='teadog_single')
 parser.add_argument('--experiment', type=str, default='e0')
 parser.add_argument('--model', type=str, default='default')
 parser.add_argument('--init_model', type=str, default='sp_00001899')
-parser.add_argument('--method', type=str, default='stabmap')
-# parser.add_argument('--method', type=str, default='midas_embed')
+# parser.add_argument('--method', type=str, default='stabmap')
+parser.add_argument('--method', type=str, default='midas_embed')
 o, _ = parser.parse_known_args()  # for python interactive
 # o = parser.parse_args()
 
@@ -38,10 +38,10 @@ o, _ = parser.parse_known_args()  # for python interactive
 
 
 if "midas" in o.method:
-    result_dir = pj("result", "comparison", o.task, o.method, o.experiment, o.init_model)
+    result_dir = pj("result", "comparison", o.task, o.method, o.experiment, o.model, o.init_model)
 else:
     result_dir = pj("result", "comparison", o.task, o.method)
-cfg_task = re.sub("_atlas|_generalize|_transfer|_ref_.*", "", o.task)
+cfg_task = re.sub("_vd.*|_vt.*|_atlas|_generalize|_transfer|_ref_.*", "", o.task)
 data_config = utils.load_toml("configs/data.toml")[cfg_task]
 for k, v in data_config.items():
     vars(o)[k] = v
@@ -58,8 +58,9 @@ o.s_joint, o.combs, *_ = utils.gen_all_batch_ids(o.s_joint, o.combs)
 
 # Load cell type labels
 labels = []
+label_file = "l1_" + o.task.split("_")[-1] + ".csv" if "_vt" in o.task else "l1.csv"
 for raw_data_dir in o.raw_data_dirs:
-    label = utils.load_csv(pj(raw_data_dir, "label_seurat", "l1.csv"))
+    label = utils.load_csv(pj(raw_data_dir, "label_seurat", label_file))
     labels += utils.transpose_list(label)[1][1:]
 labels = np.array(labels)
 print(np.unique(labels))
@@ -77,7 +78,7 @@ pred = utils.load_predicted(o)
 # In[15]:
 
 
-if o.method in ["midas_embed", "mofa", "scmomat", "stabmap", "scvaeit"]:
+if o.method in ["midas_embed", "mofa", "scmomat", "stabmap", "scvaeit", "multigrate", "glue"]:
     output_type = "embed"
 elif o.method in [
     "midas_feat+wnn", 
@@ -120,7 +121,7 @@ if o.method == "midas_embed":
     adata.obs[batch_key] = adata.obs[batch_key].astype("category")
     adata.obs[label_key] = labels
     adata.obs[label_key] = adata.obs[label_key].astype("category")
-elif o.method in ["mofa", "stabmap"]:
+elif o.method in ["mofa", "stabmap", "multigrate", "glue"]:
     adata = ad.AnnData(c*0)
     embeddings = utils.load_csv(pj(result_dir, "embeddings.csv"))
     adata.obsm[embed] = np.array(embeddings)[1:, 1:].astype(np.float32)

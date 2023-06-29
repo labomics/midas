@@ -1,5 +1,5 @@
-setwd("/root/workspace/code/sc-transformer/eval/plot")
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+setwd("/root/workspace/code/midas/eval/plot")
+source("/root/workspace/code/midas/preprocess/utils.R")
 library(tibble)
 library(RColorBrewer)
 library(dynutils)
@@ -13,7 +13,8 @@ library(scales)
 outdir <- "../../paper/5"
 mkdir(outdir, remove_old = F)
 
-scib <- as.data.frame(read.xls("data/scib_metrics_sota+mosaic_dogma_e0_sp_00001899_sorted+less_mod.xlsx"))
+# scib <- as.data.frame(read.xls("data/scib_metrics_sota+mosaic_dogma_e0_sp_00001899_sorted+less_mod.xlsx"))
+scib <- as.data.frame(read.xls("data/scib_metrics_sota+mosaic_dogma_e0_sp_00001899_sorted.xlsx"))
 scib_transfer <- as.data.frame(read.xls("data/scib_metrics_sota+mosaic_dogma_e0_sp_00003699_sorted.xlsx"))
 scmib_midas <- as.data.frame(read.xls("data/scmib_metrics_dogma_sp_00001899_sorted.xlsx"))
 scmib_midas_transfer <- as.data.frame(read.xls("data/scmib_metrics_dogma_sp_00003699_sorted.xlsx"))

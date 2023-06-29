@@ -1,5 +1,5 @@
-setwd("/root/workspace/code/sc-transformer")
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+setwd("/root/workspace/code/midas")
+source("/root/workspace/code/midas/preprocess/utils.R")
 library(tibble)
 library(RColorBrewer)
 library(dynutils)

@@ -1,5 +1,5 @@
-setwd("/root/workspace/code/sc-transformer/eval/plot")
-source("/root/workspace/code/sc-transformer/utils/utils.R")
+setwd("/root/workspace/code/midas/eval/plot")
+source("/root/workspace/code/midas/utils/utils.R")
 library(tibble)
 library(RColorBrewer)
 library(dynutils)
@@ -10,7 +10,7 @@ library(gdata)
 source("knit_table.R")
 
 parser <- ArgumentParser()
-parser$add_argument("--fig", type = "integer", default = 10)
+parser$add_argument("--fig", type = "integer", default = 16)
 o <- parser$parse_known_args()[[1]]
 
 method <- "midas"
@@ -166,7 +166,7 @@ if (o$fig == 14) {
 }
 if (o$fig == 15) {
     # dogma mosaic, scib
-    method <- "midas"
+    method <- "multigrate"
     dataset <- "dogma"
     sota <- F
     mosaic <- T
@@ -176,6 +176,28 @@ if (o$fig == 15) {
     img_head <- paste0("sFig3_", method, "_")
 }
 if (o$fig == 16) {
+    # teadog mosaic, scib
+    method <- "multigrate"
+    dataset <- "teadog"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 17) {
+    # dogma mosaic, scib
+    method <- "midas"
+    dataset <- "dogma"
+    sota <- F
+    mosaic <- T
+    scmib <- F
+    transfer <- F
+    outdir <- "../../paper/metrics/supplementary fig 3"
+    img_head <- paste0("sFig3_", method, "_")
+}
+if (o$fig == 18) {
     # teadog mosaic, scib
     method <- "midas"
     dataset <- "teadog"
@@ -187,29 +209,65 @@ if (o$fig == 16) {
     img_head <- paste0("sFig3_", method, "_")
 }
 
-init <- ifelse(transfer, "sp_00003699", "sp_00001899")
+# de novo, dogma single
+method <- "midas"
+dataset <- "dogma"
+sota <- F
+mosaic <- T
+scmib <- F
+transfer <- F
+outdir <- "../../paper/metrics/supplementary fig 3"
+img_head <- "sFig3_"
 
-if (sota & !mosaic) {
-    xls_metrics_path <- paste0("data/scib_metrics_sota_",        dataset, "_e0_", init, "_sorted.xlsx")
-} else if (!sota & mosaic) {
-    if (method == "midas") {
-        xls_metrics_path <- paste0("data/scib_metrics_mosaic_",      dataset, "_e0_", init, "_sorted.xlsx")
-    } else {
-        xls_metrics_path <- paste0("data/scib_metrics_mosaic_", dataset, "_", method, "_sorted.xlsx")
-    }
-} else {
-    if (dataset == "dogma" & !transfer) {
-         xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_", dataset, "_e0_", init, "_sorted+less_mod.xlsx")
-    } else {
-        xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_", dataset, "_e0_", init, "_sorted.xlsx")
-    }
-}
+xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_dogma_single_atac_e0_l_2_sp_00001899_sorted_R1_12.xlsx")
+xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_dogma_single_rna_e0_l_2_sp_00001999_sorted_R1_12.xlsx")
+# xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_dogma_single_adt_e0_default_sp_00001899_sorted_R1_12.xlsx")
 
-if (scmib) {
-    xls_metrics_path <- paste0("data/scmib_metrics_", dataset, "_", init, "_sorted.xlsx")
-}
 
-mkdir(outdir, remove_old = F)
+# de novo, bm
+method <- "midas"
+dataset <- "bm"
+scmib <- F
+transfer <- F
+outdir <- "../../paper/metrics/supplementary fig 6"
+img_head <- "sFig6_"
+
+xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_bm_e0_la_1_sp_00001899_sorted.xlsx")
+
+
+# transfer, bm
+method <- "midas"
+dataset <- "bm"
+scmib <- F
+transfer <- F
+outdir <- "../../paper/metrics/supplementary fig 6"
+img_head <- "sFig6_"
+
+xls_metrics_path <- paste0("data/scib_metrics_mosaic_bm_no_map_ref_default_sp_00003599_sorted.xlsx")
+
+# init <- ifelse(transfer, "sp_00003699", "sp_00001899")
+
+# if (sota & !mosaic) {
+#     xls_metrics_path <- paste0("data/scib_metrics_sota_",        dataset, "_e0_", init, "_sorted.xlsx")
+# } else if (!sota & mosaic) {
+#     if (method == "midas") {
+#         xls_metrics_path <- paste0("data/scib_metrics_mosaic_",      dataset, "_e0_", init, "_sorted.xlsx")
+#     } else {
+#         xls_metrics_path <- paste0("data/scib_metrics_mosaic_", dataset, "_", method, "_sorted.xlsx")
+#     }
+# } else {
+#     if (dataset == "dogma" & !transfer) {
+#          xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_", dataset, "_e0_", init, "_sorted+less_mod.xlsx")
+#     } else {
+#         xls_metrics_path <- paste0("data/scib_metrics_sota+mosaic_", dataset, "_e0_", init, "_sorted.xlsx")
+#     }
+# }
+
+# if (scmib) {
+#     xls_metrics_path <- paste0("data/scmib_metrics_", dataset, "_", init, "_sorted.xlsx")
+# }
+
+# mkdir(outdir, remove_old = F)
 
 metrics_tab <- read.xls(xls_metrics_path)
 # metrics_tab <- as.data.frame(metrics_tab[, -1])
@@ -263,7 +321,11 @@ metrics_tab[, "Method"] <- str_replace_all(metrics_tab[, "Method"], c(
     "pca\\+wnn" = "PCA + WNN",
     "scanorama_feat\\+wnn" = "Scanorama-feat + WNN",
     "liger\\+wnn" = "LIGER + WNN",
-    "mofa" = "MOFA+"
+    "mofa" = "MOFA+",
+    "multigrate" = "Multigrate",
+    "stabmap" = "StabMap",
+    "scvaeit" = "scVAEIT",
+    "scmomat" = "scMoMaT"
 ))
 metrics_tab[, "Task"] <- str_replace_all(metrics_tab[, "Task"], c(
     "dogma_|teadog_|_transfer" = ""
@@ -274,6 +336,11 @@ metrics_tab[, "Task"] <- str_replace_all(metrics_tab[, "Task"], c(
 ))
 if (transfer) {
     metrics_tab[, "Method"] <- str_replace_all(metrics_tab[, "Method"], c("MIDAS" = "MIDAS (transfer)"))
+}
+
+if (dataset == "bm") {
+    metrics_tab[, "Task"] <- "full"
+    dataset <- "dogma"
 }
 
 if (scmib) {

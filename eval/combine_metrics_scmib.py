@@ -5,7 +5,7 @@
 
 
 import os
-os.chdir("/root/workspace/code/sc-transformer/")
+os.chdir("/root/workspace/code/midas/")
 from os.path import join as pj
 import argparse
 import sys
@@ -37,7 +37,7 @@ o, _ = parser.parse_known_args()  # for python interactive
 
 df_batch_bio_embed = {}
 for task in o.tasks:
-    df_batch_bio_embed[task] = pd.read_excel(pj("result", "comparison", task, o.method, o.experiment, o.init_model, "metrics_batch_bio.xlsx"))
+    df_batch_bio_embed[task] = pd.read_excel(pj("result", "comparison", task, o.method, o.experiment, o.model, o.init_model, "metrics_batch_bio.xlsx"))
     df_batch_bio_embed[task].rename(index={0: task}, inplace=True)
 df_batch_bio_embed_cat = pd.concat(df_batch_bio_embed.values(), axis=0)
 df_batch_bio_embed_cat.rename(columns={c: c+"_embed" for c in df_batch_bio_embed_cat.columns}, inplace=True)
@@ -45,7 +45,7 @@ df_batch_bio_embed_cat
 
 df_batch_bio_feat = {}
 for task in o.tasks:
-    df_batch_bio_feat[task] = pd.read_excel(pj("result", "comparison", task, "midas_feat+wnn", o.experiment, o.init_model, "metrics_batch_bio.xlsx"))
+    df_batch_bio_feat[task] = pd.read_excel(pj("result", "comparison", task, "midas_feat+wnn", o.experiment, o.model, o.init_model, "metrics_batch_bio.xlsx"))
     df_batch_bio_feat[task].rename(index={0: task}, inplace=True)
 df_batch_bio_feat_cat = pd.concat(df_batch_bio_feat.values(), axis=0)
 df_batch_bio_feat_cat.rename(columns={c: c+"_feat" for c in df_batch_bio_feat_cat.columns}, inplace=True)
@@ -53,7 +53,7 @@ df_batch_bio_feat_cat
 
 df_mod = {}
 for task in o.tasks:
-    df_mod[task] = pd.read_excel(pj("result", "comparison", task, o.method, o.experiment, o.init_model, "metrics_mod.xlsx"))
+    df_mod[task] = pd.read_excel(pj("result", "comparison", task, o.method, o.experiment, o.model, o.init_model, "metrics_mod.xlsx"))
     df_mod[task].rename(index={0: task}, inplace=True)
 df_mod_cat = pd.concat(df_mod.values(), axis=0)
 df_mod_cat
@@ -95,6 +95,10 @@ df_mean_cat_sorted
 
 out_dir = pj("eval", "plot", "data")
 utils.mkdir(out_dir, remove_old=False)
-df_mean_cat_sorted.to_excel(pj(out_dir, "scmib_metrics_"+o.tasks[0].split("_")[0]+"_"+o.init_model+"_sorted.xlsx"))
-df_mean_cat.to_excel(pj(out_dir, "scmib_metrics_"+o.tasks[0].split("_")[0]+"_"+o.init_model+"_unsorted.xlsx"))
+
+tname = o.tasks[0].split("_")[0]
+if "vd" in o.tasks[0] or "vt" in o.tasks[0]:
+    tname = tname + "_" + o.tasks[0].split("_")[-1]
+df_mean_cat_sorted.to_excel(pj(out_dir, "scmib_metrics_"+tname+"_"+o.experiment+"_"+o.model+"_"+o.init_model+"_sorted.xlsx"))
+df_mean_cat.to_excel(pj(out_dir, "scmib_metrics_"+tname+"_"+o.experiment+"_"+o.model+"_"+o.init_model+"_unsorted.xlsx"))
 

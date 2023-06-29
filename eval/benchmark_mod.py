@@ -5,7 +5,7 @@
 
 
 import os
-os.chdir("/root/workspace/code/sc-transformer/")
+os.chdir("/root/workspace/code/midas/")
 from os.path import join as pj
 import argparse
 import sys
@@ -42,14 +42,15 @@ o, _ = parser.parse_known_args()  # for python interactive
 
 
 if "midas" in o.method:
-    result_dir = pj("result", "comparison", o.task, o.method, o.experiment, o.init_model)
+    result_dir = pj("result", "comparison", o.task, o.method, o.experiment, o.model, o.init_model)
 else:
     result_dir = pj("result", "comparison", o.task, o.method)
 t = o.task.split("_")[0] # dogma
-o.task = re.sub(t, t+"_full_ref", o.task) # dogma_full_ref_paired_full
+tl = "_" + o.task.split("_")[-1] if "vd" in o.task or "vt" in o.task else ""
+o.task = re.sub(t, t+"_full"+tl+"_ref", o.task) # dogma_full_ref_paired_full
 # data_dir = pj("data", "processed", re.sub("_generalize", "_transfer", o.task))
 data_dir = pj("data", "processed", o.task)
-cfg_task = re.sub("_atlas|_generalize|_transfer|_ref_.*", "", o.task) # dogma_full
+cfg_task = re.sub("_vd.*|_vt.*|_atlas|_generalize|_transfer|_ref_.*", "", o.task) # dogma_full
 data_config = utils.load_toml("configs/data.toml")[cfg_task]
 for k, v in data_config.items():
     vars(o)[k] = v
@@ -97,6 +98,7 @@ results = {
 
 
 knn = KNeighborsClassifier(n_neighbors=5, weights='distance')
+label_file = "l1_" + o.task.split("_")[-1] + ".csv" if "_vt" in o.task else "l1.csv"
 
 for batch_id in pred.keys():
     
@@ -110,7 +112,7 @@ for batch_id in pred.keys():
     c_cat = np.concatenate((c["atac"], c["rna"], c["adt"]), axis=0)
     mods_cat = ["atac"]*len(c["atac"]) + ["rna"]*len(c["rna"]) + ["adt"]*len(c["adt"])
     
-    label = utils.load_csv(pj(o.raw_data_dirs[batch_id], "label_seurat", "l1.csv"))
+    label = utils.load_csv(pj(o.raw_data_dirs[batch_id], "label_seurat", label_file))
     label = np.array(utils.transpose_list(label)[1][1:])
     label_cat = np.tile(label, 3)
     

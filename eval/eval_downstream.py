@@ -5,7 +5,7 @@
 
 
 import os
-os.chdir("/root/workspace/code/sc-transformer/")
+os.chdir("/root/workspace/code/midas/")
 from os.path import join as pj
 import argparse
 import sys

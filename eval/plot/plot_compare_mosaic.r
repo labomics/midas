@@ -1,5 +1,5 @@
-setwd("/root/workspace/code/sc-transformer/eval/plot")
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+setwd("/root/workspace/code/midas/eval/plot")
+source("/root/workspace/code/midas/preprocess/utils.R")
 library(tibble)
 library(RColorBrewer)
 library(dynutils)
@@ -11,24 +11,26 @@ library(scales)
 library(reshape)
 
 
-# data <- "dogma"
 data <- "dogma"
+# data <- "teadog"
 
 outdir <- "../../paper/3"
 mkdir(outdir, remove_old = F)
 
 midas   <- as.data.frame(read.xls(paste0("data/scib_metrics_mosaic_", data, "_e0_sp_00001899_sorted.xlsx")))
 scvaeit <- as.data.frame(read.xls(paste0("data/scib_metrics_mosaic_", data, "_scvaeit_sorted.xlsx")))
+multigrate <- as.data.frame(read.xls(paste0("data/scib_metrics_mosaic_", data, "_multigrate_sorted.xlsx")))
 scmomat <- as.data.frame(read.xls(paste0("data/scib_metrics_mosaic_", data, "_scmomat_sorted.xlsx")))
 stabmap <- as.data.frame(read.xls(paste0("data/scib_metrics_mosaic_", data, "_stabmap_sorted.xlsx")))
-names(midas)[1] <- names(scvaeit)[1] <- names(scmomat)[1] <- names(stabmap)[1] <- "Method"
+names(midas)[1] <- names(scvaeit)[1] <- names(multigrate)[1] <- names(scmomat)[1] <- names(stabmap)[1] <- "Method"
 
 midas["Method"] <- "MIDAS"
 scvaeit["Method"] <- "scVAEIT"
+multigrate["Method"] <- "Multigrate"
 scmomat["Method"] <- "scMoMaT"
 stabmap["Method"] <- "StabMap"
 
-all <- rbind(midas, scvaeit, scmomat, stabmap)[c("Method", "Task", "overall_score")]
+all <- rbind(midas, scvaeit, multigrate, scmomat, stabmap)[c("Method", "Task", "overall_score")]
 names(all) <- c("Method", "Task", "Overall score")
 
 
@@ -39,7 +41,7 @@ all[["Task"]] <- str_replace_all(all[["Task"]], c("_" = "-",
                                                 "-single" = ""
                                                 ))
 
-all[["Method"]] <- factor(x = all[["Method"]], levels = c("StabMap", "scVAEIT", "scMoMaT", "MIDAS"))
+all[["Method"]] <- factor(x = all[["Method"]], levels = c("StabMap", "scVAEIT", "scMoMaT", "Multigrate", "MIDAS"))
 all[["Task"]] <- factor(x = all[["Task"]], levels = paste0(data, c(
     "-full",
     "-paired+full",
@@ -51,13 +53,15 @@ all[["Task"]] <- factor(x = all[["Task"]], levels = paste0(data, c(
     "-diagonal")))
 all
 
+y_min <- floor(min(all[["Overall score"]], na.rm=TRUE) / 0.05) * 0.05
+y_max <- ceil(max(all[["Overall score"]], na.rm=TRUE) / 0.05) * 0.05
 p <- ggplot(data = all, aes(x = .data[["Task"]],
                                  y = .data[["Overall score"]],
                                  fill = .data[["Method"]], width = 0.5)) +
-geom_bar(stat = "identity", position = position_dodge(width = 0.5 + 0.15)) +
+geom_bar(stat = "identity", position = position_dodge(width = 0.5 + 0.1)) +
 scale_fill_brewer(palette = "Set1", direction = -1) +
   scale_y_continuous(
-    limits = c(min(all["Overall score"]) - 0.05, max(all["Overall score"]) + 0.03), oob = rescale_none,
+    limits = c(y_min, y_max), oob = rescale_none,
     breaks = seq(0, 1, by = 0.05),
     expand = c(0, 0), # The vertical axis does not extend to either side
     # position = "top"  # Labels are located on the top

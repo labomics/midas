@@ -610,6 +610,456 @@ train_ratio = 1
 N = 256
 
 
+[teadog_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["atac", "rna"] ],
+    [ ["atac", "rna"] ],
+    [ ["atac", "rna"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_atac_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_rna_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_a_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_b_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_c_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["atac"] ],
+    [ ["rna"] ],
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_d_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["atac"] ],
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["atac"] ],
+    [ ["rna"] ],
+    [ ["atac"] ],
+    [ ["rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_b]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["atac"] ],
+    [ ["rna"] ],
+    [ ["atac"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna", "adt"] ],
+    [ ["rna", "adt"] ],
+    [ ["rna", "adt"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_rna_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_adt_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_a_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_b_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_c_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["adt"] ],
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_d_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["adt"] ],
+    [ ["rna"] ],
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["adt"] ],
+    [ ["rna"] ],
+    [ ["adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[teadog_diagonal_d]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/tea/TEA-seq/w1",
+    "data/raw/atac+rna+adt/tea/TEA-seq/w6",
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM4949911_X061-AP0C1W1_leukopak_perm-cells_tea_fulldepth_atac_filtered_fragments.tsv.gz",
+    "GSM5123954_X066-MP0C1W6_leukopak_perm-cells_tea_200M_atac_filtered_fragments.tsv.gz",
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["adt"] ],
+    [ ["rna"] ],
+    [ ["adt"] ],
+    [ ["rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
 # dogma
 [dogma_full]
 raw_data_dirs = [
@@ -961,135 +1411,425 @@ train_ratio = 1
 N = 256
 
 
-[dogma_lll_atac]
+[dogma_atac_paired_a]
 raw_data_dirs = [
     "data/raw/atac+rna+adt/dogma/lll_ctrl",
     "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
 ]
 raw_data_frags = [
     "GSM5065524_LLL_CTRL_fragments.tsv.gz",
     "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
 ]
 combs = [
     [ ["atac"] ],
+    [ ["atac", "rna"] ],
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_rna_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_a_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_b_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_c_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["atac"] ],
+    [ ["rna"] ],
+    [ ["atac"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_d_paired_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["atac"] ],
+    [ ["rna"] ],
+    [ ["atac", "rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_a]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["atac"] ],
+    [ ["rna"] ],
+    [ ["atac"] ],
+    [ ["rna"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_b]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["atac"] ],
+    [ ["rna"] ],
     [ ["atac"] ],
 ]
-comb_ratios = [ [ 1 ], [ 1 ] ]
-s_joint =     [ [ 0 ], [ 1 ] ]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
 train_ratio = 1
 N = 256
 
 
-[dogma_lll_rna]
+[dogma_rna_paired_c]
 raw_data_dirs = [
     "data/raw/atac+rna+adt/dogma/lll_ctrl",
     "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
 ]
 raw_data_frags = [
     "GSM5065524_LLL_CTRL_fragments.tsv.gz",
     "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
 ]
 combs = [
     [ ["rna"] ],
+    [ ["rna", "adt"] ],
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_adt_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_a_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_b_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_c_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["adt"] ],
+    [ ["rna"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_d_paired_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["adt"] ],
+    [ ["rna"] ],
+    [ ["adt"] ],
+    [ ["rna", "adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_c]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["rna"] ],
+    [ ["adt"] ],
+    [ ["rna"] ],
+    [ ["adt"] ],
+]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+train_ratio = 1
+N = 256
+
+
+[dogma_diagonal_d]
+raw_data_dirs = [
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+]
+combs = [
+    [ ["adt"] ],
+    [ ["rna"] ],
+    [ ["adt"] ],
     [ ["rna"] ],
 ]
-comb_ratios = [ [ 1 ], [ 1 ] ]
-s_joint =     [ [ 0 ], [ 1 ] ]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
 train_ratio = 1
 N = 256
 
 
-[dogma_lll_adt]
+# bone marrow
+[bm]
 raw_data_dirs = [
-    "data/raw/atac+rna+adt/dogma/lll_ctrl",
-    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/rna/ica",
+    "data/raw/atac+adt/asap/BM",
+    "data/raw/rna+adt/bm",
 ]
 raw_data_frags = [
-    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
-    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "",
+    "GSM4732140_Human_BoneMarrow_hg38_fragments.tsv.gz",
+    "",
 ]
 combs = [
-    [ ["adt"] ],
-    [ ["adt"] ],
-]
-comb_ratios = [ [ 1 ], [ 1 ] ]
-s_joint =     [ [ 0 ], [ 1 ] ]
-train_ratio = 1
-N = 256
-
-
-[dogma_lll_paired_a]
-raw_data_dirs = [
-    "data/raw/atac+rna+adt/dogma/lll_ctrl",
-    "data/raw/atac+rna+adt/dogma/lll_stim",
-]
-raw_data_frags = [
-    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
-    "GSM5065527_LLL_STIM_fragments.tsv.gz",
-]
-combs = [
-    [ ["atac", "rna"] ],
-    [ ["atac", "rna"] ],
-]
-comb_ratios = [ [ 1 ], [ 1 ] ]
-s_joint =     [ [ 0 ], [ 1 ] ]
-train_ratio = 1
-N = 256
-
-
-[dogma_lll_paired_b]
-raw_data_dirs = [
-    "data/raw/atac+rna+adt/dogma/lll_ctrl",
-    "data/raw/atac+rna+adt/dogma/lll_stim",
-]
-raw_data_frags = [
-    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
-    "GSM5065527_LLL_STIM_fragments.tsv.gz",
-]
-combs = [
+    [ ["rna"] ],
     [ ["atac", "adt"] ],
-    [ ["atac", "adt"] ],
+    [ ["rna",  "adt"] ],
 ]
-comb_ratios = [ [ 1 ], [ 1 ] ]
-s_joint =     [ [ 0 ], [ 1 ] ]
-train_ratio = 1
-N = 256
-
-
-[dogma_lll_paired_c]
-raw_data_dirs = [
-    "data/raw/atac+rna+adt/dogma/lll_ctrl",
-    "data/raw/atac+rna+adt/dogma/lll_stim",
-]
-raw_data_frags = [
-    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
-    "GSM5065527_LLL_STIM_fragments.tsv.gz",
-]
-combs = [
-    [ ["rna", "adt"] ],
-    [ ["rna", "adt"] ],
-]
-comb_ratios = [ [ 1 ], [ 1 ] ]
-s_joint =     [ [ 0 ], [ 1 ] ]
-train_ratio = 1
-N = 256
-
-
-[dogma_lll_full]
-raw_data_dirs = [
-    "data/raw/atac+rna+adt/dogma/lll_ctrl",
-    "data/raw/atac+rna+adt/dogma/lll_stim",
-]
-raw_data_frags = [
-    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
-    "GSM5065527_LLL_STIM_fragments.tsv.gz",
-]
-combs = [
-    [ ["atac", "rna", "adt"] ],
-    [ ["atac", "rna", "adt"] ],
-]
-comb_ratios = [ [ 1 ], [ 1 ] ]
-s_joint =     [ [ 0 ], [ 1 ] ]
+comb_ratios = [ [ 1 ], [ 1 ], [ 1 ] ]
+s_joint =     [ [ 0 ], [ 1 ], [ 2 ] ]
 train_ratio = 1
 N = 256
 

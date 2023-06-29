@@ -18,6 +18,63 @@ norm = "ln"
 drop = 0.2
 
 
+[c_8]
+dim_c = 8
+
+
+[c_16]
+dim_c = 16
+
+
+[c_24]
+dim_c = 24
+
+
+[c_40]
+dim_c = 40
+
+
+[c_48]
+dim_c = 48
+
+
+[c_56]
+dim_c = 56
+
+
+[c_64]
+dim_c = 64
+
+
+[c_128]
+dim_c = 128
+
+
+[l_1]
+dims_enc_x = []
+
+
+[l_2]
+dims_enc_x = [1024]
+
+
+[l_4]
+dims_enc_x = [1024, 256, 128]
+
+
+[l_5]
+dims_enc_x = [1024, 256, 256, 128]
+
+
+[la_1]
+dims_enc_chr = [32]
+
+
+[la_1_l_2]
+dims_enc_chr = [32]
+dims_enc_x = [1024]
+
+
 
 # [atlas.default]
 # dim_c = 32

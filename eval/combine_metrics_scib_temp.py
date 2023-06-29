@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 import os
@@ -18,34 +18,28 @@ import copy
 import re
 
 
-# In[9]:
+# In[ ]:
 
 
 parser = argparse.ArgumentParser()
 # parser.add_argument('--tasks', type=str, nargs='+',  default=["dogma_full", "dogma_paired_full", 
 #     "dogma_paired_abc", "dogma_paired_ab",  "dogma_paired_ac", "dogma_paired_bc",
 #     "dogma_single_full", "dogma_single"])
-# parser.add_argument('--tasks', type=str, nargs='+',  default=["teadog_full", "teadog_paired_full", 
-#     "teadog_paired_abc", "teadog_paired_ab",  "teadog_paired_ac", "teadog_paired_bc",
-#     "teadog_single_full", "teadog_single"])
-# parser.add_argument('--tasks', type=str, nargs='+',  default=["dogma_full", "dogma_paired_a",  "dogma_paired_b", "dogma_paired_c"])
-# parser.add_argument('--tasks', type=str, nargs='+',  default=["dogma_single_atac",  "dogma_single_rna", "dogma_single_adt"])
-parser.add_argument('--tasks', type=str, nargs='+',  default=["bm"])
+parser.add_argument('--tasks', type=str, nargs='+',  default=["teadog_paired_a", "teadog_atac_paired_a", "teadog_rna_paired_a", "teadog_diagonal_a_paired_a", "teadog_diagonal_b_paired_a", "teadog_diagonal_c_paired_a", "teadog_diagonal_d_paired_a", "teadog_diagonal_a", "teadog_diagonal_b"])
 parser.add_argument('--method', type=str, default='midas_embed')
 # parser.add_argument('--method', type=str, default='scmomat')
 # parser.add_argument('--method', type=str, default='scvaeit')
 # parser.add_argument('--method', type=str, default='stabmap')
-# parser.add_argument('--method', type=str, default='multigrate')
 parser.add_argument('--mosaic', type=int, default=1)
 parser.add_argument('--sota', type=int, default=0)
-parser.add_argument('--experiment', type=str, default='no_map_ref')
+parser.add_argument('--experiment', type=str, default='e0')
 parser.add_argument('--model', type=str, default='default')
-parser.add_argument('--init_model', type=str, default='sp_00003599')
+parser.add_argument('--init_model', type=str, default='sp_00001899')
 o, _ = parser.parse_known_args()  # for python interactive
 # o = parser.parse_args()
 
 
-# In[12]:
+# In[ ]:
 
 
 # mosaic results
@@ -66,30 +60,23 @@ df_batch_bio_embed_cat.rename(index={i: o.method for i in df_batch_bio_embed_cat
 df_batch_bio_embed_cat
 
 
-# In[13]:
+# In[ ]:
 
 
 # sota results
 if o.sota == 1:
-    if o.tasks[0] == "bm":
-        methods = [
-            "multigrate",
-            "scmomat",
-            "scvaeit",
-            "stabmap",
-        ]
-    else:
-        methods = [
-            "mofa",
-            "liger+wnn",
-            "harmony+wnn",
-            "scanorama_embed+wnn",
-            "scanorama_feat+wnn",
-            "bbknn",
-            "seurat_rpca+wnn",
-            "seurat_cca+wnn",
-            "pca+wnn",
-        ]
+    methods = [
+        "midas_feat+wnn",
+        "mofa",
+        "liger+wnn",
+        "harmony+wnn",
+        "scanorama_embed+wnn",
+        "scanorama_feat+wnn",
+        "bbknn",
+        "seurat_rpca+wnn",
+        "seurat_cca+wnn",
+        "pca+wnn",
+    ]
 
     df_sota = {}
     for method in methods:
@@ -101,13 +88,14 @@ if o.sota == 1:
     df_sota_cat = pd.concat(df_sota.values(), axis=0)
 
     df_sota_cat[["Task"]] = o.tasks[0]
+    df_sota_cat.loc["midas_feat+wnn", "Task"] = o.tasks[0]
     df_sota_cat
     df_cat = pd.concat([df_batch_bio_embed_cat, df_sota_cat], axis=0)
 else:
     df_cat = df_batch_bio_embed_cat
 
 
-# In[14]:
+# In[ ]:
 
 
 df_mean_cat = copy.deepcopy(df_cat)
@@ -119,7 +107,7 @@ df_mean_cat_sorted = df_mean_cat.sort_values("overall_score", ascending=False, i
 df_mean_cat_sorted
 
 
-# In[71]:
+# In[ ]:
 
 
 # df_norm = copy.deepcopy(df)
@@ -137,10 +125,10 @@ df_mean_cat_sorted
 # df_norm_cat
 
 
-# In[15]:
+# In[ ]:
 
 
-out_dir = pj("eval", "plot", "data")
+out_dir = pj("paper", "6")
 utils.mkdir(out_dir, remove_old=False)
 if o.mosaic == 0:
     ms = "_sota_"
@@ -154,23 +142,4 @@ if o.method == "midas_embed":
 else:
     df_mean_cat_sorted.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.method+"_sorted.xlsx"))
     df_mean_cat.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.method+"_unsorted.xlsx"))
-
-
-# In[73]:
-
-
-# out_dir = pj("eval", "plot", "data")
-# utils.mkdir(out_dir, remove_old=False)
-# if o.mosaic == 0:
-#     ms = "_sota_"
-# elif o.sota == 0:
-#     ms = "_mosaic_"
-# else:
-#     ms = "_sota+mosaic_"
-# if o.method == "midas_embed":
-#     df_mean_cat_sorted.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.experiment+"_"+o.model+"_"+o.init_model+"_sorted_R1_12.xlsx"))
-#     df_mean_cat.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.experiment+"_"+o.model+"_"+o.init_model+"_unsorted_R1_12.xlsx"))
-# else:
-#     df_mean_cat_sorted.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.method+"_sorted.xlsx"))
-#     df_mean_cat.to_excel(pj(out_dir, "scib_metrics"+ms+o.tasks[0].split("_")[0]+"_"+o.method+"_unsorted.xlsx"))
 
