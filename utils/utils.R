@@ -28,3 +28,13 @@ mkdirs <- function(directories, remove_old = F) {
         mkdir(directory, remove_old = remove_old)
     }
 }
+
+
+random_round <- function(mat) {
+    mat_floor <- floor(mat)
+    res <- mat - mat_floor
+    res[] <- rbinom(n = nrow(res) * ncol(res), size = 1, prob = res)
+    mat <- mat_floor + res
+    mode(mat) <- "integer"
+    return(mat)
+}
