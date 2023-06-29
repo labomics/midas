@@ -1,10 +1,10 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
-setwd("/root/workspace/code/sc-transformer/")
+source("/root/workspace/code/midas/preprocess/utils.R")
+setwd("/root/workspace/code/midas/")
 library(RColorBrewer)
 library(patchwork)
 
 parser <- ArgumentParser()
-parser$add_argument("--task", type = "character", default = "teadog_full")
+parser$add_argument("--task", type = "character", default = "dogma_full")
 parser$add_argument("--method", type = "character", default = "midas_embed")
 parser$add_argument("--experiment", type = "character", default = "e0")
 parser$add_argument("--model", type = "character", default = "default")
@@ -13,14 +13,19 @@ parser$add_argument("--load_saved", type = "integer", default = 0)
 o <- parser$parse_known_args()[[1]]
 
 data_name <- strsplit(o$task, split = "_")[[1]][1]
-config <- parseTOML("configs/data.toml")[[gsub("_transfer$|_ref_.*$", "", o$task)]]
+config <- parseTOML("configs/data.toml")[[gsub("_vd.*|_vt.*|_transfer$|_ref_.*$", "", o$task)]]
 subset_names <- basename(config$raw_data_dirs)
 subset_ids <- sapply(seq_along(subset_names) - 1, toString)
 input_dirs <- pj("result", o$task, o$experiment, o$model, "predict", o$init_model, paste0("subset_", subset_ids))
 pp_dir <- pj("data", "processed", o$task)
-output_dir <- pj("result", "comparison", o$task, o$method, o$experiment, o$init_model)
+output_dir <- pj("result", "comparison", o$task, o$method, o$experiment, o$model, o$init_model)
 mkdir(output_dir, remove_old = F)
-label_paths <- pj(config$raw_data_dirs, "label_seurat", "l1.csv")
+if (grepl("_vt", o$task)) {
+    fn <- paste0("l1_", tail(strsplit(o$task, split = "_")[[1]], 1), ".csv")
+    label_paths <- pj(config$raw_data_dirs, "label_seurat", fn)
+} else {
+    label_paths <- pj(config$raw_data_dirs, "label_seurat", "l1.csv")
+}
 
 K <- parseTOML("configs/model.toml")[["default"]]$dim_c
 l <- 7.5  # figure size
@@ -254,14 +259,17 @@ for (m in names(objs)) {
             p <- ggplot()# + theme_void()
         }
 
-        if (m == "atac") {
-            s_ <- gsub("lll", "LLL", gsub("dig", "DIG", gsub("ctrl", "Ctrl", gsub("stim", "Stim", s))))
+        if (m == names(objs)[1]) {
+            s_ <- gsub("ica", "ICA", gsub("^BM$", "ASAP", gsub("^bm$", "CITE", 
+                  gsub("^w", "W", gsub("lll", "LLL", gsub("dig", "DIG", gsub("ctrl", "Ctrl", gsub("stim", "Stim", s))))))))
             p <- p + ggtitle(s_) + theme(plot.title = element_text(face = "plain", hjust = 0.5, size = 40))
         } else {
             p <- p + theme(plot.title = element_blank())
         }
 
-        if (data_name == "dogma" & s == "lll_ctrl" | data_name == "teadog" & s == "w1") {
+        if (data_name == "dogma" & s == "lll_ctrl" |
+            data_name == "teadog" & s == "w1" |
+            data_name == "bm" & s == "ica") {
             p <- p + theme(axis.title.y = element_text(size = 40),
                            axis.title.x = element_blank(),
                            axis.text.x = element_blank(),
@@ -301,7 +309,7 @@ w <- 5 * S + 0.5
 h <- 5 * length(objs) + 0.5 + 0.625
 plt_size(w, h)
 plt
-save_path <- pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_all", sep = "_"))
+save_path <- pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "c_all", sep = "_"))
 ggsave(plot = plt, file = paste0(save_path, ".png"), width = w, height = h, limitsize = F)
 ggsave(plot = plt, file = paste0(save_path, ".pdf"), width = w, height = h, limitsize = F)
 
@@ -325,14 +333,17 @@ for (m in names(objs)) {
             p <- ggplot()# + theme_void()
         }
 
-        if (m == "atac") {
-            s_ <- gsub("lll", "LLL", gsub("dig", "DIG", gsub("ctrl", "Ctrl", gsub("stim", "Stim", s))))
+        if (m == names(objs)[1]) {
+            s_ <- gsub("ica", "ICA", gsub("^BM$", "ASAP", gsub("^bm$", "CITE", 
+                  gsub("^w", "W", gsub("lll", "LLL", gsub("dig", "DIG", gsub("ctrl", "Ctrl", gsub("stim", "Stim", s))))))))
             p <- p + ggtitle(s_) + theme(plot.title = element_text(face = "plain", hjust = 0.5, size = 40))
         } else {
             p <- p + theme(plot.title = element_blank())
         }
 
-        if (data_name == "dogma" & s == "lll_ctrl" | data_name == "teadog" & s == "w1") {
+        if (data_name == "dogma" & s == "lll_ctrl" |
+            data_name == "teadog" & s == "w1" |
+            data_name == "bm" & s == "ica") {
             p <- p + theme(axis.title.y = element_text(size = 40),
                            axis.title.x = element_blank(),
                            axis.text.x = element_blank(),
@@ -373,7 +384,7 @@ w <- 5 * S + 0.5
 h <- 5 * length(objs) + 0.5 + 0.625
 plt_size(w, h)
 plt
-save_path <- pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "u_all", sep = "_"))
+save_path <- pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "u_all", sep = "_"))
 ggsave(plot = plt, file = paste0(save_path, ".png"), width = w, height = h, limitsize = F)
 ggsave(plot = plt, file = paste0(save_path, ".pdf"), width = w, height = h, limitsize = F)
 

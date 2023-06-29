@@ -1,15 +1,16 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
-setwd("/root/workspace/code/sc-transformer/")
+source("/root/workspace/code/midas/preprocess/utils.R")
+setwd("/root/workspace/code/midas/")
 library(RColorBrewer)
 library(patchwork)
 
 parser <- ArgumentParser()
-# parser$add_argument("--task", type = "character", default = "dogma")
-parser$add_argument("--task", type = "character", default = "teadog")
-# parser$add_argument("--method", type = "character", default = "midas_embed")
+parser$add_argument("--task", type = "character", default = "dogma")
+# parser$add_argument("--task", type = "character", default = "teadog")
+parser$add_argument("--method", type = "character", default = "midas_embed")
 # parser$add_argument("--method", type = "character", default = "scmomat")
 # parser$add_argument("--method", type = "character", default = "stabmap")
-parser$add_argument("--method", type = "character", default = "scvaeit")
+# parser$add_argument("--method", type = "character", default = "scvaeit")
+# parser$add_argument("--method", type = "character", default = "multigrate")
 parser$add_argument("--experiment", type = "character", default = "e0")
 parser$add_argument("--model", type = "character", default = "default")
 parser$add_argument("--init_model", type = "character", default = "sp_00001899")
@@ -33,7 +34,7 @@ for (t in c("full", "paired_full", "paired_abc", "paired_ab", "paired_ac", "pair
 }
 
 
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 plt_c_b <- NULL
 plt_c_l <- NULL
 

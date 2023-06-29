@@ -1,28 +1,33 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
-setwd("/root/workspace/code/sc-transformer/")
+source("/root/workspace/code/midas/preprocess/utils.R")
+setwd("/root/workspace/code/midas/")
 library(RColorBrewer)
 
 parser <- ArgumentParser()
-parser$add_argument("--task", type = "character", default = "dogma_full")
+parser$add_argument("--task", type = "character", default = "dogma_single_adt")
 parser$add_argument("--method", type = "character", default = "midas_embed")
 parser$add_argument("--experiment", type = "character", default = "e0")
 parser$add_argument("--model", type = "character", default = "default")
 parser$add_argument("--init_model", type = "character", default = "sp_00001899")
 o <- parser$parse_known_args()[[1]]
 
-config <- parseTOML("configs/data.toml")[[gsub("_transfer$|_ref_.*$", "", o$task)]]
+config <- parseTOML("configs/data.toml")[[gsub("_vd.*|_vt.*|_transfer$|_ref_.*$", "", o$task)]]
 subset_names <- basename(config$raw_data_dirs)
 subset_ids <- sapply(seq_along(subset_names) - 1, toString)
 input_dirs <- pj("result", o$task, o$experiment, o$model, "predict", o$init_model, paste0("subset_", subset_ids))
 pp_dir <- pj("data", "processed", o$task)
-output_dir <- pj("result", "comparison", o$task, o$method, o$experiment, o$init_model)
+output_dir <- pj("result", "comparison", o$task, o$method, o$experiment, o$model, o$init_model)
 mkdir(output_dir, remove_old = F)
-label_paths <- pj(config$raw_data_dirs, "label_seurat", "l1.csv")
+if (grepl("_vt", o$task)) {
+    fn <- paste0("l1_", tail(strsplit(o$task, split = "_")[[1]], 1), ".csv")
+    label_paths <- pj(config$raw_data_dirs, "label_seurat", fn)
+} else {
+    label_paths <- pj(config$raw_data_dirs, "label_seurat", "l1.csv")
+}
 
 K <- parseTOML("configs/model.toml")[["default"]]$dim_c
 l <- 7.5  # figure size
 L <- 10   # figure size
-m <- 0.5  # legend margin
+m <- 0.6  # legend margin
 
 z_list <- list()
 cell_name_list <- list()
@@ -85,59 +90,60 @@ obj <- RunUMAP(obj, reduction = 'c', dims = 1:K, reduction.name = 'c.umap')
 obj <- RunUMAP(obj, reduction = 'u', dims = 1:2, metric = "euclidean", reduction.name = 'u.umap')
 SaveH5Seurat(obj, pj(output_dir, "obj.h5seurat"), overwrite = TRUE)
 
+
 # obj <- LoadH5Seurat(pj(output_dir, "obj.h5seurat"), reductions = c("c.umap", "u.umap"))
 
-# dim_plot(obj, w = S*l, h = l, reduction = 'c.umap',
-#     split.by = "batch", group.by = "batch", label = F,
-#     repel = T, label.size = 4, pt.size = 0.5, cols = bcols,
-#     title = o$method, legend = F,
-#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_split_batch", sep = "_")))
+dim_plot(obj, w = S*l, h = l+0.8, reduction = 'c.umap', no_axes = T, border = T, raster = T, raster_dpi = 500,
+    split.by = "batch", group.by = "batch", label = F,
+    repel = T, label.size = 4, pt.size = 1, cols = col_4,
+    title = paste0(o$method, ", ", o$task), legend = F,
+    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "c_split_batch", sep = "_")))
 
-# dim_plot(obj, w = S*l+m, h = l, reduction = 'c.umap',
-#     split.by = "batch", group.by = "l1", label = F,
-#     repel = T, label.size = 4, pt.size = 0.5, cols = dcols,
-#     title = o$method, legend = T,
-#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_split_label", sep = "_")))
+dim_plot(obj, w = S*l+m, h = l+0.8, reduction = 'c.umap', no_axes = T, border = T, raster = T, raster_dpi = 500,
+    split.by = "batch", group.by = "l1", label = F,
+    repel = T, label.size = 4, pt.size = 1, cols = col_8,
+    title = paste0(o$method, ", ", o$task), legend = T,
+    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "c_split_label", sep = "_")))
 
 # dim_plot(obj, w = L+m, h = L, reduction = 'c.umap',
 #     split.by = NULL, group.by = "batch", label = F,
 #     repel = T, label.size = 4, pt.size = 0.1, cols = bcols,
 #     title = o$method, legend = T,
-#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_merged_batch", sep = "_")))
+#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "c_merged_batch", sep = "_")))
 
 # dim_plot(obj, w = L+m, h = L, reduction = 'c.umap',
 #     split.by = NULL, group.by = "l1", label = F,
 #     repel = T, label.size = 4, pt.size = 0.1, cols = dcols,
 #     title = o$method, legend = T,
-#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_merged_label", sep = "_")))
+#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "c_merged_label", sep = "_")))
 
 # dim_plot(obj, w = L+m, h = L, reduction = 'u.umap',
 #     split.by = NULL, group.by = "batch", label = F,
 #     repel = T, label.size = 4, pt.size = 0.1, cols = bcols,
 #     title = o$method, legend = T,
-#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "u_merged_batch", sep = "_")))
+#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "u_merged_batch", sep = "_")))
 
 # dim_plot(obj, w = L+m, h = L, reduction = 'u.umap',
 #     split.by = NULL, group.by = "l1", label = F,
 #     repel = T, label.size = 4, pt.size = 0.1, cols = dcols,
 #     title = o$method, legend = T,
-#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "u_merged_label", sep = "_")))
+#     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "u_merged_label", sep = "_")))
+
 
 # obj <- LoadH5Seurat(pj(output_dir, "obj.h5seurat"), reductions = c("c.umap", "u.umap"))
 
-dim_plot(obj, w = L, h = L, reduction = 'c.umap', no_axes = T,
+dim_plot(obj, title = rename_task(o$task), w = L, h = L+m, reduction = 'c.umap', no_axes = T, border = T, raster = T, raster_dpi = 500,
     split.by = NULL, group.by = "batch", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_4, legend = F,
-    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_merged_batch", sep = "_")))
+    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "c_merged_batch", sep = "_")))
 
-dim_plot(obj, w = L, h = L, reduction = 'c.umap', no_axes = T,
+dim_plot(obj, title = rename_task(o$task), w = L, h = L+m, reduction = 'c.umap', no_axes = T, border = T, raster = T, raster_dpi = 500,
     split.by = NULL, group.by = "l1", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_8, legend = F,
-    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_merged_label", sep = "_")))
+    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "c_merged_label", sep = "_")))
 
-dim_plot(obj, w = L, h = L, reduction = 'u.umap', no_axes = T,
+dim_plot(obj, title = rename_task(o$task), w = L, h = L+m, reduction = 'u.umap', no_axes = T, border = T, raster = T, raster_dpi = 500,
     split.by = NULL, group.by = "batch", label = F,  repel = T, label.size = 4, pt.size = 0.1, cols = col_4, legend = F,
-    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "u_merged_batch", sep = "_")))
+    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "u_merged_batch", sep = "_")))
 
-dim_plot(obj, w = L, h = L, reduction = 'u.umap', no_axes = T,
+dim_plot(obj, title = rename_task(o$task), w = L, h = L+m, reduction = 'u.umap', no_axes = T, border = T, raster = T, raster_dpi = 500,
     split.by = NULL, group.by = "l1", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_8, legend = F,
-    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "u_merged_label", sep = "_")))
-
+    save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$model, o$init_model, "u_merged_label", sep = "_")))

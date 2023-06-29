@@ -1,5 +1,5 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
-setwd("/root/workspace/code/sc-transformer/")
+source("/root/workspace/code/midas/preprocess/utils.R")
+setwd("/root/workspace/code/midas/")
 library(RColorBrewer)
 library(patchwork)
 
@@ -86,8 +86,8 @@ obj
 obj <- RunUMAP(obj, reduction = 'c', dims = 1:K, reduction.name = 'c.umap')
 obj <- RunUMAP(obj, reduction = 'u', dims = 1:2, metric = "euclidean", reduction.name = 'u.umap')
 SaveH5Seurat(obj, pj(output_dir, "obj.h5seurat"), overwrite = TRUE)
-
 # obj <- LoadH5Seurat(pj(output_dir, "obj.h5seurat"), reductions = c("c.umap", "u.umap"))
+
 obj_batch <- SplitObject(obj, split.by = "batch")
 
 pal <- col_8
@@ -166,21 +166,84 @@ save_path <- pj(output_dir, paste("4a_", o$task, o$method, o$experiment, o$init_
 ggsave(plot = plt, file = paste0(save_path, ".png"), width = w, height = h, limitsize = F)
 ggsave(plot = plt, file = paste0(save_path, ".pdf"), width = w, height = h, limitsize = F)
 
-dim_plot(obj, w = L+3, h = L, reduction = 'c.umap', no_axes = T, raster = T, rater_dpi = 500,
+dataset <- as.character(obj@meta.data$batch)
+dataset[dataset %in% c("lll_ctrl", "lll_stim", "dig_ctrl", "dig_stim")] <- "DOGMA (4 batches)"
+dataset[dataset %in% c("w1", "w3", "w4", "w5", "w6")] <- "TEA (5 batches)"
+dataset[grepl("tea_multi", dataset)] <- "TEA Multiome (2 batches)"
+dataset[grepl("10x_multiome", dataset)] <- "10X Multiome (4 batches)"
+dataset[dataset %in% c("asap_ctrl", "asap_stim")] <- "ASAP (2 batches)"
+dataset[dataset %in% c("cite_ctrl", "cite_stim")] <- "ASAP CITE (2 batches)"
+dataset[grepl("p*_0", dataset)] <- "WNN CITE (8 batches)"
+obj@meta.data$dataset <- factor(dataset, levels = c("DOGMA (4 batches)", "TEA (5 batches)", "TEA Multiome (2 batches)",
+    "10X Multiome (4 batches)", "ASAP (2 batches)", "ASAP CITE (2 batches)", "WNN CITE (8 batches)"))
+table(obj@meta.data$dataset)
+
+obj_dataset <- SplitObject(obj, split.by = "dataset")
+
+pal <- col_8
+labels <- str_sort(unique(obj@meta.data$l1))
+label_to_color <- list()
+for (i in seq_along(labels)) {
+    label_to_color[[labels[i]]] <- pal[i]
+}
+order <- c(str_sort(unique(obj@meta.data$l1), decreasing = T), "Unselected")
+plt <- NULL
+
+for (s in unique(obj@meta.data$dataset)) {
+
+    # set groups for highlighting
+    obj@meta.data$highlight <- "Unselected"
+    select_mask <- colnames(obj) %in% colnames(obj_dataset[[s]])
+    obj@meta.data$highlight[select_mask] <- as.character(obj@meta.data$l1[select_mask])
+    # set label-specific colors
+    cols <- c("#E5E5E5")
+    for (label in str_sort(unique(obj_dataset[[s]]@meta.data$l1))) {
+        cols <- c(cols, label_to_color[[label]])
+    }
+    # plot
+    p <- DimPlot(obj, reduction = "c.umap", group.by = "highlight", repel = T,
+            label.size = 4, pt.size = 0.1, shuffle = F, cols = cols, order = order, raster = T, raster.dpi = c(250, 250))
+    p <- p + ggtitle(s) + theme(plot.title = element_text(face = "plain", hjust = 0.5, size = 25))
+    p <- p  + NoLegend() + NoAxes() +
+        theme(panel.border = element_rect(color = "black", linewidth = 1),
+        axis.ticks.length = unit(0, "pt"), plot.margin = margin(0, 0, 20, 0)) +
+        labs(colour = "Cell type")
+    if (!is_label) {
+        p <- p + NoLegend()
+    }
+    if (is.null(plt)) {
+        plt <- p
+    } else {
+        plt <- plt + p
+    }
+}
+
+plt <- plt + plot_layout(ncol = 7, guides = "collect") & theme(legend.position = "right")
+w <- 5 * 7 + 1.38
+h <- 5 * 1 + 0.8
+plt_size(w, h)
+plt
+save_path <- pj(output_dir, paste("4a_", o$task, o$method, o$experiment, o$init_model, "c_all_reduced_300", sep = "_"))
+ggsave(plot = plt, file = paste0(save_path, ".png"), width = w, height = h, limitsize = F)
+ggsave(plot = plt, file = paste0(save_path, ".pdf"), width = w, height = h, limitsize = F)
+
+# merged umap
+
+## with legend
+dim_plot(obj, w = L+3, h = L, reduction = 'c.umap', no_axes = T, raster = T, raster_dpi = 500,
     split.by = NULL, group.by = "l1", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_8, legend = T,
     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_merged_label_lg", sep = "_")))
 
-dim_plot(obj, w = L+3, h = L, reduction = 'u.umap', no_axes = T, raster = T, rater_dpi = 500,
+dim_plot(obj, w = L+3, h = L, reduction = 'u.umap', no_axes = T, raster = T, raster_dpi = 500,
     split.by = NULL, group.by = "batch", label = F,  repel = T, label.size = 4, pt.size = 0.1, cols = col_27, legend = T,
     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "u_merged_batch_lg", sep = "_")))
 
-
-# without legend
-dim_plot(obj, w = L, h = L, reduction = 'c.umap', no_axes = T, raster = T, rater_dpi = 500,
+## without legend
+dim_plot(obj, w = L, h = L, reduction = 'c.umap', no_axes = T, raster = T, raster_dpi = 500,
     split.by = NULL, group.by = "l1", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_8, legend = F,
     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "c_merged_label", sep = "_")))
 
-dim_plot(obj, w = L, h = L, reduction = 'u.umap', no_axes = T, raster = T, rater_dpi = 500,
+dim_plot(obj, w = L, h = L, reduction = 'u.umap', no_axes = T, raster = T, raster_dpi = 500,
     split.by = NULL, group.by = "batch", label = F,  repel = T, label.size = 4, pt.size = 0.1, cols = col_27, legend = F,
     save_path = pj(output_dir, paste(o$task, o$method, o$experiment, o$init_model, "u_merged_batch", sep = "_")))
 

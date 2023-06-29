@@ -1,5 +1,5 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
-setwd("/root/workspace/code/sc-transformer/")
+source("/root/workspace/code/midas/preprocess/utils.R")
+setwd("/root/workspace/code/midas/")
 library(RColorBrewer)
 library(patchwork)
 
@@ -57,7 +57,7 @@ if (o$task == "dogma") {
 }
 
 
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 plt_c_b <- NULL
 plt_c_l <- NULL
 

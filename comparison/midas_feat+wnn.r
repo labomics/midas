@@ -1,5 +1,5 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
-setwd("/root/workspace/code/sc-transformer/")
+source("/root/workspace/code/midas/preprocess/utils.R")
+setwd("/root/workspace/code/midas/")
 library(RColorBrewer)
 
 parser <- ArgumentParser()
@@ -10,14 +10,19 @@ parser$add_argument("--model", type = "character", default = "default")
 parser$add_argument("--init_model", type = "character", default = "sp_00001899")
 o <- parser$parse_known_args()[[1]]
 
-config <- parseTOML("configs/data.toml")[[gsub("_transfer$|_ref_.*$", "", o$task)]]
+config <- parseTOML("configs/data.toml")[[gsub("_vd.*|_vt.*|_transfer$|_ref_.*$", "", o$task)]]
 subset_names <- basename(config$raw_data_dirs)
 subset_ids <- sapply(seq_along(subset_names) - 1, toString)
 input_dirs <- pj("result", o$task, o$experiment, o$model, "predict", o$init_model, paste0("subset_", subset_ids))
 pp_dir <- pj("data", "processed", o$task)
-output_dir <- pj("result", "comparison", o$task, o$method, o$experiment, o$init_model)
+output_dir <- pj("result", "comparison", o$task, o$method, o$experiment, o$model, o$init_model)
 mkdir(output_dir, remove_old = F)
-label_paths <- pj(config$raw_data_dirs, "label_seurat", "l1.csv")
+if (grepl("_vt", o$task)) {
+    fn <- paste0("l1_", tail(strsplit(o$task, split = "_")[[1]], 1), ".csv")
+    label_paths <- pj(config$raw_data_dirs, "label_seurat", fn)
+} else {
+    label_paths <- pj(config$raw_data_dirs, "label_seurat", "l1.csv")
+}
 
 K <- parseTOML("configs/model.toml")[["default"]]$dim_c
 l <- 7.5  # figure size
@@ -63,13 +68,19 @@ rna <- t(data.matrix(bind_rows(rna_list)))
 colnames(rna) <- do.call("c", unname(cell_name_list))
 rownames(rna) <- read.csv(pj(pp_dir, "feat", "feat_names_rna.csv"), header = T)[, 2]
 obj <- CreateSeuratObject(counts = rna, assay = "rna")
+rm(rna, rna_list)
+gc()
 
 adt <- t(data.matrix(bind_rows(adt_list)))
 colnames(adt) <- colnames(obj)
 rownames(adt) <- read.csv(pj(pp_dir, "feat", "feat_names_adt.csv"), header = T)[, 2]
 obj[["adt"]] <- CreateAssayObject(counts = adt)
+rm(adt, adt_list)
+gc()
 
 atac <- t(data.matrix(bind_rows(atac_list)))
+rm(atac_list)
+gc()
 # h <- nrow(atac)
 # w <- ncol(atac)
 # atac[] <- rbinom(n = h * w, size = 1, prob = atac)
@@ -82,6 +93,8 @@ obj[["atac"]] <- CreateChromatinAssay(counts = atac)
 # seqlevelsStyle(annotation) <- "UCSC"
 # genome(annotation) <- "hg38"
 # obj[["atac"]] <- CreateChromatinAssay(counts = atac, genome = 'hg38', annotation = annotation)
+rm(atac)
+gc()
 
 obj@meta.data$l1 <- do.call("c", unname(label_list))
 obj@meta.data$batch <- factor(x = do.call("c", unname(subset_name_list)), levels = subset_names)
@@ -102,41 +115,43 @@ connectivities <- obj$wsnn
 diag(connectivities) <- 0
 invisible(writeMM(connectivities, pj(output_dir, "connectivities.mtx")))
 
-obj <- RunUMAP(obj, nn.name = "weighted.nn", reduction.name = "umap")
-SaveH5Seurat(obj, pj(output_dir, "obj.h5seurat"), overwrite = TRUE)
+# obj <- RunUMAP(obj, nn.name = "weighted.nn", reduction.name = "umap")
+# SaveH5Seurat(obj, pj(output_dir, "obj.h5seurat"), overwrite = TRUE)
 
-# obj <- LoadH5Seurat(pj(output_dir, "obj.h5seurat"), assays = "adt", reductions = "umap")
 
-# dim_plot(obj, w = 4*l, h = l, reduction = "umap",
-#     split.by = "batch", group.by = "batch", label = F,
-#     repel = T, label.size = 4, pt.size = 0.5, cols = NULL,
-#     title = o$method, legend = F,
-#     save_path = pj(output_dir, paste(o$method, o$experiment, o$init_model, "split_batch", sep = "_")))
+# # obj <- LoadH5Seurat(pj(output_dir, "obj.h5seurat"), assays = "adt", reductions = "umap")
 
-# dim_plot(obj, w = 4*l+m, h = l, reduction = "umap",
-#     split.by = "batch", group.by = "l1", label = F,
-#     repel = T, label.size = 4, pt.size = 0.5, cols = dcols,
-#     title = o$method, legend = T,
-#     save_path = pj(output_dir, paste(o$method, o$experiment, o$init_model, "split_label", sep = "_")))
+# # dim_plot(obj, w = 4*l, h = l, reduction = "umap",
+# #     split.by = "batch", group.by = "batch", label = F,
+# #     repel = T, label.size = 4, pt.size = 0.5, cols = NULL,
+# #     title = o$method, legend = F,
+# #     save_path = pj(output_dir, paste(o$method, o$experiment, o$model, o$init_model, "split_batch", sep = "_")))
 
-# dim_plot(obj, w = L+m, h = L, reduction = "umap",
-#     split.by = NULL, group.by = "batch", label = F,
-#     repel = T, label.size = 4, pt.size = 0.1, cols = NULL,
-#     title = o$method, legend = T,
-#     save_path = pj(output_dir, paste(o$method, o$experiment, o$init_model, "merged_batch", sep = "_")))
+# # dim_plot(obj, w = 4*l+m, h = l, reduction = "umap",
+# #     split.by = "batch", group.by = "l1", label = F,
+# #     repel = T, label.size = 4, pt.size = 0.5, cols = dcols,
+# #     title = o$method, legend = T,
+# #     save_path = pj(output_dir, paste(o$method, o$experiment, o$model, o$init_model, "split_label", sep = "_")))
 
-# dim_plot(obj, w = L+m, h = L, reduction = "umap",
-#     split.by = NULL, group.by = "l1", label = F,
-#     repel = T, label.size = 4, pt.size = 0.1, cols = dcols,
-#     title = o$method, legend = T,
-#     save_path = pj(output_dir, paste(o$method, o$experiment, o$init_model, "merged_label", sep = "_")))
+# # dim_plot(obj, w = L+m, h = L, reduction = "umap",
+# #     split.by = NULL, group.by = "batch", label = F,
+# #     repel = T, label.size = 4, pt.size = 0.1, cols = NULL,
+# #     title = o$method, legend = T,
+# #     save_path = pj(output_dir, paste(o$method, o$experiment, o$model, o$init_model, "merged_batch", sep = "_")))
 
-# obj <- LoadH5Seurat(pj(output_dir, "obj.h5seurat"), assays = "adt", reductions = "umap")
+# # dim_plot(obj, w = L+m, h = L, reduction = "umap",
+# #     split.by = NULL, group.by = "l1", label = F,
+# #     repel = T, label.size = 4, pt.size = 0.1, cols = dcols,
+# #     title = o$method, legend = T,
+# #     save_path = pj(output_dir, paste(o$method, o$experiment, o$model, o$init_model, "merged_label", sep = "_")))
 
-dim_plot(obj, w = L, h = L, reduction = 'umap', no_axes = T,
-    split.by = NULL, group.by = "batch", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_4, legend = F,
-    save_path = pj(output_dir, paste(o$method, o$experiment, o$init_model, "merged_batch", sep = "_")))
 
-dim_plot(obj, w = L, h = L, reduction = 'umap', no_axes = T,
-    split.by = NULL, group.by = "l1", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_8, legend = F,
-    save_path = pj(output_dir, paste(o$method, o$experiment, o$init_model, "merged_label", sep = "_")))
+# # obj <- LoadH5Seurat(pj(output_dir, "obj.h5seurat"), assays = "adt", reductions = "umap")
+
+# dim_plot(obj, w = L, h = L, reduction = 'umap', no_axes = T,
+#     split.by = NULL, group.by = "batch", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_4, legend = F,
+#     save_path = pj(output_dir, paste(o$method, o$experiment, o$model, o$init_model, "merged_batch", sep = "_")))
+
+# dim_plot(obj, w = L, h = L, reduction = 'umap', no_axes = T,
+#     split.by = NULL, group.by = "l1", label = F, repel = T, label.size = 4, pt.size = 0.1, cols = col_8, legend = F,
+#     save_path = pj(output_dir, paste(o$method, o$experiment, o$model, o$init_model, "merged_label", sep = "_")))

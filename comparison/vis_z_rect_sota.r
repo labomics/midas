@@ -1,5 +1,5 @@
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
-setwd("/root/workspace/code/sc-transformer/")
+source("/root/workspace/code/midas/preprocess/utils.R")
+setwd("/root/workspace/code/midas/")
 library(RColorBrewer)
 library(patchwork)
 
@@ -32,7 +32,7 @@ dirs <- list(
     "seurat_rpca+wnn"      = pj("result", "comparison", o$task, "seurat_rpca+wnn")
 )
 
-source("/root/workspace/code/sc-transformer/preprocess/utils.R")
+source("/root/workspace/code/midas/preprocess/utils.R")
 plt_c_b <- NULL
 plt_c_l <- NULL
 
