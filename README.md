@@ -1,6 +1,6 @@
 # MIDAS
 
-### Our project website is under construction and the software will be released soon. Thanks for your patience!
+### Our project website is under construction and the software will be released soon!
 
 Please see the [**instruction**](https://sc-midas-docs.readthedocs.io/en/latest/) for reproducing the manuscript results.
 
