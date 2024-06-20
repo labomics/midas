@@ -1,0 +1,28 @@
+.
+├── feat
+│   ├── feat_dims.csv
+│   ├── feat_names_mod1.csv
+│   ├── feat_names_mod2.csv
+│   └── feat_names_mod3.csv
+├── subset_0  # batch 0
+│   ├── cell_names.csv
+│   ├── mask # feature mask
+│   │   ├── mod1.csv
+│   │   ├── mod2.csv
+│   │   └── mod3.csv
+│   └── vec # counts for each cell
+│       ├── mod1
+│       │   ├── 0000.csv
+│       │   ├── ...
+│       │   └── xxx.csv
+│       ├── mod2
+│       │   ├── 0000.csv
+│       │   ├── ...
+│       │   └── xxx.csv
+│       └── mod3
+│           ├── 0000.csv
+│           ├── ...
+│           └── xxx.csv
+├── subset_1
+├── ...
+└── subset_n

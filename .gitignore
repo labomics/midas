@@ -1,0 +1,15 @@
+data/
+temp/
+dist/
+__pycache__/
+result/
+./tutorial*.ipynb
+*.zip
+*labels/
+*.pdf
+pyproject.toml
+test_files/
+tutorial-2.ipynb
+tutorial-2 copy.ipynb
+docs/build/
+src/*egg*
