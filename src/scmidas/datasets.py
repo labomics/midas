@@ -364,7 +364,7 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
         transform = {}
         for m in b.keys():
             feat_name = list(pd.read_csv(b[m], index_col=0, nrows=1).columns)
-            _, transform[m] = utils.merge_features(feat_names[m], feat_name, only_f1=False if feature_combine == "union" else True)
+            _, transform[m] = utils.merge_features(feat_names[m], feat_name, only_f1=False if feature == "union" else True)
         transforms.append(transform)
 
     # save data in MIDAS format
