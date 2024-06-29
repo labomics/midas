@@ -485,6 +485,7 @@ class MIDAS():
         self.dims_x = {}
         self.dims_chr = []
         self.dims_rep = {}
+        self.masks = []
         for i, d in enumerate(data):
             # d.info()
             for k in d.mod_combination:
@@ -504,7 +505,16 @@ class MIDAS():
                             self.dims_rep[k] = d.feat_dims[k]
                         else:
                             self.dims_rep[k], _  = utils.merge_features(self.dims_rep[k], d.feat_dims[k])
-
+        for i, d in enumerate(data):
+            for mask in d.masks:
+                mask_ = {}
+                for k in mask.keys():
+                    _, transform = utils.merge_features(self.reference_features[k], d.features[k].copy())
+                    temp = np.zeros(len(self.reference_features[k]), dtype=np.float32)
+                    temp[transform[0]] = mask[k][transform[1]]
+                    mask_[k] = temp
+                self.masks.append(mask_)
+                    
         for k in ['atac', 'rna', 'adt']:
             if k in self.reference_features:
                 self.dims_x[k] = len(self.reference_features[k])
@@ -789,7 +799,8 @@ class MIDAS():
                 batch_correct:bool = False, 
                 translate:bool = False, 
                 input:bool = False, 
-                mini_batch_size:int = 256
+                mini_batch_size:int = 256,
+                remove_old=True
                 ):
         """Predict the embeddings or their imputed expression.
 
@@ -810,8 +821,8 @@ class MIDAS():
             os.makedirs(self.o.pred_dir)
         dirs = utils.get_pred_dirs(self.o, joint_latent, mod_latent, impute, batch_correct, translate, input)
         parent_dirs = list(set(map(os.path.dirname, utils.extract_values(dirs))))
-        utils.mkdirs(parent_dirs, remove_old=True)
-        utils.mkdirs(dirs, remove_old=True)
+        utils.mkdirs(parent_dirs, remove_old=remove_old)
+        utils.mkdirs(dirs, remove_old=remove_old)
         datasets = self.gen_datasets(self.data)
         data_loaders = {k:torch.utils.data.DataLoader(datasets[k], batch_size=mini_batch_size, \
             num_workers=64, pin_memory=True, shuffle=False) for k in range(self.batch_num_curr+self.batch_num_rep)}
@@ -898,9 +909,9 @@ class MIDAS():
                         for m in self.o.mods:
                             utils.save_tensor_to_csv(x_r[m], os.path.join(dirs[subset_id]["x_bc"][m], fname_fmt) % i)
     
-    def read_embeddings(
+    def read_preds(
             self, 
-            emb_path:str = None, 
+            pred_path:str = None, 
             joint_latent:bool = True, 
             mod_latent:bool = False, 
             impute:bool = False, 
@@ -911,7 +922,7 @@ class MIDAS():
         """Get embeddings or other outputs from a specified path.
 
         Args:
-            emb_path (str): The path from which to retrieve the embeddings. If not provided, it uses the path from the previous `predict()` function call, if available.
+            pred_path (str): The path from which to retrieve the embeddings. If not provided, it uses the path from the previous `predict()` function call, if available.
             joint_latent (bool): Whether to retrieve the joint embeddings.
             impute (bool): Whether to retrieve the imputed expression data.
             batch_correct (bool): Whether to retrieve the batch-corrected expression data.
@@ -923,8 +934,8 @@ class MIDAS():
             Embeddings or other outputs obtained from the specified path.
         """
 
-        if emb_path is not None:
-            self.o.pred_dir = emb_path
+        if pred_path is not None:
+            self.o.pred_dir = pred_path
         pred = utils.load_predicted(self.o, joint_latent=joint_latent, mod_latent=mod_latent, impute=impute, batch_correct=batch_correct, 
                    translate=translate, input=input, group_by=group_by)
         return pred
