@@ -271,3 +271,120 @@ class GetDataInfo():
         print('%d subset(s) in this path' % self.num_subset, self.feat_dims)
         for key,value in self.subset_cell_num.items():
             print('%10s : %5d cells' % (key, value), ';', self.mods[key])
+
+
+
+def split_list_by_prefix(input_list):
+    result_dict = {}
+    for item in input_list:
+        prefix = item.split('-')[0]
+        if prefix not in result_dict:
+            result_dict[prefix] = []
+        result_dict[prefix].append(item)
+    return result_dict
+
+def sort_chromosomes(chromosome_list):
+    return sorted(chromosome_list, key=lambda x: int(x[3:]))
+
+def lists_are_identical(lists):
+    set_of_tuples = set(tuple(lst) for lst in lists)
+    return len(set_of_tuples) == 1
+def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, feature_combine:str="union"):
+    """ Convert files in DataFrame format to MIDAS input format.
+
+    Args:
+        data_path_list (list): A list of dictionaries where each item represents a batch with CSV paths for each modality. Ensure each CSV file (cell * features) has correct column names and cell names. For example: [{"rna": "rna.csv", "adt": "adt.csv"}, {"adt": "adt2.csv", "atac": "atac.csv"}].
+        save_dir (str): Target path to save the data.
+        remove_old (bool): Whether to remove old directories.
+        feature_combine (str): Strategy for features selection. Support "union" and "intersect".
+    """
+    data = data_path_list
+    batch_num = len(data)
+    mods = list(set([item for sublist in [list(d.keys()) for d in data] for item in sublist]))
+    if remove_old:
+        utils.mkdirs(f"{save_dir}",remove_old=remove_old)
+    utils.mkdirs(f"{save_dir}/feat", remove_old=remove_old)
+
+    for i in range(batch_num):
+        utils.mkdirs(f"{save_dir}/subset_{i}/mask", remove_old=remove_old)
+        utils.mkdirs(f"{save_dir}/subset_{i}/vec", remove_old=remove_old)
+    
+    for i, b in enumerate(data):
+        for m in b:
+            utils.mkdirs(f"{save_dir}/subset_{i}/vec/{m}", remove_old=remove_old)
+    if feature_combine == "union":
+        print("union")
+        feat_names = {m:[] for m in mods}
+        for i, b in enumerate(data):
+            cn = []
+            for m in b.keys():
+                feat_name = list(pd.read_csv(b[m], index_col=0, nrows=1).columns)
+                feat_names[m], _ = utils.merge_features(feat_names[m], feat_name)
+                cn.append(list(pd.read_csv(b[m], usecols=[0], index_col=0).index))
+            assert lists_are_identical(cn), f"inconsistent cell names in batch {i}"
+            pd.DataFrame(cn[0]).to_csv(f"{save_dir}/subset_{i}/cell_names.csv")
+    elif feature_combine == "intersect":
+        print("intersect")
+        feat_names = {m:[] for m in mods}
+        for i, b in enumerate(data):
+            cn = []
+            for m in b.keys():
+                feat_name = list(pd.read_csv(b[m], index_col=0, nrows=1).columns)
+                if len(feat_names[m]) > 0:
+                    print("inter1", len(feat_names[m]))
+                    feat_names[m] = np.intersect1d(feat_names[m], feat_name)
+                else:
+                    feat_names[m] = feat_name
+                cn.append(list(pd.read_csv(b[m], usecols=[0], index_col=0).index))
+            assert lists_are_identical(cn), f"inconsistent cell names in batch {i}"
+            pd.DataFrame(cn[0]).to_csv(f"{save_dir}/subset_{i}/cell_names.csv")
+    # Calculate the feature dimensions.
+    feat_dims = {}
+    for m in utils.ref_sort(feat_names.keys(), ['atac', 'rna', 'adt']):
+        if m=="atac":
+            chr_dims = []
+            split_chr = split_list_by_prefix(feat_names["atac"])
+            chr_keys = sort_chromosomes(list(split_chr.keys()))
+            for c in chr_keys:
+                chr_dims.append(len(split_chr[c]))
+            feat_dims[m] = chr_dims
+        else:
+            if "atac" in feat_names:
+                feat_dims[m] = [len(feat_names[m])] * len(chr_keys) # All columns in the pandas DataFrame must have uniform dimensions.
+            else:
+                feat_dims[m] = [len(feat_names[m])]
+    pd.DataFrame(feat_dims).to_csv(f"{save_dir}/feat/feat_dims.csv")
+    for m in feat_names.keys():
+        pd.DataFrame(feat_names[m]).to_csv(f"{save_dir}/feat/feat_names_{m}.csv")
+    
+    # After aligning all batches, we need to generate the new matrix and mask for each batch.
+    transforms = []
+    for b in data:
+        transform = {}
+        for m in b.keys():
+            feat_name = list(pd.read_csv(b[m], index_col=0, nrows=1).columns)
+            _, transform[m] = utils.merge_features(feat_names[m], feat_name, only_f1=False if feature_combine == "union" else True)
+        transforms.append(transform)
+
+    # save data in MIDAS format
+    for i, b in enumerate(data):
+        for m in b.keys():
+            d = pd.read_csv(b[m], index_col=0)
+            new_mat = pd.DataFrame(np.zeros([d.shape[0], len(feat_names[m])]))
+            new_mat.index = d.index
+            print(new_mat.shape, len(feat_names[m]))
+            new_mat.columns = feat_names[m]
+            new_mat.iloc[:, transforms[i][m][0]] = d.iloc[:, transforms[i][m][1]]
+            if m in ["rna", "adt"]:
+                mask = np.array([1 if f in feat_names[m] else 0 for f in d.columns])
+                new_mask = pd.DataFrame(np.zeros(len(feat_names[m]))).T
+                new_mask.iloc[:, transforms[i][m][0]] = mask[transforms[i][m][1]]
+                new_mask = new_mask.astype(int)
+                new_mask.to_csv(f"{save_dir}/subset_{i}/mask/{m}.csv")
+            cell_num = d.shape[0]
+            feat_num = d.shape[1]
+            vec_name_fmt = os.path.join(f"{save_dir}/subset_{i}/vec/{m}", utils.get_name_fmt(cell_num) + ".csv")
+            print("Spliting %s matrix: %d cells, %d features" % (m, cell_num, feat_num))
+            for c in range(cell_num):
+                pd.DataFrame(new_mat.iloc[c]).T.to_csv(vec_name_fmt % c, header=None, index=None)
+                
