@@ -272,8 +272,6 @@ class GetDataInfo():
         for key,value in self.subset_cell_num.items():
             print('%10s : %5d cells' % (key, value), ';', self.mods[key])
 
-
-
 def split_list_by_prefix(input_list):
     result_dict = {}
     for item in input_list:
@@ -314,7 +312,6 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
         for m in b:
             utils.mkdirs(f"{save_dir}/subset_{i}/vec/{m}", remove_old=remove_old)
     if feature == "union":
-        print("union")
         feat_names = {m:[] for m in mods}
         for i, b in enumerate(data):
             cn = []
@@ -325,7 +322,6 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
             assert lists_are_identical(cn), f"inconsistent cell names in batch {i}"
             pd.DataFrame(cn[0]).to_csv(f"{save_dir}/subset_{i}/cell_names.csv")
     elif feature == "intersect":
-        print("intersect")
         feat_names = {m:[] for m in mods}
         for i, b in enumerate(data):
             cn = []
