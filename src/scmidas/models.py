@@ -807,9 +807,9 @@ class MIDAS():
         Args:
             save_dir (str): The path to save the predicted files.
             joint_latent (bool): Whether to generate the joint embeddings.
-            impute (bool): Whether to generate the imputed expression data.
-            batch_correct (bool): Whether to generate the batch-corrected expression data.
-            translate (bool): Whether to generate the translated expressions.
+            impute (bool): Whether to generate the imputed counts data.
+            batch_correct (bool): Whether to generate the batch-corrected counts data.
+            translate (bool): Whether to generate the translated counts.
             input (bool): Whether to generate the input data.
             mini_batch_size (int): The mini-batch size for saving. Influence the cell number in the csv file.
         """
@@ -924,9 +924,9 @@ class MIDAS():
         Args:
             pred_path (str): The path from which to retrieve the embeddings. If not provided, it uses the path from the previous `predict()` function call, if available.
             joint_latent (bool): Whether to retrieve the joint embeddings.
-            impute (bool): Whether to retrieve the imputed expression data.
-            batch_correct (bool): Whether to retrieve the batch-corrected expression data.
-            translate (bool): Whether to retrieve the translated expressions.
+            impute (bool): Whether to retrieve the imputed counts data.
+            batch_correct (bool): Whether to retrieve the batch-corrected counts data.
+            translate (bool): Whether to retrieve the translated counts.
             input (bool): Whether to retrieve the input data.
             group_by (str): Specify how to group the data: "modality" or "batch".
 
