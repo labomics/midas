@@ -289,14 +289,15 @@ def sort_chromosomes(chromosome_list):
 def lists_are_identical(lists):
     set_of_tuples = set(tuple(lst) for lst in lists)
     return len(set_of_tuples) == 1
-def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, feature_combine:str="union"):
+
+def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, feature:str="union"):
     """ Convert files in DataFrame format to MIDAS input format.
 
     Args:
         data_path_list (list): A list of dictionaries where each item represents a batch with CSV paths for each modality. Ensure each CSV file (cell * features) has correct column names and cell names. For example: [{"rna": "rna.csv", "adt": "adt.csv"}, {"adt": "adt2.csv", "atac": "atac.csv"}].
         save_dir (str): Target path to save the data.
         remove_old (bool): Whether to remove old directories.
-        feature_combine (str): Strategy for features selection. Support "union" and "intersect".
+        feature (str): Strategy for features selection. Support "union" and "intersect".
     """
     data = data_path_list
     batch_num = len(data)
@@ -312,7 +313,7 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
     for i, b in enumerate(data):
         for m in b:
             utils.mkdirs(f"{save_dir}/subset_{i}/vec/{m}", remove_old=remove_old)
-    if feature_combine == "union":
+    if feature == "union":
         print("union")
         feat_names = {m:[] for m in mods}
         for i, b in enumerate(data):
@@ -323,7 +324,7 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
                 cn.append(list(pd.read_csv(b[m], usecols=[0], index_col=0).index))
             assert lists_are_identical(cn), f"inconsistent cell names in batch {i}"
             pd.DataFrame(cn[0]).to_csv(f"{save_dir}/subset_{i}/cell_names.csv")
-    elif feature_combine == "intersect":
+    elif feature == "intersect":
         print("intersect")
         feat_names = {m:[] for m in mods}
         for i, b in enumerate(data):
