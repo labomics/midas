@@ -245,7 +245,7 @@ class GetDataInfo():
         for n in range(self.num_subset):
             masks = {}
             for m in ["rna", "adt"]:   
-                if m in self.mod_combination:
+                if m in self.mods[f"subset_{n}"]:
                     masks[m] = pd.read_csv(os.path.join(self.data_path, f"subset_{n}", "mask", m+".csv")).values.flatten()
                 self.masks.append(masks)
         self.feat_dims = self.__cal_feat_dims__(pd.read_csv(os.path.join(self.data_path, 'feat', 'feat_dims.csv'), index_col=0), self.mod_combination)
