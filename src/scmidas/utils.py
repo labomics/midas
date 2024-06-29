@@ -581,10 +581,12 @@ class simple_obj():
         self.__dict__ = args
 
 
-def merge_features(f1, f2):
+def merge_features(f1, f2, only_f1=False):
+    # if only_f1, use only f1 features.
     assert len(f1) == len(set(f1)), 'Duplicate values in f1'
     assert len(f2) == len(set(f2)), 'Duplicate values in f2'
-    f1.extend((set(f2) - set(f1)))
+    if not only_f1:
+        f1.extend((set(f2) - set(f1)))
     p1 = []
     p2 = []
     for i,j in enumerate(f1):
