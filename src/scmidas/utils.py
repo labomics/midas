@@ -450,7 +450,7 @@ def load_predicted(o, joint_latent=True, mod_latent=False, impute=False, batch_c
         for varible in dirs[subset_id].keys():
             data[subset_id][varible] = {}
             for m, dir in dirs[subset_id][varible].items():
-                print("Loading subset %d: %s, %s" % (subset_id, varible, m))
+                # print("Loading subset %d: %s, %s" % (subset_id, varible, m))
                 data[subset_id][varible][m] = []
                 if varible == "z":
                     data[subset_id]["s"][m] = []
@@ -632,3 +632,20 @@ def update_model(savepoint, dims_h_past, dims_h, curr_model):
     
 def combine_mod(mods):
     return ref_sort(np.unique(np.concatenate(list(mods.values()))), ref=['atac', 'rna', 'adt'])
+
+
+def split_list_by_prefix(input_list):
+    result_dict = {}
+    for item in input_list:
+        prefix = item.split('-')[0]
+        if prefix not in result_dict:
+            result_dict[prefix] = []
+        result_dict[prefix].append(item)
+    return result_dict
+
+def sort_chromosomes(chromosome_list):
+    return sorted(chromosome_list, key=lambda x: int(x[3:]))
+
+def lists_are_identical(lists):
+    set_of_tuples = set(tuple(lst) for lst in lists)
+    return len(set_of_tuples) == 1

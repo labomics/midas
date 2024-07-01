@@ -19,7 +19,7 @@ pip install scmidas
 Other packages (Optional):
 
 ```bash
-pip install ipykernel jupyter scanpy
+pip install ipykernel jupyter scanpy scvi-tools pandas matplotlib numpy
 ```
 
 ## Reproducibility

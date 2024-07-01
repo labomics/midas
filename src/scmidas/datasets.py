@@ -272,21 +272,6 @@ class GetDataInfo():
         for key,value in self.subset_cell_num.items():
             print('%10s : %5d cells' % (key, value), ';', self.mods[key])
 
-def split_list_by_prefix(input_list):
-    result_dict = {}
-    for item in input_list:
-        prefix = item.split('-')[0]
-        if prefix not in result_dict:
-            result_dict[prefix] = []
-        result_dict[prefix].append(item)
-    return result_dict
-
-def sort_chromosomes(chromosome_list):
-    return sorted(chromosome_list, key=lambda x: int(x[3:]))
-
-def lists_are_identical(lists):
-    set_of_tuples = set(tuple(lst) for lst in lists)
-    return len(set_of_tuples) == 1
 
 def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, feature:str="union"):
     """ Convert files in DataFrame format to MIDAS input format.
@@ -328,20 +313,19 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
             for m in b.keys():
                 feat_name = list(pd.read_csv(b[m], index_col=0, nrows=1).columns)
                 if len(feat_names[m]) > 0:
-                    print("inter1", len(feat_names[m]))
                     feat_names[m] = np.intersect1d(feat_names[m], feat_name)
                 else:
                     feat_names[m] = feat_name
                 cn.append(list(pd.read_csv(b[m], usecols=[0], index_col=0).index))
-            assert lists_are_identical(cn), f"inconsistent cell names in batch {i}"
+            assert utils.lists_are_identical(cn), f"inconsistent cell names in batch {i}"
             pd.DataFrame(cn[0]).to_csv(f"{save_dir}/subset_{i}/cell_names.csv")
     # Calculate the feature dimensions.
     feat_dims = {}
     for m in utils.ref_sort(feat_names.keys(), ['atac', 'rna', 'adt']):
         if m=="atac":
             chr_dims = []
-            split_chr = split_list_by_prefix(feat_names["atac"])
-            chr_keys = sort_chromosomes(list(split_chr.keys()))
+            split_chr = utils.split_list_by_prefix(feat_names["atac"])
+            chr_keys = utils.sort_chromosomes(list(split_chr.keys()))
             for c in chr_keys:
                 chr_dims.append(len(split_chr[c]))
             feat_dims[m] = chr_dims
@@ -369,7 +353,6 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
             d = pd.read_csv(b[m], index_col=0)
             new_mat = pd.DataFrame(np.zeros([d.shape[0], len(feat_names[m])]))
             new_mat.index = d.index
-            print(new_mat.shape, len(feat_names[m]))
             new_mat.columns = feat_names[m]
             new_mat.iloc[:, transforms[i][m][0]] = d.iloc[:, transforms[i][m][1]]
             if m in ["rna", "adt"]:

@@ -19,5 +19,6 @@ Welcome to MIDAS's documentation!
 
    notebooks/tutorial_1.ipynb
    notebooks/tutorial_2.ipynb
+   notebooks/tutorial_3.ipynb
    scmidas.rst
 
