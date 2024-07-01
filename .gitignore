@@ -16,3 +16,5 @@ src/*egg*
 protocol.md
 genesets
 tutorial_2.ipynb
+*.csv
+tutorial-3.ipynb
