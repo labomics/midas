@@ -9,13 +9,11 @@ result/
 *.pdf
 pyproject.toml
 test_files/
-tutorial-2.ipynb
-tutorial-2 copy.ipynb
 docs/build/
 src/*egg*
 protocol.md
 genesets
-tutorial_2.ipynb
 *.csv
-tutorial-3.ipynb
 core
+result_old/
+tutorial_*.ipynb

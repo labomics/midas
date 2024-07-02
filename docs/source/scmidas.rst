@@ -16,3 +16,12 @@ scmidas.models module
    :members: MIDAS
    :undoc-members:
    :show-inheritance:
+
+
+scmidas.evaluation module
+-------------------------
+
+.. automodule:: scmidas.evaluation
+   :members:
+   :undoc-members:
+   :show-inheritance:
