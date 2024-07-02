@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
-
+from tqdm import tqdm
 
 class MultiDatasetSampler(torch.utils.data.sampler.Sampler):
 
@@ -272,9 +272,8 @@ class GetDataInfo():
         for key,value in self.subset_cell_num.items():
             print('%10s : %5d cells' % (key, value), ';', self.mods[key])
 
-
 def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, feature:str="union"):
-    """ Convert files in DataFrame format to MIDAS input format.
+    """ Convert csv files to MIDAS input format.
 
     Args:
         data_path_list (list): A list of dictionaries where each item represents a batch with CSV paths for each modality. Ensure each CSV file (cell * features) has correct column names and cell names. For example: [{"rna": "rna.csv", "adt": "adt.csv"}, {"adt": "adt2.csv", "atac": "atac.csv"}].
@@ -302,9 +301,12 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
             cn = []
             for m in b.keys():
                 feat_name = list(pd.read_csv(b[m], index_col=0, nrows=1).columns)
-                feat_names[m], _ = utils.merge_features(feat_names[m], feat_name)
+                if feat_names[m] != []:
+                    feat_names[m], _ = utils.merge_features(feat_names[m], feat_name)
+                else:
+                    feat_names[m] = feat_name
                 cn.append(list(pd.read_csv(b[m], usecols=[0], index_col=0).index))
-            assert lists_are_identical(cn), f"inconsistent cell names in batch {i}"
+            assert utils.lists_are_identical(cn), f"inconsistent cell names in batch {i}"
             pd.DataFrame(cn[0]).to_csv(f"{save_dir}/subset_{i}/cell_names.csv")
     elif feature == "intersect":
         feat_names = {m:[] for m in mods}
@@ -313,7 +315,7 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
             for m in b.keys():
                 feat_name = list(pd.read_csv(b[m], index_col=0, nrows=1).columns)
                 if len(feat_names[m]) > 0:
-                    feat_names[m] = np.intersect1d(feat_names[m], feat_name)
+                    feat_names[m] = utils.ref_sort(np.intersect1d(feat_names[m], feat_name), feat_names[m])
                 else:
                     feat_names[m] = feat_name
                 cn.append(list(pd.read_csv(b[m], usecols=[0], index_col=0).index))
@@ -332,6 +334,7 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
         else:
             if "atac" in feat_names:
                 feat_dims[m] = [len(feat_names[m])] * len(chr_keys) # All columns in the pandas DataFrame must have uniform dimensions.
+
             else:
                 feat_dims[m] = [len(feat_names[m])]
     pd.DataFrame(feat_dims).to_csv(f"{save_dir}/feat/feat_dims.csv")
@@ -365,6 +368,7 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
             feat_num = d.shape[1]
             vec_name_fmt = os.path.join(f"{save_dir}/subset_{i}/vec/{m}", utils.get_name_fmt(cell_num) + ".csv")
             print("Spliting %s matrix: %d cells, %d features" % (m, cell_num, feat_num))
-            for c in range(cell_num):
-                pd.DataFrame(new_mat.iloc[c]).T.to_csv(vec_name_fmt % c, header=None, index=None)
+            new_mat = new_mat.values
+            for c in tqdm(range(len(new_mat))):
+                utils.save_list_to_csv([new_mat[c]], vec_name_fmt % c)
                 
