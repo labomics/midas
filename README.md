@@ -10,16 +10,15 @@ Read our documentation at https://scmidas.readthedocs.io/en/latest/. We provide 
 ## Installation
 
 ```bash
-conda create -n scmidas
+conda create -n scmidas python=3.9
 conda activate scmidas
-conda install python=3.8
 pip install scmidas
 ```
 
 Other packages (Optional):
 
 ```bash
-pip install ipykernel jupyter scanpy scvi-tools pandas matplotlib numpy
+pip install ipykernel jupyter scvi-tools
 ```
 
 ## Reproducibility
