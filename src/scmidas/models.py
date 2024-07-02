@@ -451,8 +451,8 @@ class Identity(nn.Module):
 class MIDAS():
     """
     Args:
-        data (list): A list of 'GetDataInfo' objects or a single 'GetDataInfo' object. For a list input, the order of the items influences the order of batch ID distribution to them. If a list is provided, 'query' is always assigned after 'reference'.
-
+        data (list): A list of 'GetDataInfo' objects or a single 'GetDataInfo' object. For a list, the order of items determines the sequence of batch IDs assigned to them.
+        status (list): A list indicating the role of each item in data. 'query' is always assigned after 'reference'.
     Example:
         for offline integration::
         
@@ -947,7 +947,7 @@ class MIDAS():
             data (list): A list of GetDataInfo containing information about the dataset.
 
         Returns:
-            A list containing torch Dataset objects.
+            A list containing torch.utils.data.Dataset objects.
         """
         datasets = []
         n = 0
@@ -967,25 +967,25 @@ class MIDAS():
         plt.ylabel('Loss')
         plt.title('Loss curve')
 
-    def pack(self, 
+    def reduce_data(self, 
              output_task_name:str = 'pack', 
              des_dir:str = './data/processed/', 
              n_sample:int = 100000, 
              pred_dir:Union[str, None] = None):
-        """ Pack the data for training or sharing.
+        """ Reduces data by proportionally sampling from each batch and eventually merging them into a unified dataset with consistent features for storage.
     
         Args:
             output_task_name (str): The name of the output. It will be concatenated with 'des_dir' to form the output path.
-            des_dir (str): The directory path where the data will be saved.
-            n_sample (int): The desired number of samples to be packed. Use the balltree sampling to implement it.
-            pred_dir (str): The directory path where the embeddings are stored.
+            des_dir (str): The directory path to save the data.
+            n_sample (int): The desired number of samples.
+            pred_dir (str): The directory path where the embeddings are stored. The embeddings are used for sampling. 
         """
 
         if pred_dir is None:
             pred_dir = self.o.pred_dir
         else:
             self.o.pred_dir = pred_dir
-        print("Packing ...")
+        print("reducing data ...")
 
         if not os.path.exists(os.path.join(des_dir, output_task_name)):
             os.makedirs(os.path.join(des_dir, output_task_name, 'feat'))
