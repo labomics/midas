@@ -18,6 +18,8 @@ from tqdm import tqdm
 import re
 import pandas as pd
 
+import scanpy as sc
+from scanpy import AnnData
 
 # IO
 
@@ -649,3 +651,102 @@ def sort_chromosomes(chromosome_list):
 def lists_are_identical(lists):
     set_of_tuples = set(tuple(lst) for lst in lists)
     return len(set_of_tuples) == 1
+
+def viz_mod_latent(emb:dict, label:list, h:int = 2, w:int = 2, legend:bool = True, legend_size:list = [3, 2], legend_loc="right"):
+    """Visualize modality-specific embeddings.
+
+    Args:
+        emb (dict): A dictionary containing modality-specific embeddings.
+        label (list): Labels for different batches.
+        h (int): Height of the subfigure.
+        w (int): Width of the subfigure.
+        legend (bool): Whether to plot the legend.
+        legend_size (int): Size of the legend.
+        legend_loc (str): Location of the legend.
+    """
+    adata_list = []
+    for m in emb["s"].keys():
+        adata = sc.AnnData(emb["z"][m][:, :32])
+        adata.obs["modality"] = m
+        adata.obs["batch"] = emb["s"][m]
+        labels = np.concatenate([label[label["s"]==i]["x"].values for i in sorted(np.unique(adata.obs["batch"]))])
+        adata.obs["label"] = labels
+        adata_list.append(adata)
+        adata = sc.concat(adata_list)
+        
+        # sc.pp.subsample(adata, fraction=1) # shuffle for better visualization
+        sc.pp.neighbors(adata)
+        sc.tl.umap(adata)
+
+    nrows = len(np.unique(adata.obs["batch"]))
+    ncols = len(np.unique(adata.obs["modality"]))
+    mods = np.unique(adata.obs["modality"])
+    mods_ = []
+    for m in ["rna", "adt", "atac", "joint"]:
+        if m in mods:
+            mods_.append(m)
+    f, ax = plt.subplots(nrows, ncols, figsize=[ncols*h+legend_size[0], nrows*w+legend_size[1]])
+    for i, b in enumerate(np.unique(adata.obs["batch"])):
+        for j, m in enumerate(mods_):
+            if len(adata[(adata.obs['modality']==m) & (adata.obs['batch']==b)]):
+                sc.pl.umap(adata, ax=ax[i,j], show=False, s=0.5)
+                sc.pl.umap(adata[(adata.obs['modality']==m) & (adata.obs['batch']==b)], color='label', ax=ax[i,j], show=False, s=2)
+                ax[i,j].get_legend().set_visible(False)
+            ax[i,j].set_xticks([])
+            ax[i,j].set_yticks([])
+            ax[i,j].set_xlabel("")
+
+            if j==0:
+                ax[i,j].set_ylabel(b)
+            else:
+                ax[i,j].set_ylabel("")
+            if i==0:
+                ax[i,j].set_title(m)
+            else:
+                ax[i,j].set_title("")
+    handles, labels = ax[i,j].get_legend_handles_labels()
+    if legend:
+        f.legend(handles, labels, loc=legend_loc, ncol=1) 
+    plt.show()
+
+def viz_diff(adata:AnnData, group:str = "label", emb:str = "emb", n:int = 2, viz_rank:bool = True, viz_heat:bool = True, show_log:bool = True):
+    """Visualize differential features.
+
+    Args:
+        adata (AnnData): The input dataset.
+        group (str): The key for grouping data in the differential features analysis, e.g., 'label'.
+        emb (str): The key for UMAP embeddings.
+        n (int): The number of features to visualize.
+        viz_rank (bool): Whether to run rank_genes_groups_dotplot().
+        viz_heat (bool): Whether to visualize each feature individually.
+        show_log (bool): Whether to log-transform adata.X for visualization.
+    """
+    adata = adata.copy()
+    if "distances" in adata.obsp:
+        print("skipping sc.pp.neighbors")
+    else:
+        sc.pp.neighbors(adata, use_rep=emb)
+
+    if "X_umap" in adata.obsm:
+        print("skipping sc.tl.umap")
+    else:
+        sc.tl.umap(adata)
+
+    if show_log:
+        sc.pp.log1p(adata)
+    sc.tl.rank_genes_groups(adata, groupby=group, method="wilcoxon")
+
+    if viz_rank:
+        sc.pl.rank_genes_groups_dotplot(adata, groupby=group, standard_scale="var", n_genes=n)
+
+    if viz_heat:
+        celltypes = np.unique(adata.obs[group])
+        for i in range(len(celltypes)):
+            print("group:", celltypes[i])
+            dc_cluster_genes = sc.get.rank_genes_groups_df(adata, group=celltypes[i]).head(n)["names"]
+            sc.pl.umap(
+                adata,
+                color=[*dc_cluster_genes],
+                frameon=False,
+                ncols=3,
+            )
