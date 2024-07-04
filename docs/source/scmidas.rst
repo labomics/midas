@@ -24,3 +24,12 @@ scmidas.evaluation
    :members:
    :undoc-members:
    :show-inheritance:
+
+
+scmidas.utils
+-------------
+
+.. automodule:: scmidas.utils
+   :members: viz_diff, viz_mod_latent
+   :undoc-members:
+   :show-inheritance:

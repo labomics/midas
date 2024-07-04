@@ -8,6 +8,7 @@
 5. fix bugs
 6. add viz_diff()
 7. add viz_mod_latent()
+8. add evaluation funcs
 
 
 ## v0.0.8  2024-06-20 
