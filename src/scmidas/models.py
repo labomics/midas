@@ -453,6 +453,8 @@ class MIDAS():
     Args:
         data (list): A list of 'GetDataInfo' objects or a single 'GetDataInfo' object. For a list, the order of items determines the sequence of batch IDs assigned to them.
         status (list): A list indicating the role of each item in data. 'query' is always assigned after 'reference'.
+        num_workers (int): Setting the argument num_workers as a positive integer will turn on multi-process data loading with the specified number of loader worker processes.
+        pin_memory (bool): Copies the tensor to pinned memory, if it’s not already pinned.  
     Example:
         for offline integration::
         
@@ -462,8 +464,14 @@ class MIDAS():
         
             >>> model = MIDAS([GetDataInfo1, GetDataInfo2], ["reference", "query"])
     """
-    def __init__(self, data:Union[list, GetDataInfo], status:Union[list, None] = None):
-
+    def __init__(self, data:Union[list, GetDataInfo], status:Union[list, None] = None, cuda='cuda:0', num_workers:int = 64, pin_memory:bool = True):
+        
+        if cuda and torch.cuda.is_available():
+            self.device=cuda
+        else:
+            self.device='cpu'
+        self.num_workers = num_workers
+        self.pin_memory = pin_memory
         if type(data) is not list:
             data = [data]
         self.data = data
@@ -626,8 +634,8 @@ class MIDAS():
             "loss_disc": loss_disc, 
             })
 
-        self.net = Net(self.o).cuda()
-        self.discriminator = Discriminator(self.o).cuda()
+        self.net = Net(self.o).to(self.device)
+        self.discriminator = Discriminator(self.o).to(self.device)
         self.optimizer_net = torch.optim.AdamW(self.net.parameters(), lr=self.o.lr)
         self.optimizer_disc = torch.optim.AdamW(self.discriminator.parameters(), lr=self.o.lr)
         
@@ -640,7 +648,7 @@ class MIDAS():
             for m, dim in self.dims_rep.items():
                 dims_h_rep[m] = dim if m != "atac" else dims_enc_chr[-1] * self.n_chr
             self.net = utils.update_model(savepoint, dims_h_rep, self.o.dims_h, self.net)
-            self.discriminator = Discriminator(self.o).cuda()
+            self.discriminator = Discriminator(self.o).to(self.device)
             self.optimizer_net = torch.optim.AdamW(self.net.parameters(), lr=self.o.lr)
             self.optimizer_disc = torch.optim.AdamW(self.discriminator.parameters(), lr=self.o.lr)
         # start training from a breakpoint
@@ -687,7 +695,8 @@ class MIDAS():
         optimizer.step()
         
     def __run_iter__(self, split, epoch_id, inputs, rnt=1):
-        inputs = utils.convert_tensors_to_cuda(inputs)
+        if self.device!='cpu':
+            inputs = utils.convert_tensors_to_cuda(inputs, self.device)
         if split == "train":
             with autograd.set_detect_anomaly(self.debug == 1):
                 loss_net, c_all = self.__forward_net__(inputs)
@@ -752,7 +761,7 @@ class MIDAS():
             shuffle:bool = True, 
             save_epochs:int = 50, 
             debug:int = 0, 
-            save_path:str = './result/experiment/'
+            save_path:str = './result/experiment/',
             ):
         """Train the model.
         
@@ -763,7 +772,6 @@ class MIDAS():
             save_epochs (int): Frequency to save the latest weights and logs during training.
             debug (int): If True, print intermediate variables for debugging purposes.
             save_path (str): Path to save the trained model and related files.
-
         """
         print("Training ...")
         self.save_epochs = save_epochs
@@ -778,13 +786,13 @@ class MIDAS():
             reference_sampler = MultiDatasetSampler(reference_datasets, batch_size=mini_batch_size, shuffle=shuffle)
             query_sampler = MultiDatasetSampler(query_datasets, batch_size=mini_batch_size, shuffle=shuffle)
             self.data_loader = [
-                torch.utils.data.DataLoader(reference_datasets, batch_size=mini_batch_size, sampler=reference_sampler, num_workers=64, pin_memory=True),
-                torch.utils.data.DataLoader(query_datasets, batch_size=mini_batch_size, sampler=query_sampler, num_workers=64, pin_memory=True)
+                torch.utils.data.DataLoader(reference_datasets, batch_size=mini_batch_size, sampler=reference_sampler, num_workers=self.num_workers, pin_memory=self.pin_memory),
+                torch.utils.data.DataLoader(query_datasets, batch_size=mini_batch_size, sampler=query_sampler, num_workers=self.num_workers, pin_memory=self.pin_memory)
             ]
         elif self.train_mod == 'offline':
             datasets = self.gen_datasets(self.data)
             sampler = MultiDatasetSampler(torch.utils.data.dataset.ConcatDataset(datasets), batch_size=mini_batch_size, shuffle=shuffle)
-            self.data_loader = torch.utils.data.DataLoader(torch.utils.data.dataset.ConcatDataset(datasets), batch_size=mini_batch_size, sampler=sampler, num_workers=64, pin_memory=True)
+            self.data_loader = torch.utils.data.DataLoader(torch.utils.data.dataset.ConcatDataset(datasets), batch_size=mini_batch_size, sampler=sampler, num_workers=self.num_workers, pin_memory=self.pin_memory)
         with tqdm(total=n_epoch) as pbar:
             pbar.update(self.log['epoch_id_start'])
             for epoch_id in range(self.log['epoch_id_start'], n_epoch):
@@ -827,7 +835,7 @@ class MIDAS():
         utils.mkdirs(dirs, remove_old=remove_old)
         datasets = self.gen_datasets(self.data)
         data_loaders = {k:torch.utils.data.DataLoader(datasets[k], batch_size=mini_batch_size, \
-            num_workers=64, pin_memory=True, shuffle=False) for k in range(self.batch_num_curr+self.batch_num_rep)}
+            num_workers=self.num_workers, pin_memory=self.pin_memory, shuffle=False) for k in range(self.batch_num_curr+self.batch_num_rep)}
         # data_loaders = get_dataloaders("test", train_ratio=0)
         self.net.eval()
         with torch.no_grad():
@@ -836,7 +844,8 @@ class MIDAS():
                 fname_fmt = utils.get_name_fmt(len(data_loader))+".csv"
                 
                 for i, data in enumerate(tqdm(data_loader)):
-                    data = utils.convert_tensors_to_cuda(data)
+                    if self.device!='cpu':
+                        data = utils.convert_tensors_to_cuda(data, self.device)
                     
                     # conditioned on all observed modalities
                     if joint_latent:
@@ -905,7 +914,8 @@ class MIDAS():
                     fname_fmt = utils.get_name_fmt(len(data_loader))+".csv"
                     
                     for i, data in enumerate(tqdm(data_loader)):
-                        data = utils.convert_tensors_to_cuda(data)
+                        if self.device!='cpu':
+                            data = utils.convert_tensors_to_cuda(data, self.device)
                         x_r_pre, *_ = self.net.sct(data)
                         x_r = gen_real_data(x_r_pre, sampling=True)
                         for m in self.o.mods:
@@ -973,7 +983,8 @@ class MIDAS():
              output_task_name:str = 'pack', 
              des_dir:str = './data/processed/', 
              n_sample:int = 100000, 
-             pred_dir:Union[str, None] = None):
+             pred_dir:Union[str, None] = None,
+             ):
         """ Reduces data by proportionally sampling from each batch and eventually merging them into a unified dataset with consistent features for storage.
     
         Args:
@@ -995,7 +1006,7 @@ class MIDAS():
         # load info
         datasets = self.gen_datasets(self.data)
         data_loaders = {k:torch.utils.data.DataLoader(datasets[k], batch_size=1, \
-            num_workers=64, pin_memory=True, shuffle=False) for k in range(self.batch_num_curr+self.batch_num_rep)}
+            num_workers=self.num_workers, pin_memory=self.pin_memory, shuffle=False) for k in range(self.batch_num_curr+self.batch_num_rep)}
         
         emb = self.read_embeddings()
         # print(emb)

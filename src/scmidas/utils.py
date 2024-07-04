@@ -108,7 +108,7 @@ def save_list_to_csv(data, filename, delimiter=','):
     """
     Save a 2D list `data` into a `.csv` file named as `filename`
     """
-    with open(filename, "w") as file:
+    with open(filename, "w", newline='') as file:
         writer = csv.writer(file, delimiter=delimiter)
         writer.writerows(data)
         
@@ -166,13 +166,13 @@ def get_sub_dict(src_dict, keys):
     return {k: src_dict[k] for k in keys}
 
 
-def convert_tensors_to_cuda(x):
+def convert_tensors_to_cuda(x, device):
     """
     Recursively converts tensors to cuda
     """
     y = {}
     for kw, arg in x.items():
-        y[kw] = arg.cuda() if th.is_tensor(arg) else convert_tensors_to_cuda(arg)
+        y[kw] = arg.to(device) if th.is_tensor(arg) else convert_tensors_to_cuda(arg, device)
     return y
 
 
@@ -395,13 +395,13 @@ def calc_foscttm(mu1, mu2, logvar1=None, logvar2=None):
     # return foscttm
 
 
-def calc_subset_foscttm(o, model, data_loader):
+def calc_subset_foscttm(o, model, data_loader, device="cuda:0"):
     mods = data_loader.dataset.comb
     z_mus = get_dict(mods, [[] for _ in mods])
     z_logvars = get_dict(mods, [[] for _ in mods])
     with th.no_grad():
         for data in data_loader:
-            data = convert_tensors_to_cuda(data)
+            data = convert_tensors_to_cuda(data, device)
             for m in data["x"].keys():
                 input_data = {
                     "x": {m: data["x"][m]},
