@@ -21,7 +21,7 @@ scmidas.evaluation
 ------------------
 
 .. automodule:: scmidas.evaluation
-   :members:
+   :members: eval_scmib, eval_scib
    :undoc-members:
    :show-inheritance:
 
