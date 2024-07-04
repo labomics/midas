@@ -453,6 +453,7 @@ class MIDAS():
     Args:
         data (list): A list of 'GetDataInfo' objects or a single 'GetDataInfo' object. For a list, the order of items determines the sequence of batch IDs assigned to them.
         status (list): A list indicating the role of each item in data. 'query' is always assigned after 'reference'.
+        cuda (str): Specifies whether to use CPU or GPU. For CPU, set cuda=None. For GPU, indicate the specific device, such as "cuda:0".
         num_workers (int): Setting the argument num_workers as a positive integer will turn on multi-process data loading with the specified number of loader worker processes.
         pin_memory (bool): Copies the tensor to pinned memory, if it’s not already pinned.  
     Example:
