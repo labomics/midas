@@ -1,4 +1,4 @@
-data/
+data_/
 temp/
 dist/
 __pycache__/
@@ -18,5 +18,7 @@ core
 result_old/
 tutorial_*.ipynb
 *.tar
-!dogma_demo_labels.zip
-!wnn_demo_labels.zip
+!data/dogma_demo_labels.zip
+!data/wnn_demo_labels.zip
+!data/download_prep_dogma.sh
+!data/prep_wnn.sh
