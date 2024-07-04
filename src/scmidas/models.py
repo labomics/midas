@@ -493,8 +493,10 @@ class MIDAS():
                     self.dims_x['atac'] = d.feat_dims['atac']
                     self.reference_features[k] = d.features['atac']
                     self.dims_chr = d.dims_chr
+                    self.n_chr = d.n_chr
                     if (status[i] == 'reference') and (k not in self.dims_rep):
                         self.dims_rep[k] = d.feat_dims[k]
+                
                 else:
                     if k not in self.reference_features:
                         self.reference_features[k] = d.features[k]
@@ -578,7 +580,7 @@ class MIDAS():
         dims_h = {}
         self.train_mod = train_mod
         for m, dim in self.dims_x.items():
-            dims_h[m] = dim if m != "atac" else dims_enc_chr[-1] * 22
+            dims_h[m] = dim if m != "atac" else dims_enc_chr[-1] * self.n_chr
 
         self.log = {
             "train_loss": [],
@@ -636,7 +638,7 @@ class MIDAS():
             savepoint = torch.load(reciprocal_from)
             dims_h_rep = {}
             for m, dim in self.dims_rep.items():
-                dims_h_rep[m] = dim if m != "atac" else dims_enc_chr[-1] * 22
+                dims_h_rep[m] = dim if m != "atac" else dims_enc_chr[-1] * self.n_chr
             self.net = utils.update_model(savepoint, dims_h_rep, self.o.dims_h, self.net)
             self.discriminator = Discriminator(self.o).cuda()
             self.optimizer_net = torch.optim.AdamW(self.net.parameters(), lr=self.o.lr)
@@ -748,7 +750,7 @@ class MIDAS():
             n_epoch:int = 2000, 
             mini_batch_size:int = 256, 
             shuffle:bool = True, 
-            save_epochs:int = 10, 
+            save_epochs:int = 50, 
             debug:int = 0, 
             save_path:str = './result/experiment/'
             ):
@@ -1049,7 +1051,7 @@ class MIDAS():
             features_dims['atac'] = self.dims_chr
         for m in self.reference_features:
             if m != 'atac':
-                features_dims[m] = [self.dims_x[m] for i in range(22)]
+                features_dims[m] = [self.dims_x[m] for i in range(self.n_chr)]
             pd.DataFrame(self.reference_features[m]).to_csv(os.path.join(des_dir, output_task_name, 'feat','feat_names_%s.csv'%m))
         pd.DataFrame(features_dims).to_csv(os.path.join(des_dir, output_task_name, 'feat','feat_dims.csv'))
 

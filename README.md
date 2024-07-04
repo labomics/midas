@@ -15,10 +15,11 @@ conda activate scmidas
 pip install scmidas
 ```
 
-Other packages (Optional):
+Optional packages:
 
 ```bash
-pip install ipykernel jupyter scvi-tools
+pip install ipykernel jupyter
+pip install git+https://github.com/yoseflab/scib-metrics.git@main
 ```
 
 ## Reproducibility
@@ -29,5 +30,12 @@ Refer to https://github.com/labomics/midas/tree/reproducibility.
 
 If you use MIDAS in your work, please cite the midas publication as follows:
 ```
-He, Z., Hu, S., Chen, Y. et al. Mosaic integration and knowledge transfer of single-cell multimodal data with MIDAS. Nat Biotechnol (2024). https://doi.org/10.1038/s41587-023-02040-y
+@article{he2024mosaic,
+  title={Mosaic integration and knowledge transfer of single-cell multimodal data with MIDAS},
+  author={He, Zhen and Hu, Shuofeng and Chen, Yaowen and An, Sijing and Zhou, Jiahao and Liu, Runyan and Shi, Junfeng and Wang, Jing and Dong, Guohua and Shi, Jinhui and others},
+  journal={Nature Biotechnology},
+  pages={1--12},
+  year={2024},
+  publisher={Nature Publishing Group US New York}
+}
 ```

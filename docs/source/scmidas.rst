@@ -1,25 +1,24 @@
 API
 ===============
 
-scmidas.datasets module
------------------------
-
-.. automodule:: scmidas.datasets
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-scmidas.models module
----------------------
+scmidas.models
+--------------
 
 .. automodule:: scmidas.models
    :members: MIDAS
    :undoc-members:
    :show-inheritance:
 
+scmidas.datasets
+----------------
 
-scmidas.evaluation module
--------------------------
+.. automodule:: scmidas.datasets
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scmidas.evaluation
+------------------
 
 .. automodule:: scmidas.evaluation
    :members:

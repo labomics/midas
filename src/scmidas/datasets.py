@@ -247,13 +247,15 @@ class GetDataInfo():
             for m in ["rna", "adt"]:   
                 if m in self.mods[f"subset_{n}"]:
                     masks[m] = pd.read_csv(os.path.join(self.data_path, f"subset_{n}", "mask", m+".csv")).values.flatten()
-                self.masks.append(masks)
+            self.masks.append(masks)
         self.feat_dims = self.__cal_feat_dims__(pd.read_csv(os.path.join(self.data_path, 'feat', 'feat_dims.csv'), index_col=0), self.mod_combination)
         self.subset.sort()
         if 'atac' in self.mod_combination:
             self.dims_chr = pd.read_csv(os.path.join(self.data_path, 'feat', 'feat_dims.csv'), index_col=0)['atac'].values.tolist()
+            self.n_chr = len(self.dims_chr)
         else:
             self.dims_chr = []
+            self.n_chr = None
     
     def __cal_feat_dims__(self, df, mods):
         feat_dims = {}
@@ -280,6 +282,10 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
         save_dir (str): Target path to save the data.
         remove_old (bool): Whether to remove old directories.
         feature (str): Strategy for features selection. Support "union" and "intersect".
+    
+    Note:
+        For ATAC-seq data, we determine the chromosome number based on the prefix of the feature names, such as "chr1-xxxx", "chr2-xxx", ..., "chr22-xxx" 
+        (see scmidas.utils.split_list_by_prefix() and the Supplementary Figure 1 in our paper for better understanding). 
     """
     data = data_path_list
     batch_num = len(data)

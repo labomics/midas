@@ -17,3 +17,6 @@ genesets
 core
 result_old/
 tutorial_*.ipynb
+*.tar
+!dogma_demo_labels.zip
+!wnn_demo_labels.zip
