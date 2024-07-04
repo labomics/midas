@@ -1,4 +1,5 @@
 data_/
+data/processed
 temp/
 dist/
 __pycache__/
