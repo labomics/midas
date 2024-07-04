@@ -19,7 +19,6 @@ Optional packages:
 
 ```bash
 pip install ipykernel jupyter
-pip install git+https://github.com/yoseflab/scib-metrics.git@main
 ```
 
 ## Reproducibility
