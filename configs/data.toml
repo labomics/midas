@@ -21,7 +21,7 @@ comb_ratios = [
     [ 1 ], [ 1 ], [ 1 ]
 ]
 
-[dogma_demo_offline]
+[dogma_demo]
 raw_data_dirs = [
     # dogma
     "data/raw/atac+rna+adt/dogma/lll_ctrl",
