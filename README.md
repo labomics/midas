@@ -10,6 +10,8 @@ Read our documentation at https://scmidas.readthedocs.io/en/latest/. We provide 
 ## Installation
 
 ```bash
+git clone https://github.com/labomics/midas.git
+cd midas
 conda create -n scmidas python=3.9
 conda activate scmidas
 pip install scmidas
