@@ -25,3 +25,4 @@ tutorial_*.ipynb
 !data/wnn_demo_labels.zip
 !data/download_prep_dogma.sh
 !data/prep_wnn.sh
+.vscode
