@@ -1,5 +1,7 @@
-data_/
+data_2/
 data/processed
+data/raw
+data/*.h5ad
 temp/
 dist/
 __pycache__/

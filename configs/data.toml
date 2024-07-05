@@ -62,3 +62,32 @@ comb_ratios = [
     # dogma
     [ 1 ]
 ]
+
+
+[dogma_full]
+raw_data_dirs = [
+    # dogma
+    "data/raw/atac+rna+adt/dogma/lll_ctrl",
+    "data/raw/atac+rna+adt/dogma/lll_stim",
+    "data/raw/atac+rna+adt/dogma/dig_ctrl",
+    "data/raw/atac+rna+adt/dogma/dig_stim",
+]
+raw_data_frags = [
+    # dogma
+    "GSM5065524_LLL_CTRL_fragments.tsv.gz",
+    "GSM5065527_LLL_STIM_fragments.tsv.gz",
+    "GSM5065530_DIG_CTRL_fragments.tsv.gz",
+    "GSM5065533_DIG_STIM_fragments.tsv.gz",
+
+]
+combs = [
+    # dogma
+    [ ["atac", "rna", "adt"] ],
+    [ ["atac", "rna", "adt"] ],
+    [ ["atac", "rna", "adt"] ],
+    [ ["atac", "rna", "adt"] ],
+]
+comb_ratios = [
+    # dogma
+    [ 1 ], [ 1 ], [ 1 ], [ 1 ],
+]
