@@ -645,9 +645,6 @@ def split_list_by_prefix(input_list):
         result_dict[prefix].append(item)
     return result_dict
 
-def sort_chromosomes(chromosome_list):
-    return sorted(chromosome_list, key=lambda x: int(x[3:]))
-
 def lists_are_identical(lists):
     set_of_tuples = set(tuple(lst) for lst in lists)
     return len(set_of_tuples) == 1

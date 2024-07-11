@@ -643,7 +643,7 @@ class MIDAS():
         # initialization for reciprocal learning
         # model structure adaptation
         if self.train_mod == 'reciprocal':
-            print('load an old model from', reciprocal_from)
+            print('load a previously trained model from', reciprocal_from)
             savepoint = torch.load(reciprocal_from)
             dims_h_rep = {}
             for m, dim in self.dims_rep.items():
@@ -652,6 +652,10 @@ class MIDAS():
             self.discriminator = Discriminator(self.o).to(self.device)
             self.optimizer_net = torch.optim.AdamW(self.net.parameters(), lr=self.o.lr)
             self.optimizer_disc = torch.optim.AdamW(self.discriminator.parameters(), lr=self.o.lr)
+            self.n_cells_orig = []
+            for d in self.data:
+                for name in d.cell_names_orig.values():
+                    self.n_cells_orig.append(len(name))
         # start training from a breakpoint
         if model_path is not None:
             print('load a pretrained model from', model_path)
@@ -732,15 +736,16 @@ class MIDAS():
             assert False, "Invalid split: %s" % split
         loss_total = 0
         if self.train_mod == 'reciprocal':
+            sum_n = sum(self.n_cells_orig)
             assert type(data_loader) is list, "Wrong type of dataloader for reciprocal learning."
             query_dataloader = data_loader[1]
             reference_dataloader = data_loader[0]
             for _, data in enumerate(zip(query_dataloader, reference_dataloader)):
                 data1, data2 = data[0], data[1]
-                rnt_ = self.batch_num_curr / (self.batch_num_rep + self.batch_num_curr)
+                rnt_ = self.n_cells_orig[data1["s"]["joint"][0].detach()]/sum_n
                 loss = self.__run_iter__(split, epoch_id, data1, rnt_)
                 loss_total += loss
-                rnt_ = self.batch_num_rep / (self.batch_num_rep  + self.batch_num_curr)
+                rnt_ = self.n_cells_orig[data2["s"]["joint"][0].detach()] / sum_n * (self.batch_num_rep)
                 loss = self.__run_iter__(split, epoch_id, data2, rnt_)
                 loss_total += loss
             loss_avg = loss_total / len(query_dataloader) / 2
@@ -1009,7 +1014,7 @@ class MIDAS():
         data_loaders = {k:torch.utils.data.DataLoader(datasets[k], batch_size=1, \
             num_workers=self.num_workers, pin_memory=self.pin_memory, shuffle=False) for k in range(self.batch_num_curr+self.batch_num_rep)}
         
-        emb = self.read_embeddings()
+        emb = self.read_preds()
         # print(emb)
         cell_names = {}
         cell_names_sampled = {}
@@ -1061,10 +1066,17 @@ class MIDAS():
         features_dims = {}
         if self.dims_chr != []:
             features_dims['atac'] = self.dims_chr
-        for m in self.reference_features:
-            if m != 'atac':
-                features_dims[m] = [self.dims_x[m] for i in range(self.n_chr)]
-            pd.DataFrame(self.reference_features[m]).to_csv(os.path.join(des_dir, output_task_name, 'feat','feat_names_%s.csv'%m))
+        if "atac" not in self.reference_features:
+            for m in self.reference_features:
+                features_dims[m] = [self.dims_x[m]]
+                pd.DataFrame(self.reference_features[m]).to_csv(os.path.join(des_dir, output_task_name, 'feat','feat_names_%s.csv'%m))
+        else:
+            for m in self.reference_features:
+                if m != 'atac':
+                    features_dims[m] = [self.dims_x[m] for _ in range(self.n_chr)]
+                else:
+                    features_dims[m] = self.dims_x[m]
+                pd.DataFrame(self.reference_features[m]).to_csv(os.path.join(des_dir, output_task_name, 'feat','feat_names_%s.csv'%m))
         pd.DataFrame(features_dims).to_csv(os.path.join(des_dir, output_task_name, 'feat','feat_dims.csv'))
 
 

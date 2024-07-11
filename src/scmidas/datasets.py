@@ -221,22 +221,22 @@ class GetDataInfo():
             if 'subset_' in i:
                 self.num_subset += 1
         for n in range(self.num_subset):
-                i = 'subset_%d'%n
-                self.subset.append(i)
-                assert os.path.exists(os.path.join(self.data_path, i, 'cell_names.csv')), "'cell_names.csv' does not exist in %s."%i
-                try:
-                    self.cell_names[i] = pd.read_csv(os.path.join(self.data_path, i, 'cell_names_sampled.csv')).values[:, 1].flatten()
-                except:
-                    self.cell_names[i] = pd.read_csv(os.path.join(self.data_path, i, 'cell_names.csv')).values[:, 1].flatten()
-                self.cell_names_orig[i] = pd.read_csv(os.path.join(self.data_path, i, 'cell_names.csv')).values[:, 1].flatten()
-                self.subset_cell_num[i] = len(self.cell_names[i])
-                
-                if not self.predefine_mod:
-                    m = []
-                    for j in os.listdir(os.path.join(self.data_path, i, 'vec')):
-                        if j in ['atac', 'rna', 'adt'] and os.path.exists(os.path.join(self.data_path, 'feat', 'feat_names_%s.csv'%j)):
-                            m.append(j)
-                    self.mods[i] = utils.ref_sort(m, ref=['atac', 'rna', 'adt'])
+            i = 'subset_%d'%n
+            self.subset.append(i)
+            assert os.path.exists(os.path.join(self.data_path, i, 'cell_names.csv')), "'cell_names.csv' does not exist in %s."%i
+            try:
+                self.cell_names[i] = pd.read_csv(os.path.join(self.data_path, i, 'cell_names_sampled.csv')).values[:, 1].flatten()
+            except:
+                self.cell_names[i] = pd.read_csv(os.path.join(self.data_path, i, 'cell_names.csv')).values[:, 1].flatten()
+            self.cell_names_orig[i] = pd.read_csv(os.path.join(self.data_path, i, 'cell_names.csv')).values[:, 1].flatten()
+            self.subset_cell_num[i] = len(self.cell_names[i])
+            
+            if not self.predefine_mod:
+                m = []
+                for j in os.listdir(os.path.join(self.data_path, i, 'vec')):
+                    if j in ['atac', 'rna', 'adt'] and os.path.exists(os.path.join(self.data_path, 'feat', 'feat_names_%s.csv'%j)):
+                        m.append(j)
+                self.mods[i] = utils.ref_sort(m, ref=['atac', 'rna', 'adt'])
 
         self.mod_combination = utils.combine_mod(self.mods)
 
@@ -284,7 +284,7 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
         feature (str): Strategy for features selection. Support "union" and "intersect".
     
     Note:
-        For ATAC-seq data, we determine the chromosome number based on the prefix of the feature names, such as "chr1-xxxx", "chr2-xxx", ..., "chr22-xxx" 
+        For ATAC-seq data, we determine the chromosome number based on the prefix of the feature names, such as "chr1-xxx", "chr2-xxx", ..., "chr22-xxx" 
         (see scmidas.utils.split_list_by_prefix() and the Supplementary Figure 1 in our paper for better understanding). 
     """
     data = data_path_list
@@ -333,13 +333,12 @@ def GenDataFromPath(data_path_list:list, save_dir:str, remove_old:bool = True, f
         if m=="atac":
             chr_dims = []
             split_chr = utils.split_list_by_prefix(feat_names["atac"])
-            chr_keys = utils.sort_chromosomes(list(split_chr.keys()))
-            for c in chr_keys:
+            for c in split_chr.keys():
                 chr_dims.append(len(split_chr[c]))
             feat_dims[m] = chr_dims
         else:
             if "atac" in feat_names:
-                feat_dims[m] = [len(feat_names[m])] * len(chr_keys) # All columns in the pandas DataFrame must have uniform dimensions.
+                feat_dims[m] = [len(feat_names[m])] * len(split_chr.keys()) # All columns in the pandas DataFrame must have uniform dimensions.
 
             else:
                 feat_dims[m] = [len(feat_names[m])]

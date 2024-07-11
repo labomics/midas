@@ -1,5 +1,4 @@
-
-# new version (change to recursive procedure)
+# Developing ... 
 from sklearn.neighbors import BallTree
 import random
 def split_layer(nodes):
@@ -28,22 +27,14 @@ def sample(nodes, order, memory, target):
     for n in nodes_id:
         selected.extend(randomsampling(n, number))
     return selected
-
-def recursive_sampling(layers, layer, order, target, memory):
-    # print("current leyer", layer, "memory", len(memory), "target", target)
-    if target == 0 or layer<=0:
-        return memory
-    else:
-        nodes = layers[layer-1]
-        selected = sample(nodes, order, memory, target)
-        memory.extend(selected)
-        return recursive_sampling(layers, layer-1, order, target-len(selected), memory)
-    
-def BallTreeSubsample(data, target_size):
+def BallTreeSubsample(data, target):
     bt = BallTree(data, leaf_size = 2)
     nodes = bt.get_arrays()[2]
     order = bt.get_arrays()[1]
     layers, n_layers = split_layer(nodes)
-    selected = recursive_sampling(layers, n_layers, order, target_size, [])
+    selected = []
+    l = n_layers-1
+    while len(selected) < target:
+        selected.extend(sample(layers[l], order, selected, target- len(selected)))
+        l -= 1
     return selected
-    
