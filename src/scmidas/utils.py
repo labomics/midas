@@ -518,10 +518,11 @@ def get_pred_dirs(o, joint_latent, mod_latent, impute, batch_correct, translate,
             for m in o.combs[subset_id]: # single to double
                 for m_ in set(o.mods) - {m}:
                     dirs[subset_id]["x_trans"][m+"_to_"+m_] = pj(subset_dir, "x_trans", m+"_to_"+m_)
-            for mods in itertools.combinations(o.combs[subset_id], 2): # double to single
-                m1, m2 = ref_sort(mods, ref=o.mods)
-                m_ = list(set(o.mods) - set(mods))[0]
-                dirs[subset_id]["x_trans"][m1+"_"+m2+"_to_"+m_] = pj(subset_dir, "x_trans", m1+"_"+m2+"_to_"+m_)
+            if len(o.mods) == 3:
+                for mods in itertools.combinations(o.combs[subset_id], 2): # double to single
+                    m1, m2 = ref_sort(mods, ref=o.mods)
+                    m_ = list(set(o.mods) - set(mods))[0]
+                    dirs[subset_id]["x_trans"][m1+"_"+m2+"_to_"+m_] = pj(subset_dir, "x_trans", m1+"_"+m2+"_to_"+m_)
         if input:
             dirs[subset_id]["x"] = {}
             for m in o.combs[subset_id]:

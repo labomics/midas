@@ -1,6 +1,8 @@
 # Release notes
+## v0.0.16  2024-07-11
+1. Fix utils.load_predicted(). See #5
 
-## v0.0.15  2024-07-08
+## v0.0.15  2024-07-11
 1. Fix reduce_data()
 2. Fix utils.ref_sort(). See #9.
 

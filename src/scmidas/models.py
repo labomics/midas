@@ -882,7 +882,7 @@ class MIDAS():
                                 for m_ in set(self.o.mods) - {m}:
                                     utils.save_tensor_to_csv(x_r[m_], os.path.join(dirs[subset_id]["x_trans"][m+"_to_"+m_], fname_fmt) % i)
                     
-                    if translate: # double to single
+                    if translate and len(self.o.mods) ==3: # double to single
                         for mods in itertools.combinations(data["x"].keys(), 2):
                             m1, m2 = utils.ref_sort(mods, ref=self.o.mods)
                             input_data = {
