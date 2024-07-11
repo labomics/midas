@@ -26,3 +26,6 @@ tutorial_*.ipynb
 !data/download_prep_dogma.sh
 !data/prep_wnn.sh
 .vscode
+paper_exp
+result_paper
+exp_2.py
