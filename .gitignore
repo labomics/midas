@@ -25,6 +25,7 @@ tutorial_*.ipynb
 !data/wnn_demo_labels.zip
 !data/download_prep_dogma.sh
 !data/prep_wnn.sh
+!docs/source/notebooks/tutorial_3.ipynb
 .vscode
 paper_exp
 result_paper
