@@ -534,13 +534,13 @@ class MIDAS():
     
     def init_model(
             self, 
-            # training related
+            # training
             train_mod:str = 'offline', 
             lr:float = 1e-4, 
             drop_s:int = 0, 
             s_drop_rate:float = 0.1, 
             grad_clip:int = -1, 
-            # structure related
+            # structure
             dim_c:int = 32, 
             dim_b:int = 2, 
             dims_enc_s:list = [16,16], 
@@ -550,14 +550,15 @@ class MIDAS():
             norm:str = "ln", 
             drop:float = 0.2, 
             disc_train:int = 3,
-            # loss related
+            # loss
             loss_s_recon:float = 1000.0,
             loss_mod_alignment:float = 50.0,
             loss_disc:float = 30.0, 
-            # checkpoint related
+            # checkpoint
             model_path:Union[str, None] = None,
             log_path:Union[str, None] = None,
-            # reciprocal integration related
+            skip_s:Union[bool, None] = None,
+            # reciprocal integration
             reciprocal_from:Union[str, None] = None
             ):
         """Initialize the model structure.
@@ -582,6 +583,7 @@ class MIDAS():
             loss_disc  (float): Scaling factor for the loss used to train the discriminator.
             model_path (str, optional): Path to save the model weights (a ".pt" file).
             log_path (str, optional): Path to save the training status (a ".toml" file).
+            skip_s (bool, optional): Skipping loading weight for s_enc and s_dec to avoid dismatch structure error.
             reciprocal_from (str, optional): Path to the model weights when using 'reciprocal' training mode (a ".pt" file). This is used only when train_mod == 'reciprocal'.
         """
 
@@ -660,10 +662,25 @@ class MIDAS():
         if model_path is not None:
             print('load a pretrained model from', model_path)
             savepoint = torch.load(model_path)
-            self.net.load_state_dict(savepoint['net_states'])
-            self.discriminator.load_state_dict(savepoint['disc_states'])
-            self.optimizer_net.load_state_dict(savepoint['optim_net_states'])
-            self.optimizer_disc.load_state_dict(savepoint['optim_disc_states'])
+            if skip_s:
+                exclude_modules = ["s_enc", "s_dec"]
+                pretrained_dict = {}
+                for k, v in savepoint['net_states'].items():
+                    exclude = False
+                    for exclude_module in exclude_modules:
+                        if exclude_module in k:
+                            exclude = True
+                            break
+                    if not exclude:
+                        pretrained_dict[k] = v
+                net_dict = self.net.state_dict()
+                net_dict.update(pretrained_dict)
+                self.net.load_state_dict(net_dict)
+            else:
+                self.net.load_state_dict(savepoint['net_states'])
+                self.discriminator.load_state_dict(savepoint['disc_states'])
+                self.optimizer_net.load_state_dict(savepoint['optim_net_states'])
+                self.optimizer_disc.load_state_dict(savepoint['optim_disc_states'])
         if log_path is not None:
             savepoint_toml = utils.load_toml(log_path)
             self.log.update(savepoint_toml['log'])

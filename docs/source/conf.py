@@ -30,8 +30,10 @@ extensions = [
    'sphinx.ext.githubpages',
    'recommonmark',
    'sphinx_markdown_tables',
-   'nbsphinx'
+   'nbsphinx',
+   'sphinx.ext.mathjax'
    ]
+mathjax_path = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 from recommonmark.parser import CommonMarkParser
 
 source_parsers = {
