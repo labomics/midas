@@ -1,11 +1,8 @@
 # Release notes
 
-## utils.viz_viz_mod_latent()
+# v0.0.18 2024-07-29
 
-
-    if np.unique(adata.obs["batch"]).shape[0] ==1:
-
-    ax = ax[np.newaxis, :]
+1. utils.viz_viz_mod_latent(). Rotated the image and fixed the bug that caused an error when inputting a batch.
 
 ## v0.0.17  2024-07-16
 
