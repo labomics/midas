@@ -650,7 +650,7 @@ def lists_are_identical(lists):
     set_of_tuples = set(tuple(lst) for lst in lists)
     return len(set_of_tuples) == 1
 
-def viz_mod_latent(emb:dict, label:list, h:int = 2, w:int = 2, legend:bool = True, legend_size:list = [3, 2], legend_loc="right"):
+def viz_mod_latent(emb:dict, label:list, h:int = 2, w:int = 2, legend:bool = True, legend_loc="right"):
     """Visualize modality-specific embeddings.
 
     Args:
@@ -659,7 +659,6 @@ def viz_mod_latent(emb:dict, label:list, h:int = 2, w:int = 2, legend:bool = Tru
         h (int): Height of the subfigure.
         w (int): Width of the subfigure.
         legend (bool): Whether to plot the legend.
-        legend_size (int): Size of the legend.
         legend_loc (str): Location of the legend.
     """
     adata_list = []
@@ -683,7 +682,7 @@ def viz_mod_latent(emb:dict, label:list, h:int = 2, w:int = 2, legend:bool = Tru
     for m in ["rna", "adt", "atac", "joint"]:
         if m in mods:
             mods_.append(m)
-    f, ax = plt.subplots(nrows, ncols, figsize=[ncols*h+legend_size[0], nrows*w+legend_size[1]])
+    f, ax = plt.subplots(nrows, ncols, figsize=[ncols*h, nrows*w])
     if np.unique(adata.obs["batch"]).shape[0] == 1:
         ax = ax[:, np.newaxis]
     for i, b in enumerate(np.unique(adata.obs["batch"])):
