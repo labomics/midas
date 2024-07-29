@@ -1,6 +1,6 @@
 # Release notes
 
-# v0.0.18 2024-07-29
+## v0.0.18 2024-07-29
 
 1. utils.viz_viz_mod_latent(). Rotated the image and fixed the bug that caused an error when inputting a batch.
 
