@@ -583,7 +583,7 @@ class MIDAS():
             loss_disc  (float): Scaling factor for the loss used to train the discriminator.
             model_path (str, optional): Path to save the model weights (a ".pt" file).
             log_path (str, optional): Path to save the training status (a ".toml" file).
-            skip_s (bool, optional): Skipping loading weight for s_enc and s_dec to avoid dismatch structure error.
+            skip_s (bool, optional): Skipping loading weights for s_enc and s_dec.
             reciprocal_from (str, optional): Path to the model weights when using 'reciprocal' training mode (a ".pt" file). This is used only when train_mod == 'reciprocal'.
         """
 

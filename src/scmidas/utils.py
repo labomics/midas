@@ -676,37 +676,39 @@ def viz_mod_latent(emb:dict, label:list, h:int = 2, w:int = 2, legend:bool = Tru
         sc.pp.neighbors(adata)
         sc.tl.umap(adata)
 
-    nrows = len(np.unique(adata.obs["batch"]))
-    ncols = len(np.unique(adata.obs["modality"]))
+    nrows = len(np.unique(adata.obs["modality"]))
+    ncols = len(np.unique(adata.obs["batch"]))
     mods = np.unique(adata.obs["modality"])
     mods_ = []
     for m in ["rna", "adt", "atac", "joint"]:
         if m in mods:
             mods_.append(m)
     f, ax = plt.subplots(nrows, ncols, figsize=[ncols*h+legend_size[0], nrows*w+legend_size[1]])
+    if np.unique(adata.obs["batch"]).shape[0] == 1:
+        ax = ax[:, np.newaxis]
     for i, b in enumerate(np.unique(adata.obs["batch"])):
         for j, m in enumerate(mods_):
             if len(adata[(adata.obs['modality']==m) & (adata.obs['batch']==b)]):
-                sc.pl.umap(adata, ax=ax[i,j], show=False, s=0.5)
-                sc.pl.umap(adata[(adata.obs['modality']==m) & (adata.obs['batch']==b)], color='label', ax=ax[i,j], show=False, s=2)
-                ax[i,j].get_legend().set_visible(False)
-            ax[i,j].set_xticks([])
-            ax[i,j].set_yticks([])
-            ax[i,j].set_xlabel("")
+                sc.pl.umap(adata, ax=ax[j,i], show=False, s=0.5)
+                sc.pl.umap(adata[(adata.obs['modality']==m) & (adata.obs['batch']==b)], color='label', ax=ax[j,i], show=False, s=2)
+                ax[j,i].get_legend().set_visible(False)
+            ax[j,i].set_xticks([])
+            ax[j,i].set_yticks([])
+            ax[j,i].set_xlabel("")
 
-            if j==0:
-                ax[i,j].set_ylabel(b)
-            else:
-                ax[i,j].set_ylabel("")
             if i==0:
-                ax[i,j].set_title(m)
+                ax[j,i].set_ylabel(m)
             else:
-                ax[i,j].set_title("")
-    handles, labels = ax[i,j].get_legend_handles_labels()
+                ax[j,i].set_ylabel("")
+            if j==0:
+                ax[j,i].set_title(b)
+            else:
+                ax[j,i].set_title("")
+    handles, labels = ax[j,i].get_legend_handles_labels()
     if legend:
         f.legend(handles, labels, loc=legend_loc, ncol=1) 
     plt.show()
-
+    
 def viz_diff(adata:AnnData, group:str = "label", emb:str = "emb", n:int = 2, viz_rank:bool = True, viz_heat:bool = True, show_log:bool = True):
     """Visualize differential features.
 

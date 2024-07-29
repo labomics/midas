@@ -1,5 +1,12 @@
 # Release notes
 
+## utils.viz_viz_mod_latent()
+
+
+    if np.unique(adata.obs["batch"]).shape[0] ==1:
+
+    ax = ax[np.newaxis, :]
+
 ## v0.0.17  2024-07-16
 
 1. add eval_mod(), remove eval_scmib()
