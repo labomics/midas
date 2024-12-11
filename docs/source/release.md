@@ -1,5 +1,15 @@
 # Release notes
 
+## v0.1.0 2024-12-10
+
+1. **Improved Performance** : Integrated Lightning to support multi-GPU training, enhancing processing speed.
+2. **Increased Flexibility** :
+
+* Reorganized the model structure to accommodate additional modalities. See the latest ducumentation for instrutions.
+* Added support for multiple input formats, including the original CSV format and split CSV files.
+
+3. **Clearer Configuration** : Moved structure-related parameters to a dedicated configuration file for better clarity.
+
 ## v0.0.18 2024-07-29
 
 1. utils.viz_viz_mod_latent(). Rotated the image and fixed the bug that caused an error when inputting a batch.
