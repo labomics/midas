@@ -9,7 +9,7 @@
 project = 'midas'
 copyright = '2024, Anonymous'
 author = 'Anonymous'
-release = '0.0.3'
+release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -31,7 +31,8 @@ extensions = [
    'recommonmark',
    'sphinx_markdown_tables',
    'nbsphinx',
-   'sphinx.ext.mathjax'
+   'sphinx.ext.mathjax',
+   'sphinx_copybutton'
    ]
 mathjax_path = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 from recommonmark.parser import CommonMarkParser
@@ -45,13 +46,14 @@ source_suffix = ['.rst', '.md']
 templates_path = ['_templates']
 exclude_patterns = []
 
-
+html_static_path = ['_static']
+html_logo = "_static/img/midas_small_color3.svg"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_theme = 'sphinx_book_theme'
+
 
 # Napoleon settings
 napoleon_google_docstring = True

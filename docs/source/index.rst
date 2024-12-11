@@ -6,8 +6,8 @@
 Welcome to MIDAS's documentation!
 =======================================
 
-.. figure:: midas.png
-   :width: 2400
+.. figure:: ./_static/img/midas_logo_vertical.png
+   :width: 400
    :alt: midas figure
    :align: left
 
@@ -17,8 +17,13 @@ Welcome to MIDAS's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   install.md
-   tutorials.rst
-   scmidas.rst
+   installation.md
+   quick_start.rst
+   ./tutorials/demo1.ipynb
+   modules.rst
+   extend.md
    release.md
+
+
+
 
