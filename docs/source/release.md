@@ -1,5 +1,11 @@
 # Release notes
 
+## v0.1.0 2024-12-20
+
+1. Integrate with Lightning to enable multi-GPU training.
+2. Integrate with TensorBoard to facilitate loss visualization.
+3. Enhance MIDAS to support easier integration of new modalities.
+
 ## v0.0.18 2024-07-29
 
 1. utils.viz_viz_mod_latent(). Rotated the image and fixed the bug that caused an error when inputting a batch.
