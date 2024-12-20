@@ -443,18 +443,18 @@ def get_s_joint_mods(combs: List[List[str]]):
     Generate `s_joint` and `mods` from a list of modality combinations.
 
     Parameters:
-    ----------
-    combs : list
-        A list where each element is a list of strings representing combinations 
-        of modalities for a specific batch.
+
+        combs : list
+            A list where each element is a list of strings representing combinations 
+            of modalities for a specific batch.
 
     Returns:
-    -------
-    tuple
-        A tuple containing:
-        - `s_joint`: A list of dictionaries, where each dictionary maps the modalities
-          to their corresponding indices for each batch.
-        - `mods`: A list of all unique modalities across the dataset.
+    
+        tuple
+            A tuple containing:
+            - `s_joint`: A list of dictionaries, where each dictionary maps the modalities
+            to their corresponding indices for each batch.
+            - `mods`: A list of all unique modalities across the dataset.
     """
     s_joint = []
     mods = {}
