@@ -6,19 +6,22 @@
 Welcome to MIDAS's documentation!
 =======================================
 
-.. figure:: midas.png
-   :width: 2400
+.. figure:: ./_static/img/midas_logo_vertical4.png
+   :width: 400
    :alt: midas figure
-   :align: left
+   :align: center
 
    MIDAS turns mosaic data into imputed and batch-corrected data to support single-cell multimodal analysis.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   install.md
-   tutorials.rst
-   scmidas.rst
+   installation.md
+   ./tutorials/tutorial_index.rst
+   ./modules/modules_index.rst
    release.md
+
+
+
 
