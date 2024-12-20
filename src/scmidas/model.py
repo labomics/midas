@@ -1006,9 +1006,7 @@ class MIDAS(L.LightningModule):
             mod_latent = True
         logging.info('Predicting ...')
         dirs = get_pred_dirs(pred_dir, 
-                             self.s_joint, 
                              self.combs, 
-                             self.mods, 
                              joint_latent, 
                              mod_latent, 
                              impute, 
