@@ -7,7 +7,7 @@
 <p align="center"> MIDAS turns mosaic data into imputed and batch-corrected data to support single-cell multimodal analysis. </p>
 
 <p align="center">
-  Read our paper <a href="https://www.nature.com/articles/s41587-023-02040-y" target="_blank">Mosaic integration and knowledge transfer of single-cell multimodal data with MIDAS</a>.
+  Read our paper at <a href="https://www.nature.com/articles/s41587-023-02040-y" target="_blank">Mosaic integration and knowledge transfer of single-cell multimodal data with MIDAS</a>.
 </p>
 
 <p align="center">
@@ -31,9 +31,7 @@ pip install scmidas
 ## 🔥New
 
 > - MIDAS supports not only RNA, ADT, and ATAC data but also allows seamless integration of additional modalities with straightforward configuration.
->
 > - Leverages PyTorch Lightning for efficient training, including advanced strategies such as distributed data parallel (DDP).
->
 > - Integrates with TensorBoard for real-time visualization and tracking of training metrics, such as loss.
 
 ## Reproducibility
