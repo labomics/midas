@@ -6,7 +6,7 @@ MIDAS currently supports integration of RNA, ADT, and ATAC data. If you'd like t
 Framework Overview
 ~~~~~~~~~~~~~~~~~~~
 
-MIDAS is configured via the ``scmidas/model_config.toml`` file and primarily employs Multi-Layer Perceptrons (MLPs). Below are the key components of the MIDAS framework:
+MIDAS is configured via the ``scmidas.config()`` and primarily employs Multi-Layer Perceptrons (MLPs). Below are the key components of the MIDAS framework:
 
 Key Components
 -----------------------

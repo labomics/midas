@@ -1,5 +1,5 @@
 Visualizing the Training Process (TensorBoard) 
-============================================
+===============================================
 
 To visualize the training progress, you first need to integrate TensorBoard logging into the model in the training code snippet:
 
