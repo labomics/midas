@@ -1,6 +1,6 @@
 # Release notes
 
-## v0.1.2 2024-12-21
+## v0.1.3 2024-12-21
 
 1. Integrate with Lightning to enable multi-GPU training.
 2. Integrate with TensorBoard to facilitate loss visualization.

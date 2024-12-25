@@ -2,7 +2,7 @@
 
 To ensure compatibility with **Python v3.12.7** and **Lightning v2.4.0**, we recommend creating a new environment using **conda** to avoid conflicts with existing setups.
 
-## Step 1: Create a New Environment
+## Step 1: Creating a New Environment
 
 Run the following command to create a new environment named `scmidas`:
 
@@ -16,7 +16,7 @@ Activate the environment:
 conda activate scmidas
 ```
 
-## Step 2: Install scmidas
+## Step 2: Installing scmidas
 
 **Option 1: Install via pip**
 
