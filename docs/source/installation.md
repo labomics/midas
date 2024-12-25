@@ -18,21 +18,27 @@ conda activate scmidas
 
 ## Step 2: Installing scmidas
 
-**Option 1: Install via pip**
-
 Use `pip` to install the package:
 
 ```bash
 pip install scmidas
 ```
 
-**Option 2: Install via conda**
+<!-- **Option 1: Install via pip**
+
+Use `pip` to install the package:
+
+```bash
+pip install scmidas
+``` -->
+
+<!-- **Option 2: Install via conda**
 
 Alternatively, you can install the package directly using conda:
 
 ```bash
 conda install scmidas
-```
+``` -->
 
 **You're All Set!**
 
