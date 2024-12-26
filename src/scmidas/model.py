@@ -825,7 +825,7 @@ class MIDAS(L.LightningModule):
 
         Returns:
             cls
-                Returns the configured class instance.
+                Returns MIDAS instance.
         """
 
         # Set class-level attributes
@@ -1614,8 +1614,7 @@ class MIDAS(L.LightningModule):
             mask : list of dict
                 List of mask dictionaries, where keys are modalities and values are mask file paths.
             transform : dict, optional
-                Transformations to apply to specific modalities, default is binarization for 
-                'atac', 'met', and 'acc'.
+                Transformations to apply to specific modalities.
 
         Returns:
             datasets : list
