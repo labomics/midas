@@ -1,0 +1,10672 @@
+,x
+1,Mono
+2,B
+3,Mono
+4,Mono
+5,Mono
+6,Mono
+7,DC
+8,Mono
+9,Progenitor
+10,Mono
+11,Mono
+12,Mono
+13,Mono
+14,Mono
+15,Mono
+16,Mono
+17,Mono
+18,Mono
+19,Progenitor
+20,Mono
+21,B
+22,NK
+23,CD4 T
+24,Mono
+25,Mono
+26,Mono
+27,Mono
+28,Mono
+29,Mono
+30,NK
+31,Mono
+32,Mono
+33,Mono
+34,Mono
+35,Mono
+36,DC
+37,Mono
+38,Mono
+39,Mono
+40,Mono
+41,Mono
+42,Mono
+43,Mono
+44,Mono
+45,Mono
+46,Progenitor
+47,Mono
+48,Mono
+49,Mono
+50,Mono
+51,Mono
+52,Mono
+53,Mono
+54,Mono
+55,Mono
+56,NK
+57,CD4 T
+58,Mono
+59,Mono
+60,Mono
+61,Mono
+62,Mono
+63,Mono
+64,Mono
+65,Mono
+66,Mono
+67,Mono
+68,Mono
+69,Mono
+70,DC
+71,Mono
+72,Progenitor
+73,DC
+74,Progenitor
+75,Mono
+76,Mono
+77,Mono
+78,Progenitor
+79,Mono
+80,NK
+81,Mono
+82,Mono
+83,Mono
+84,NK
+85,Mono
+86,Mono
+87,Mono
+88,Mono
+89,Mono
+90,Progenitor
+91,Mono
+92,Mono
+93,Progenitor
+94,Mono
+95,Mono
+96,Mono
+97,Mono
+98,Mono
+99,Mono
+100,Mono
+101,Mono
+102,NK
+103,CD4 T
+104,Progenitor
+105,Mono
+106,Mono
+107,CD8 T
+108,Mono
+109,Mono
+110,Mono
+111,Progenitor
+112,Mono
+113,DC
+114,Mono
+115,NK
+116,B
+117,CD8 T
+118,Mono
+119,Mono
+120,DC
+121,Progenitor
+122,DC
+123,Mono
+124,Mono
+125,DC
+126,Mono
+127,NK
+128,Mono
+129,Mono
+130,Mono
+131,Progenitor
+132,Mono
+133,Mono
+134,Mono
+135,Mono
+136,Mono
+137,Progenitor
+138,Mono
+139,Mono
+140,Mono
+141,Mono
+142,DC
+143,Progenitor
+144,Mono
+145,B
+146,CD8 T
+147,Mono
+148,Mono
+149,Mono
+150,Mono
+151,Mono
+152,Mono
+153,Mono
+154,Mono
+155,Mono
+156,Mono
+157,Mono
+158,Mono
+159,Mono
+160,Mono
+161,Mono
+162,Progenitor
+163,Mono
+164,CD4 T
+165,Mono
+166,Mono
+167,Mono
+168,Mono
+169,Mono
+170,Mono
+171,Mono
+172,CD8 T
+173,Mono
+174,Mono
+175,Mono
+176,Mono
+177,Mono
+178,Mono
+179,CD8 T
+180,Mono
+181,Mono
+182,Mono
+183,Mono
+184,CD4 T
+185,Mono
+186,Mono
+187,Mono
+188,B
+189,CD8 T
+190,Mono
+191,Mono
+192,Mono
+193,Mono
+194,Mono
+195,Mono
+196,Mono
+197,Mono
+198,Mono
+199,Mono
+200,Mono
+201,Progenitor
+202,Mono
+203,Mono
+204,CD8 T
+205,Mono
+206,Progenitor
+207,Mono
+208,Mono
+209,Mono
+210,B
+211,Mono
+212,Mono
+213,Mono
+214,Mono
+215,Mono
+216,Mono
+217,Mono
+218,Mono
+219,Mono
+220,Mono
+221,Mono
+222,CD8 T
+223,CD4 T
+224,Mono
+225,Mono
+226,Mono
+227,Mono
+228,Mono
+229,Mono
+230,Mono
+231,Mono
+232,Mono
+233,Progenitor
+234,Mono
+235,Mono
+236,Mono
+237,Mono
+238,DC
+239,Mono
+240,Mono
+241,Mono
+242,Mono
+243,Mono
+244,Mono
+245,Mono
+246,Mono
+247,Mono
+248,Mono
+249,Progenitor
+250,NK
+251,Mono
+252,Progenitor
+253,Mono
+254,Mono
+255,Mono
+256,Mono
+257,Progenitor
+258,Mono
+259,Mono
+260,B
+261,B
+262,Mono
+263,Mono
+264,Mono
+265,Mono
+266,Mono
+267,Mono
+268,CD4 T
+269,Mono
+270,Mono
+271,Mono
+272,Mono
+273,Mono
+274,Mono
+275,Mono
+276,Progenitor
+277,Mono
+278,CD4 T
+279,Mono
+280,Mono
+281,B
+282,Mono
+283,Mono
+284,Mono
+285,NK
+286,Mono
+287,Mono
+288,Mono
+289,Mono
+290,Mono
+291,Progenitor
+292,CD8 T
+293,B
+294,CD4 T
+295,Mono
+296,Mono
+297,Mono
+298,Mono
+299,Progenitor
+300,Mono
+301,Mono
+302,Mono
+303,DC
+304,Mono
+305,DC
+306,DC
+307,Mono
+308,DC
+309,Mono
+310,Mono
+311,Mono
+312,Mono
+313,NK
+314,NK
+315,Mono
+316,Mono
+317,Mono
+318,Progenitor
+319,Mono
+320,CD4 T
+321,Mono
+322,Mono
+323,CD8 T
+324,Mono
+325,Mono
+326,Mono
+327,Mono
+328,Mono
+329,Mono
+330,Mono
+331,Mono
+332,Mono
+333,Mono
+334,Mono
+335,Mono
+336,Mono
+337,DC
+338,Mono
+339,Mono
+340,Mono
+341,Mono
+342,Mono
+343,Mono
+344,CD4 T
+345,Mono
+346,Mono
+347,Mono
+348,Mono
+349,Mono
+350,Mono
+351,Mono
+352,Mono
+353,Mono
+354,Mono
+355,B
+356,Mono
+357,Mono
+358,Mono
+359,Mono
+360,Mono
+361,Mono
+362,Mono
+363,Mono
+364,Mono
+365,Mono
+366,Mono
+367,Mono
+368,B
+369,Mono
+370,Mono
+371,Mono
+372,Mono
+373,Mono
+374,Mono
+375,Mono
+376,Mono
+377,Mono
+378,CD4 T
+379,Mono
+380,Mono
+381,Mono
+382,CD8 T
+383,Mono
+384,Mono
+385,Mono
+386,Mono
+387,Mono
+388,Mono
+389,Mono
+390,Mono
+391,Mono
+392,Mono
+393,Mono
+394,Progenitor
+395,Mono
+396,Mono
+397,CD4 T
+398,Mono
+399,Progenitor
+400,Mono
+401,Mono
+402,Mono
+403,Mono
+404,Mono
+405,Mono
+406,Mono
+407,Mono
+408,Mono
+409,Mono
+410,Mono
+411,Mono
+412,Mono
+413,Mono
+414,Mono
+415,Mono
+416,Mono
+417,Mono
+418,Mono
+419,Mono
+420,Mono
+421,Mono
+422,Mono
+423,Mono
+424,Mono
+425,Mono
+426,Mono
+427,Mono
+428,Mono
+429,Mono
+430,Mono
+431,Mono
+432,Mono
+433,Mono
+434,Mono
+435,Mono
+436,Mono
+437,Mono
+438,Mono
+439,Mono
+440,Progenitor
+441,Mono
+442,Mono
+443,Mono
+444,Mono
+445,Mono
+446,Mono
+447,Mono
+448,Mono
+449,Mono
+450,Mono
+451,Mono
+452,Mono
+453,Mono
+454,Mono
+455,Mono
+456,Mono
+457,Mono
+458,Mono
+459,Mono
+460,Mono
+461,Mono
+462,CD4 T
+463,Mono
+464,Mono
+465,Mono
+466,Mono
+467,Mono
+468,Mono
+469,Mono
+470,Mono
+471,Mono
+472,Mono
+473,Mono
+474,Mono
+475,Mono
+476,Mono
+477,Mono
+478,Mono
+479,Mono
+480,Mono
+481,Mono
+482,Mono
+483,Mono
+484,Mono
+485,Mono
+486,Mono
+487,Mono
+488,Mono
+489,Mono
+490,CD8 T
+491,Mono
+492,Mono
+493,CD8 T
+494,Mono
+495,Mono
+496,Mono
+497,Mono
+498,Mono
+499,Mono
+500,Mono
+501,Mono
+502,Mono
+503,Mono
+504,Mono
+505,Mono
+506,Progenitor
+507,Mono
+508,Mono
+509,Mono
+510,Mono
+511,Mono
+512,Mono
+513,Mono
+514,Mono
+515,Mono
+516,Mono
+517,Mono
+518,Mono
+519,Mono
+520,Mono
+521,Mono
+522,Mono
+523,Progenitor
+524,Mono
+525,Mono
+526,Mono
+527,Progenitor
+528,Mono
+529,Mono
+530,Mono
+531,Mono
+532,Mono
+533,Mono
+534,Mono
+535,Mono
+536,Mono
+537,Mono
+538,Mono
+539,Mono
+540,Mono
+541,Mono
+542,Mono
+543,Mono
+544,B
+545,Mono
+546,Mono
+547,Mono
+548,Mono
+549,Progenitor
+550,Mono
+551,DC
+552,Mono
+553,Mono
+554,Mono
+555,Mono
+556,Mono
+557,Mono
+558,Mono
+559,Progenitor
+560,Mono
+561,Mono
+562,Mono
+563,Mono
+564,Mono
+565,Mono
+566,Mono
+567,Mono
+568,Mono
+569,Mono
+570,Mono
+571,Mono
+572,Mono
+573,Mono
+574,Mono
+575,CD4 T
+576,Mono
+577,Mono
+578,Progenitor
+579,Mono
+580,Mono
+581,Mono
+582,Mono
+583,Mono
+584,Mono
+585,Mono
+586,Mono
+587,Mono
+588,Mono
+589,Mono
+590,DC
+591,Mono
+592,Mono
+593,Mono
+594,Mono
+595,Mono
+596,Mono
+597,Mono
+598,CD8 T
+599,NK
+600,Mono
+601,Mono
+602,B
+603,Mono
+604,Progenitor
+605,B
+606,Mono
+607,DC
+608,Progenitor
+609,B
+610,CD8 T
+611,Mono
+612,Mono
+613,NK
+614,Mono
+615,Mono
+616,B
+617,DC
+618,DC
+619,Mono
+620,Mono
+621,Mono
+622,NK
+623,CD4 T
+624,Mono
+625,Mono
+626,other T
+627,Mono
+628,Progenitor
+629,DC
+630,Progenitor
+631,Mono
+632,Mono
+633,Mono
+634,CD8 T
+635,NK
+636,Mono
+637,Mono
+638,Mono
+639,CD8 T
+640,Mono
+641,Mono
+642,Mono
+643,CD8 T
+644,Progenitor
+645,Mono
+646,B
+647,CD8 T
+648,Progenitor
+649,Mono
+650,Mono
+651,CD8 T
+652,Mono
+653,CD8 T
+654,CD4 T
+655,Mono
+656,Mono
+657,Mono
+658,Mono
+659,Mono
+660,Mono
+661,NK
+662,Mono
+663,Mono
+664,CD8 T
+665,Mono
+666,Mono
+667,Mono
+668,CD8 T
+669,Progenitor
+670,Mono
+671,DC
+672,Mono
+673,Mono
+674,Mono
+675,Mono
+676,Mono
+677,Mono
+678,B
+679,Mono
+680,NK
+681,Progenitor
+682,Mono
+683,CD4 T
+684,Mono
+685,Mono
+686,B
+687,CD8 T
+688,Mono
+689,Progenitor
+690,Mono
+691,CD8 T
+692,Mono
+693,Mono
+694,Mono
+695,CD8 T
+696,Mono
+697,CD8 T
+698,B
+699,DC
+700,Mono
+701,DC
+702,B
+703,Mono
+704,CD8 T
+705,Mono
+706,DC
+707,Progenitor
+708,NK
+709,Mono
+710,B
+711,Mono
+712,Mono
+713,Mono
+714,Mono
+715,NK
+716,CD8 T
+717,Mono
+718,Mono
+719,NK
+720,Mono
+721,Mono
+722,CD8 T
+723,Mono
+724,Mono
+725,Mono
+726,Mono
+727,Mono
+728,Mono
+729,Mono
+730,CD4 T
+731,Progenitor
+732,CD8 T
+733,Mono
+734,CD4 T
+735,Mono
+736,CD8 T
+737,NK
+738,Mono
+739,NK
+740,DC
+741,Mono
+742,CD8 T
+743,CD8 T
+744,Mono
+745,B
+746,CD8 T
+747,B
+748,Mono
+749,Mono
+750,Mono
+751,CD8 T
+752,CD4 T
+753,Mono
+754,Mono
+755,Mono
+756,Mono
+757,Mono
+758,DC
+759,CD8 T
+760,Mono
+761,Mono
+762,Mono
+763,DC
+764,CD8 T
+765,Mono
+766,Mono
+767,Progenitor
+768,Progenitor
+769,NK
+770,Mono
+771,CD8 T
+772,Mono
+773,Mono
+774,Mono
+775,Mono
+776,Mono
+777,B
+778,Mono
+779,Mono
+780,CD8 T
+781,Mono
+782,Mono
+783,Progenitor
+784,Mono
+785,Mono
+786,Mono
+787,Mono
+788,Mono
+789,Mono
+790,Mono
+791,Mono
+792,Mono
+793,CD8 T
+794,CD4 T
+795,Mono
+796,Progenitor
+797,Mono
+798,B
+799,Mono
+800,Mono
+801,Mono
+802,CD8 T
+803,Progenitor
+804,Mono
+805,CD4 T
+806,Mono
+807,Mono
+808,Mono
+809,B
+810,Mono
+811,CD8 T
+812,Progenitor
+813,Mono
+814,Progenitor
+815,Progenitor
+816,B
+817,Progenitor
+818,NK
+819,Mono
+820,Mono
+821,Mono
+822,Mono
+823,B
+824,CD8 T
+825,Mono
+826,Mono
+827,Mono
+828,Mono
+829,CD8 T
+830,Mono
+831,Mono
+832,Mono
+833,Mono
+834,B
+835,Mono
+836,Mono
+837,Mono
+838,Mono
+839,CD8 T
+840,Mono
+841,Mono
+842,Mono
+843,Mono
+844,Mono
+845,Mono
+846,Mono
+847,Mono
+848,Mono
+849,Mono
+850,NK
+851,Mono
+852,Mono
+853,B
+854,Mono
+855,DC
+856,Mono
+857,CD4 T
+858,NK
+859,Mono
+860,B
+861,B
+862,Mono
+863,Mono
+864,Mono
+865,NK
+866,Mono
+867,Mono
+868,Mono
+869,Mono
+870,Mono
+871,Mono
+872,NK
+873,Progenitor
+874,Mono
+875,DC
+876,Mono
+877,CD4 T
+878,DC
+879,CD4 T
+880,Progenitor
+881,Mono
+882,Mono
+883,CD8 T
+884,DC
+885,Mono
+886,CD8 T
+887,Mono
+888,Mono
+889,Mono
+890,CD4 T
+891,CD8 T
+892,Mono
+893,Mono
+894,CD8 T
+895,Mono
+896,B
+897,Progenitor
+898,Mono
+899,Mono
+900,CD4 T
+901,CD8 T
+902,Mono
+903,CD8 T
+904,Mono
+905,Mono
+906,B
+907,CD8 T
+908,Mono
+909,CD8 T
+910,Progenitor
+911,Mono
+912,CD8 T
+913,Mono
+914,Mono
+915,Mono
+916,Mono
+917,Mono
+918,CD8 T
+919,Mono
+920,Mono
+921,B
+922,Mono
+923,NK
+924,B
+925,Mono
+926,Mono
+927,Mono
+928,Mono
+929,CD8 T
+930,NK
+931,NK
+932,Mono
+933,Mono
+934,DC
+935,Progenitor
+936,Mono
+937,Mono
+938,Mono
+939,Mono
+940,CD8 T
+941,Mono
+942,CD8 T
+943,Mono
+944,Mono
+945,NK
+946,NK
+947,Progenitor
+948,Mono
+949,B
+950,CD4 T
+951,CD8 T
+952,NK
+953,Progenitor
+954,Mono
+955,NK
+956,Mono
+957,Mono
+958,CD8 T
+959,Mono
+960,Mono
+961,B
+962,Progenitor
+963,Progenitor
+964,CD8 T
+965,CD4 T
+966,Mono
+967,DC
+968,Mono
+969,CD8 T
+970,Mono
+971,Mono
+972,CD4 T
+973,DC
+974,Mono
+975,Progenitor
+976,CD4 T
+977,CD4 T
+978,Mono
+979,CD8 T
+980,Mono
+981,Progenitor
+982,CD4 T
+983,DC
+984,Mono
+985,Progenitor
+986,Mono
+987,Mono
+988,Mono
+989,Mono
+990,Mono
+991,Mono
+992,Mono
+993,DC
+994,Mono
+995,B
+996,Mono
+997,Mono
+998,Mono
+999,Mono
+1000,CD4 T
+1001,Mono
+1002,B
+1003,NK
+1004,DC
+1005,CD8 T
+1006,Mono
+1007,Mono
+1008,CD8 T
+1009,Mono
+1010,Mono
+1011,CD8 T
+1012,Mono
+1013,Mono
+1014,Mono
+1015,CD4 T
+1016,Mono
+1017,Mono
+1018,Mono
+1019,Mono
+1020,CD8 T
+1021,CD8 T
+1022,B
+1023,Progenitor
+1024,Mono
+1025,CD8 T
+1026,Mono
+1027,Mono
+1028,Mono
+1029,Mono
+1030,Mono
+1031,Mono
+1032,Mono
+1033,Mono
+1034,CD4 T
+1035,CD8 T
+1036,Mono
+1037,Mono
+1038,CD8 T
+1039,Mono
+1040,NK
+1041,Mono
+1042,CD8 T
+1043,NK
+1044,Mono
+1045,Mono
+1046,B
+1047,Mono
+1048,Mono
+1049,Mono
+1050,DC
+1051,Mono
+1052,Mono
+1053,Progenitor
+1054,CD4 T
+1055,CD4 T
+1056,NK
+1057,B
+1058,Mono
+1059,CD8 T
+1060,Mono
+1061,Mono
+1062,CD8 T
+1063,NK
+1064,Mono
+1065,NK
+1066,Mono
+1067,Mono
+1068,CD8 T
+1069,CD8 T
+1070,NK
+1071,CD4 T
+1072,CD8 T
+1073,Mono
+1074,Mono
+1075,Mono
+1076,CD4 T
+1077,NK
+1078,Mono
+1079,Mono
+1080,Mono
+1081,CD4 T
+1082,Mono
+1083,Mono
+1084,Mono
+1085,B
+1086,Mono
+1087,Mono
+1088,Mono
+1089,Mono
+1090,Mono
+1091,NK
+1092,Progenitor
+1093,B
+1094,B
+1095,NK
+1096,NK
+1097,Mono
+1098,CD8 T
+1099,Mono
+1100,Mono
+1101,CD8 T
+1102,NK
+1103,Mono
+1104,NK
+1105,Mono
+1106,CD8 T
+1107,Mono
+1108,Mono
+1109,Mono
+1110,B
+1111,Mono
+1112,DC
+1113,CD8 T
+1114,B
+1115,Mono
+1116,CD4 T
+1117,Mono
+1118,Progenitor
+1119,Mono
+1120,Mono
+1121,Mono
+1122,Mono
+1123,Progenitor
+1124,NK
+1125,Mono
+1126,DC
+1127,Mono
+1128,B
+1129,CD8 T
+1130,Mono
+1131,Mono
+1132,CD8 T
+1133,CD8 T
+1134,Mono
+1135,Mono
+1136,Mono
+1137,Mono
+1138,Mono
+1139,B
+1140,Mono
+1141,Mono
+1142,Mono
+1143,CD8 T
+1144,CD8 T
+1145,Mono
+1146,B
+1147,Progenitor
+1148,Mono
+1149,Mono
+1150,Mono
+1151,Mono
+1152,Mono
+1153,B
+1154,Mono
+1155,NK
+1156,Mono
+1157,Mono
+1158,Mono
+1159,Mono
+1160,Progenitor
+1161,Mono
+1162,CD4 T
+1163,Mono
+1164,Progenitor
+1165,Mono
+1166,CD8 T
+1167,Mono
+1168,DC
+1169,Mono
+1170,Mono
+1171,CD8 T
+1172,Mono
+1173,Mono
+1174,Mono
+1175,CD8 T
+1176,Mono
+1177,B
+1178,Progenitor
+1179,other T
+1180,Mono
+1181,Mono
+1182,NK
+1183,Mono
+1184,Mono
+1185,Mono
+1186,CD4 T
+1187,Mono
+1188,CD8 T
+1189,Mono
+1190,NK
+1191,Mono
+1192,NK
+1193,Mono
+1194,CD4 T
+1195,Mono
+1196,NK
+1197,Mono
+1198,Mono
+1199,Progenitor
+1200,Progenitor
+1201,Mono
+1202,Mono
+1203,Mono
+1204,Mono
+1205,NK
+1206,NK
+1207,B
+1208,Progenitor
+1209,Mono
+1210,Mono
+1211,Progenitor
+1212,Mono
+1213,Mono
+1214,Mono
+1215,Mono
+1216,CD8 T
+1217,Mono
+1218,Mono
+1219,Mono
+1220,Progenitor
+1221,Mono
+1222,CD8 T
+1223,CD8 T
+1224,Progenitor
+1225,Progenitor
+1226,Mono
+1227,NK
+1228,Mono
+1229,NK
+1230,Mono
+1231,B
+1232,NK
+1233,DC
+1234,Mono
+1235,NK
+1236,CD8 T
+1237,Mono
+1238,Mono
+1239,Mono
+1240,CD8 T
+1241,Mono
+1242,CD8 T
+1243,B
+1244,DC
+1245,Mono
+1246,Mono
+1247,Progenitor
+1248,NK
+1249,CD4 T
+1250,Mono
+1251,CD8 T
+1252,Mono
+1253,B
+1254,Mono
+1255,Progenitor
+1256,CD4 T
+1257,Mono
+1258,Mono
+1259,Mono
+1260,Mono
+1261,CD4 T
+1262,Progenitor
+1263,NK
+1264,Progenitor
+1265,Progenitor
+1266,DC
+1267,DC
+1268,DC
+1269,Mono
+1270,CD4 T
+1271,Mono
+1272,CD8 T
+1273,NK
+1274,Mono
+1275,CD8 T
+1276,Mono
+1277,Mono
+1278,Mono
+1279,Mono
+1280,NK
+1281,Mono
+1282,Mono
+1283,B
+1284,Mono
+1285,Mono
+1286,Mono
+1287,Mono
+1288,Mono
+1289,Mono
+1290,CD8 T
+1291,CD4 T
+1292,Mono
+1293,Mono
+1294,Mono
+1295,Progenitor
+1296,Mono
+1297,Mono
+1298,CD8 T
+1299,Mono
+1300,Mono
+1301,CD8 T
+1302,Mono
+1303,Mono
+1304,Mono
+1305,Progenitor
+1306,Mono
+1307,CD8 T
+1308,B
+1309,Mono
+1310,NK
+1311,Mono
+1312,DC
+1313,NK
+1314,CD4 T
+1315,Mono
+1316,DC
+1317,Mono
+1318,Mono
+1319,Mono
+1320,Mono
+1321,NK
+1322,DC
+1323,Mono
+1324,CD8 T
+1325,Mono
+1326,Mono
+1327,Progenitor
+1328,CD8 T
+1329,Mono
+1330,B
+1331,NK
+1332,Mono
+1333,Progenitor
+1334,Mono
+1335,Mono
+1336,DC
+1337,CD8 T
+1338,B
+1339,Mono
+1340,CD4 T
+1341,NK
+1342,CD8 T
+1343,CD4 T
+1344,Mono
+1345,B
+1346,Mono
+1347,Mono
+1348,Mono
+1349,Mono
+1350,CD8 T
+1351,Mono
+1352,Mono
+1353,CD4 T
+1354,Mono
+1355,B
+1356,Progenitor
+1357,Mono
+1358,Mono
+1359,Mono
+1360,NK
+1361,CD4 T
+1362,CD4 T
+1363,Mono
+1364,NK
+1365,CD8 T
+1366,Mono
+1367,Mono
+1368,Mono
+1369,Mono
+1370,Mono
+1371,NK
+1372,Mono
+1373,NK
+1374,Mono
+1375,Progenitor
+1376,B
+1377,CD8 T
+1378,Mono
+1379,Mono
+1380,Mono
+1381,Progenitor
+1382,DC
+1383,CD4 T
+1384,Mono
+1385,NK
+1386,Mono
+1387,CD8 T
+1388,Mono
+1389,NK
+1390,Mono
+1391,Mono
+1392,Mono
+1393,CD4 T
+1394,Progenitor
+1395,Mono
+1396,Mono
+1397,Mono
+1398,B
+1399,NK
+1400,CD4 T
+1401,CD8 T
+1402,Mono
+1403,Mono
+1404,Mono
+1405,Mono
+1406,Mono
+1407,Mono
+1408,NK
+1409,CD8 T
+1410,Mono
+1411,DC
+1412,Mono
+1413,B
+1414,Mono
+1415,NK
+1416,CD4 T
+1417,Progenitor
+1418,Mono
+1419,CD8 T
+1420,Mono
+1421,NK
+1422,other T
+1423,CD8 T
+1424,B
+1425,Mono
+1426,NK
+1427,CD8 T
+1428,CD4 T
+1429,Mono
+1430,NK
+1431,B
+1432,Mono
+1433,Mono
+1434,B
+1435,B
+1436,Mono
+1437,Mono
+1438,CD4 T
+1439,CD8 T
+1440,NK
+1441,Mono
+1442,Mono
+1443,Mono
+1444,DC
+1445,Mono
+1446,Mono
+1447,Mono
+1448,Mono
+1449,Mono
+1450,NK
+1451,Mono
+1452,CD8 T
+1453,Mono
+1454,Mono
+1455,CD4 T
+1456,DC
+1457,NK
+1458,CD4 T
+1459,Mono
+1460,Mono
+1461,Mono
+1462,NK
+1463,Mono
+1464,CD8 T
+1465,CD8 T
+1466,Mono
+1467,Mono
+1468,Mono
+1469,Mono
+1470,Mono
+1471,Mono
+1472,NK
+1473,DC
+1474,Mono
+1475,CD8 T
+1476,Mono
+1477,Mono
+1478,Mono
+1479,Mono
+1480,NK
+1481,Progenitor
+1482,CD8 T
+1483,Mono
+1484,DC
+1485,CD4 T
+1486,Mono
+1487,CD8 T
+1488,Mono
+1489,Mono
+1490,Mono
+1491,Mono
+1492,Mono
+1493,Progenitor
+1494,Progenitor
+1495,Mono
+1496,CD8 T
+1497,CD4 T
+1498,CD8 T
+1499,Mono
+1500,Mono
+1501,NK
+1502,Mono
+1503,Mono
+1504,Mono
+1505,Mono
+1506,Mono
+1507,Mono
+1508,CD4 T
+1509,Mono
+1510,Mono
+1511,NK
+1512,Mono
+1513,CD4 T
+1514,Mono
+1515,Mono
+1516,CD4 T
+1517,Mono
+1518,CD8 T
+1519,DC
+1520,CD8 T
+1521,Mono
+1522,Mono
+1523,B
+1524,Mono
+1525,Mono
+1526,Mono
+1527,B
+1528,Mono
+1529,B
+1530,Mono
+1531,NK
+1532,Mono
+1533,NK
+1534,B
+1535,Mono
+1536,CD8 T
+1537,CD8 T
+1538,Progenitor
+1539,Mono
+1540,B
+1541,DC
+1542,CD4 T
+1543,Mono
+1544,Mono
+1545,B
+1546,CD8 T
+1547,CD8 T
+1548,Mono
+1549,NK
+1550,Mono
+1551,NK
+1552,NK
+1553,Mono
+1554,Mono
+1555,Mono
+1556,B
+1557,Progenitor
+1558,Mono
+1559,NK
+1560,DC
+1561,Mono
+1562,Progenitor
+1563,Mono
+1564,CD4 T
+1565,DC
+1566,Mono
+1567,Mono
+1568,Progenitor
+1569,Mono
+1570,B
+1571,CD8 T
+1572,NK
+1573,CD8 T
+1574,Mono
+1575,Mono
+1576,Mono
+1577,Mono
+1578,Mono
+1579,CD8 T
+1580,Mono
+1581,Mono
+1582,Mono
+1583,DC
+1584,B
+1585,Mono
+1586,NK
+1587,Mono
+1588,Mono
+1589,B
+1590,CD8 T
+1591,Mono
+1592,CD4 T
+1593,Mono
+1594,NK
+1595,NK
+1596,NK
+1597,Mono
+1598,NK
+1599,Mono
+1600,Mono
+1601,Mono
+1602,DC
+1603,Mono
+1604,B
+1605,Mono
+1606,Progenitor
+1607,NK
+1608,Mono
+1609,Mono
+1610,B
+1611,NK
+1612,CD4 T
+1613,Mono
+1614,Mono
+1615,Mono
+1616,B
+1617,Mono
+1618,Progenitor
+1619,Mono
+1620,CD8 T
+1621,Mono
+1622,Mono
+1623,B
+1624,CD8 T
+1625,B
+1626,Mono
+1627,CD8 T
+1628,Mono
+1629,CD4 T
+1630,CD4 T
+1631,Mono
+1632,CD4 T
+1633,CD8 T
+1634,NK
+1635,Mono
+1636,Progenitor
+1637,Mono
+1638,NK
+1639,Mono
+1640,Mono
+1641,Mono
+1642,Mono
+1643,CD4 T
+1644,Progenitor
+1645,Mono
+1646,Mono
+1647,CD4 T
+1648,CD8 T
+1649,Mono
+1650,Mono
+1651,Progenitor
+1652,Mono
+1653,CD8 T
+1654,NK
+1655,B
+1656,Progenitor
+1657,Progenitor
+1658,Progenitor
+1659,Mono
+1660,Mono
+1661,NK
+1662,NK
+1663,NK
+1664,B
+1665,Mono
+1666,CD8 T
+1667,CD4 T
+1668,Mono
+1669,Mono
+1670,Mono
+1671,Mono
+1672,DC
+1673,Progenitor
+1674,Mono
+1675,Mono
+1676,Mono
+1677,CD4 T
+1678,Mono
+1679,B
+1680,Mono
+1681,Mono
+1682,Mono
+1683,Progenitor
+1684,NK
+1685,CD8 T
+1686,B
+1687,NK
+1688,Mono
+1689,Mono
+1690,Mono
+1691,Mono
+1692,B
+1693,Mono
+1694,CD8 T
+1695,Mono
+1696,B
+1697,CD4 T
+1698,Progenitor
+1699,Mono
+1700,Mono
+1701,Mono
+1702,Mono
+1703,B
+1704,Progenitor
+1705,NK
+1706,Mono
+1707,Mono
+1708,Mono
+1709,CD4 T
+1710,Progenitor
+1711,Mono
+1712,Mono
+1713,NK
+1714,CD8 T
+1715,Mono
+1716,NK
+1717,Mono
+1718,Mono
+1719,Progenitor
+1720,CD8 T
+1721,B
+1722,Progenitor
+1723,Mono
+1724,Mono
+1725,Mono
+1726,Mono
+1727,Mono
+1728,Mono
+1729,Mono
+1730,Mono
+1731,Mono
+1732,CD4 T
+1733,Mono
+1734,B
+1735,NK
+1736,CD8 T
+1737,B
+1738,NK
+1739,DC
+1740,NK
+1741,B
+1742,Mono
+1743,Progenitor
+1744,Progenitor
+1745,Mono
+1746,Mono
+1747,Mono
+1748,Mono
+1749,Mono
+1750,DC
+1751,DC
+1752,B
+1753,Mono
+1754,Mono
+1755,CD8 T
+1756,Mono
+1757,CD8 T
+1758,CD4 T
+1759,CD4 T
+1760,Progenitor
+1761,CD8 T
+1762,CD8 T
+1763,CD4 T
+1764,Mono
+1765,Mono
+1766,Mono
+1767,B
+1768,Mono
+1769,Mono
+1770,B
+1771,Mono
+1772,Mono
+1773,Mono
+1774,B
+1775,Mono
+1776,Mono
+1777,B
+1778,CD8 T
+1779,Mono
+1780,Mono
+1781,Mono
+1782,Mono
+1783,Mono
+1784,CD4 T
+1785,Mono
+1786,B
+1787,Mono
+1788,Mono
+1789,Mono
+1790,Mono
+1791,B
+1792,B
+1793,Mono
+1794,Mono
+1795,Mono
+1796,CD8 T
+1797,Mono
+1798,DC
+1799,Mono
+1800,B
+1801,Mono
+1802,CD8 T
+1803,CD4 T
+1804,CD4 T
+1805,B
+1806,CD4 T
+1807,Progenitor
+1808,DC
+1809,Mono
+1810,Mono
+1811,NK
+1812,Mono
+1813,B
+1814,Mono
+1815,Mono
+1816,Mono
+1817,Mono
+1818,Mono
+1819,Mono
+1820,B
+1821,Mono
+1822,CD8 T
+1823,Mono
+1824,Mono
+1825,CD8 T
+1826,CD4 T
+1827,CD4 T
+1828,Mono
+1829,Progenitor
+1830,DC
+1831,Mono
+1832,Mono
+1833,DC
+1834,Mono
+1835,Mono
+1836,CD4 T
+1837,Mono
+1838,B
+1839,Mono
+1840,Mono
+1841,CD4 T
+1842,Progenitor
+1843,Mono
+1844,Mono
+1845,Mono
+1846,CD8 T
+1847,CD8 T
+1848,Progenitor
+1849,Mono
+1850,CD8 T
+1851,CD8 T
+1852,NK
+1853,Mono
+1854,Mono
+1855,Mono
+1856,Progenitor
+1857,Mono
+1858,CD8 T
+1859,Mono
+1860,CD4 T
+1861,Progenitor
+1862,CD4 T
+1863,B
+1864,Mono
+1865,Mono
+1866,Mono
+1867,NK
+1868,Mono
+1869,Mono
+1870,Mono
+1871,CD4 T
+1872,Mono
+1873,CD4 T
+1874,Progenitor
+1875,CD8 T
+1876,Mono
+1877,Mono
+1878,NK
+1879,Mono
+1880,Mono
+1881,NK
+1882,NK
+1883,Mono
+1884,B
+1885,Mono
+1886,Mono
+1887,Mono
+1888,B
+1889,Mono
+1890,B
+1891,CD4 T
+1892,CD4 T
+1893,Mono
+1894,CD4 T
+1895,Mono
+1896,Mono
+1897,Mono
+1898,Mono
+1899,Mono
+1900,B
+1901,Mono
+1902,CD4 T
+1903,Mono
+1904,Progenitor
+1905,Mono
+1906,CD8 T
+1907,CD4 T
+1908,Mono
+1909,Mono
+1910,B
+1911,CD8 T
+1912,Mono
+1913,DC
+1914,DC
+1915,Progenitor
+1916,Mono
+1917,Mono
+1918,B
+1919,Mono
+1920,Mono
+1921,NK
+1922,Mono
+1923,Mono
+1924,Mono
+1925,Mono
+1926,Mono
+1927,Mono
+1928,B
+1929,Mono
+1930,CD4 T
+1931,Mono
+1932,Mono
+1933,CD4 T
+1934,NK
+1935,Mono
+1936,Mono
+1937,B
+1938,Mono
+1939,Mono
+1940,Progenitor
+1941,CD8 T
+1942,CD8 T
+1943,DC
+1944,Mono
+1945,CD4 T
+1946,CD8 T
+1947,CD8 T
+1948,B
+1949,CD4 T
+1950,Mono
+1951,Mono
+1952,Progenitor
+1953,NK
+1954,Mono
+1955,Mono
+1956,CD8 T
+1957,Mono
+1958,B
+1959,CD8 T
+1960,Mono
+1961,Mono
+1962,Mono
+1963,Mono
+1964,Mono
+1965,Mono
+1966,B
+1967,CD4 T
+1968,Mono
+1969,Mono
+1970,Mono
+1971,Mono
+1972,Mono
+1973,CD8 T
+1974,Mono
+1975,CD8 T
+1976,CD4 T
+1977,Mono
+1978,Mono
+1979,Mono
+1980,Mono
+1981,CD8 T
+1982,CD8 T
+1983,Mono
+1984,NK
+1985,Mono
+1986,CD4 T
+1987,Mono
+1988,Mono
+1989,Mono
+1990,CD8 T
+1991,Mono
+1992,Mono
+1993,Mono
+1994,NK
+1995,B
+1996,Mono
+1997,Progenitor
+1998,NK
+1999,CD8 T
+2000,B
+2001,Mono
+2002,NK
+2003,Progenitor
+2004,Mono
+2005,Mono
+2006,Progenitor
+2007,Progenitor
+2008,Mono
+2009,B
+2010,Mono
+2011,Mono
+2012,Mono
+2013,CD8 T
+2014,NK
+2015,Mono
+2016,NK
+2017,Mono
+2018,Mono
+2019,B
+2020,DC
+2021,DC
+2022,NK
+2023,NK
+2024,Mono
+2025,Mono
+2026,CD8 T
+2027,Mono
+2028,NK
+2029,Mono
+2030,Mono
+2031,Mono
+2032,Mono
+2033,NK
+2034,CD8 T
+2035,DC
+2036,CD8 T
+2037,Mono
+2038,Mono
+2039,Mono
+2040,Progenitor
+2041,Mono
+2042,Mono
+2043,Mono
+2044,Mono
+2045,Mono
+2046,Mono
+2047,Mono
+2048,Mono
+2049,Mono
+2050,Mono
+2051,Mono
+2052,Mono
+2053,Mono
+2054,Progenitor
+2055,Mono
+2056,CD8 T
+2057,B
+2058,NK
+2059,Mono
+2060,Mono
+2061,Mono
+2062,NK
+2063,Mono
+2064,CD8 T
+2065,CD8 T
+2066,Mono
+2067,Mono
+2068,DC
+2069,CD4 T
+2070,NK
+2071,Mono
+2072,Mono
+2073,Mono
+2074,Mono
+2075,NK
+2076,Mono
+2077,Mono
+2078,DC
+2079,Mono
+2080,Mono
+2081,Progenitor
+2082,Mono
+2083,Mono
+2084,CD8 T
+2085,Mono
+2086,Mono
+2087,B
+2088,DC
+2089,Mono
+2090,B
+2091,Mono
+2092,NK
+2093,Mono
+2094,Mono
+2095,CD8 T
+2096,Mono
+2097,Mono
+2098,Progenitor
+2099,CD8 T
+2100,Mono
+2101,Mono
+2102,Mono
+2103,Mono
+2104,B
+2105,CD4 T
+2106,CD8 T
+2107,CD8 T
+2108,B
+2109,Mono
+2110,Mono
+2111,Progenitor
+2112,Mono
+2113,CD8 T
+2114,Mono
+2115,Mono
+2116,Mono
+2117,Mono
+2118,Progenitor
+2119,Mono
+2120,CD8 T
+2121,NK
+2122,Mono
+2123,Mono
+2124,Mono
+2125,Mono
+2126,Mono
+2127,Mono
+2128,CD8 T
+2129,NK
+2130,Mono
+2131,B
+2132,Mono
+2133,Mono
+2134,Mono
+2135,Mono
+2136,Mono
+2137,CD8 T
+2138,Mono
+2139,B
+2140,DC
+2141,Mono
+2142,Mono
+2143,DC
+2144,Mono
+2145,Mono
+2146,NK
+2147,NK
+2148,Mono
+2149,NK
+2150,CD8 T
+2151,Mono
+2152,Mono
+2153,CD8 T
+2154,B
+2155,Mono
+2156,Mono
+2157,DC
+2158,DC
+2159,Mono
+2160,Mono
+2161,NK
+2162,Mono
+2163,B
+2164,Mono
+2165,NK
+2166,B
+2167,Mono
+2168,B
+2169,CD4 T
+2170,Mono
+2171,B
+2172,Mono
+2173,Progenitor
+2174,Mono
+2175,DC
+2176,B
+2177,NK
+2178,CD4 T
+2179,Mono
+2180,Mono
+2181,CD4 T
+2182,Mono
+2183,Mono
+2184,Mono
+2185,CD8 T
+2186,Mono
+2187,B
+2188,B
+2189,Mono
+2190,CD8 T
+2191,Mono
+2192,Progenitor
+2193,CD8 T
+2194,Mono
+2195,Progenitor
+2196,Progenitor
+2197,CD8 T
+2198,B
+2199,Mono
+2200,Progenitor
+2201,Mono
+2202,Mono
+2203,Mono
+2204,Mono
+2205,B
+2206,Mono
+2207,Progenitor
+2208,Mono
+2209,Progenitor
+2210,Mono
+2211,CD4 T
+2212,Mono
+2213,CD4 T
+2214,Mono
+2215,Mono
+2216,Mono
+2217,Mono
+2218,CD8 T
+2219,Mono
+2220,DC
+2221,Progenitor
+2222,B
+2223,DC
+2224,Mono
+2225,Mono
+2226,Mono
+2227,Mono
+2228,Mono
+2229,Mono
+2230,Mono
+2231,Mono
+2232,Progenitor
+2233,Mono
+2234,Mono
+2235,Mono
+2236,B
+2237,Mono
+2238,CD8 T
+2239,CD4 T
+2240,DC
+2241,B
+2242,Progenitor
+2243,Mono
+2244,CD8 T
+2245,DC
+2246,Mono
+2247,Mono
+2248,Mono
+2249,Mono
+2250,Mono
+2251,Mono
+2252,Mono
+2253,DC
+2254,Mono
+2255,B
+2256,Progenitor
+2257,Mono
+2258,DC
+2259,NK
+2260,CD8 T
+2261,Mono
+2262,Mono
+2263,CD4 T
+2264,B
+2265,Mono
+2266,Mono
+2267,Mono
+2268,NK
+2269,NK
+2270,NK
+2271,Mono
+2272,Mono
+2273,Mono
+2274,Mono
+2275,Mono
+2276,Progenitor
+2277,Mono
+2278,CD8 T
+2279,Mono
+2280,B
+2281,DC
+2282,Mono
+2283,CD8 T
+2284,CD4 T
+2285,DC
+2286,Mono
+2287,B
+2288,Mono
+2289,Mono
+2290,Mono
+2291,Mono
+2292,B
+2293,Mono
+2294,Progenitor
+2295,Mono
+2296,Mono
+2297,B
+2298,Mono
+2299,Mono
+2300,Progenitor
+2301,Mono
+2302,Mono
+2303,Mono
+2304,Mono
+2305,CD4 T
+2306,DC
+2307,CD8 T
+2308,Mono
+2309,Mono
+2310,Mono
+2311,CD4 T
+2312,Mono
+2313,CD8 T
+2314,Mono
+2315,Mono
+2316,DC
+2317,Progenitor
+2318,Mono
+2319,Mono
+2320,NK
+2321,Mono
+2322,NK
+2323,Mono
+2324,Mono
+2325,CD4 T
+2326,Mono
+2327,CD4 T
+2328,CD8 T
+2329,CD8 T
+2330,B
+2331,Mono
+2332,CD4 T
+2333,Mono
+2334,DC
+2335,CD4 T
+2336,CD8 T
+2337,B
+2338,Mono
+2339,Mono
+2340,Progenitor
+2341,Mono
+2342,Progenitor
+2343,Mono
+2344,DC
+2345,Progenitor
+2346,B
+2347,B
+2348,Mono
+2349,DC
+2350,B
+2351,Mono
+2352,Mono
+2353,Mono
+2354,Mono
+2355,Progenitor
+2356,Mono
+2357,Mono
+2358,CD8 T
+2359,CD8 T
+2360,Mono
+2361,B
+2362,Mono
+2363,NK
+2364,CD8 T
+2365,DC
+2366,CD8 T
+2367,Mono
+2368,Mono
+2369,CD4 T
+2370,Mono
+2371,CD8 T
+2372,Mono
+2373,B
+2374,Mono
+2375,CD4 T
+2376,B
+2377,Mono
+2378,CD8 T
+2379,Progenitor
+2380,DC
+2381,CD8 T
+2382,Mono
+2383,Progenitor
+2384,CD8 T
+2385,DC
+2386,Mono
+2387,DC
+2388,Mono
+2389,DC
+2390,CD4 T
+2391,Mono
+2392,Mono
+2393,Mono
+2394,Mono
+2395,CD4 T
+2396,Mono
+2397,Mono
+2398,Progenitor
+2399,DC
+2400,NK
+2401,Mono
+2402,Mono
+2403,Mono
+2404,Mono
+2405,Mono
+2406,Mono
+2407,Mono
+2408,Mono
+2409,Mono
+2410,Mono
+2411,Mono
+2412,DC
+2413,Mono
+2414,Mono
+2415,CD4 T
+2416,Mono
+2417,NK
+2418,Mono
+2419,Mono
+2420,CD4 T
+2421,CD8 T
+2422,Mono
+2423,CD8 T
+2424,Mono
+2425,Mono
+2426,CD8 T
+2427,Mono
+2428,DC
+2429,Mono
+2430,Mono
+2431,Mono
+2432,Mono
+2433,Mono
+2434,Mono
+2435,B
+2436,Progenitor
+2437,DC
+2438,Mono
+2439,NK
+2440,CD8 T
+2441,B
+2442,CD8 T
+2443,B
+2444,Mono
+2445,CD8 T
+2446,Mono
+2447,NK
+2448,Mono
+2449,Mono
+2450,Mono
+2451,Mono
+2452,Mono
+2453,Mono
+2454,Mono
+2455,CD8 T
+2456,CD4 T
+2457,Mono
+2458,Mono
+2459,Mono
+2460,Mono
+2461,Mono
+2462,Mono
+2463,Mono
+2464,B
+2465,Mono
+2466,CD4 T
+2467,Mono
+2468,DC
+2469,CD4 T
+2470,CD8 T
+2471,Mono
+2472,Mono
+2473,Mono
+2474,Mono
+2475,CD4 T
+2476,NK
+2477,Mono
+2478,DC
+2479,NK
+2480,Mono
+2481,B
+2482,CD4 T
+2483,Progenitor
+2484,B
+2485,CD4 T
+2486,Mono
+2487,DC
+2488,Mono
+2489,B
+2490,NK
+2491,Mono
+2492,Mono
+2493,Mono
+2494,DC
+2495,Mono
+2496,Mono
+2497,Mono
+2498,CD8 T
+2499,Mono
+2500,CD4 T
+2501,Mono
+2502,Mono
+2503,DC
+2504,Mono
+2505,Mono
+2506,DC
+2507,Mono
+2508,Mono
+2509,Mono
+2510,Mono
+2511,Mono
+2512,Mono
+2513,Mono
+2514,Mono
+2515,Mono
+2516,CD8 T
+2517,Mono
+2518,Mono
+2519,Progenitor
+2520,Mono
+2521,Mono
+2522,CD8 T
+2523,B
+2524,Mono
+2525,CD4 T
+2526,Mono
+2527,Mono
+2528,Mono
+2529,DC
+2530,Mono
+2531,B
+2532,Mono
+2533,Mono
+2534,Mono
+2535,CD4 T
+2536,Progenitor
+2537,CD4 T
+2538,CD4 T
+2539,CD8 T
+2540,Mono
+2541,Progenitor
+2542,CD4 T
+2543,Mono
+2544,B
+2545,Mono
+2546,Progenitor
+2547,Mono
+2548,B
+2549,B
+2550,Mono
+2551,CD4 T
+2552,Progenitor
+2553,CD4 T
+2554,Mono
+2555,Mono
+2556,Progenitor
+2557,CD4 T
+2558,Mono
+2559,CD4 T
+2560,Progenitor
+2561,Mono
+2562,Mono
+2563,Mono
+2564,Mono
+2565,Mono
+2566,CD8 T
+2567,B
+2568,Mono
+2569,Mono
+2570,CD8 T
+2571,NK
+2572,Mono
+2573,other T
+2574,Mono
+2575,CD8 T
+2576,DC
+2577,Progenitor
+2578,CD8 T
+2579,Mono
+2580,Progenitor
+2581,Mono
+2582,NK
+2583,B
+2584,B
+2585,B
+2586,Mono
+2587,Mono
+2588,Mono
+2589,CD8 T
+2590,Mono
+2591,B
+2592,Mono
+2593,Mono
+2594,Mono
+2595,Mono
+2596,Mono
+2597,Progenitor
+2598,Mono
+2599,Mono
+2600,Mono
+2601,Mono
+2602,Mono
+2603,CD4 T
+2604,NK
+2605,Mono
+2606,Mono
+2607,DC
+2608,Mono
+2609,Mono
+2610,Progenitor
+2611,CD4 T
+2612,Mono
+2613,Progenitor
+2614,NK
+2615,Progenitor
+2616,Progenitor
+2617,Progenitor
+2618,NK
+2619,CD4 T
+2620,Mono
+2621,Mono
+2622,Mono
+2623,Mono
+2624,Mono
+2625,NK
+2626,Mono
+2627,Mono
+2628,B
+2629,CD8 T
+2630,NK
+2631,DC
+2632,CD8 T
+2633,NK
+2634,Progenitor
+2635,CD8 T
+2636,Mono
+2637,Progenitor
+2638,Mono
+2639,NK
+2640,Mono
+2641,Mono
+2642,Mono
+2643,Mono
+2644,Mono
+2645,Mono
+2646,CD8 T
+2647,Mono
+2648,Mono
+2649,Mono
+2650,Mono
+2651,Mono
+2652,Mono
+2653,CD8 T
+2654,B
+2655,Mono
+2656,NK
+2657,Progenitor
+2658,Progenitor
+2659,Mono
+2660,CD8 T
+2661,Mono
+2662,Mono
+2663,B
+2664,Mono
+2665,Mono
+2666,Mono
+2667,B
+2668,CD4 T
+2669,Mono
+2670,Mono
+2671,NK
+2672,Progenitor
+2673,Mono
+2674,Mono
+2675,B
+2676,B
+2677,B
+2678,Mono
+2679,Mono
+2680,CD8 T
+2681,Mono
+2682,Mono
+2683,B
+2684,Mono
+2685,Mono
+2686,Mono
+2687,Mono
+2688,Mono
+2689,CD4 T
+2690,DC
+2691,CD8 T
+2692,Mono
+2693,B
+2694,NK
+2695,Mono
+2696,CD4 T
+2697,B
+2698,Mono
+2699,CD4 T
+2700,Mono
+2701,CD4 T
+2702,Progenitor
+2703,NK
+2704,CD8 T
+2705,B
+2706,NK
+2707,CD8 T
+2708,Mono
+2709,NK
+2710,Mono
+2711,NK
+2712,Mono
+2713,CD4 T
+2714,Mono
+2715,NK
+2716,Progenitor
+2717,Mono
+2718,CD8 T
+2719,Mono
+2720,CD8 T
+2721,Progenitor
+2722,Mono
+2723,Mono
+2724,Mono
+2725,Mono
+2726,Mono
+2727,Mono
+2728,Mono
+2729,Mono
+2730,NK
+2731,NK
+2732,Mono
+2733,Mono
+2734,Mono
+2735,Mono
+2736,Mono
+2737,DC
+2738,Mono
+2739,Mono
+2740,DC
+2741,Mono
+2742,NK
+2743,NK
+2744,CD8 T
+2745,Mono
+2746,Mono
+2747,Progenitor
+2748,Mono
+2749,Mono
+2750,B
+2751,Mono
+2752,CD4 T
+2753,Progenitor
+2754,CD8 T
+2755,CD4 T
+2756,Mono
+2757,B
+2758,B
+2759,NK
+2760,CD4 T
+2761,Mono
+2762,B
+2763,Mono
+2764,Progenitor
+2765,Mono
+2766,Mono
+2767,Mono
+2768,DC
+2769,Mono
+2770,Mono
+2771,Mono
+2772,Mono
+2773,Mono
+2774,Mono
+2775,NK
+2776,Progenitor
+2777,CD8 T
+2778,Mono
+2779,CD8 T
+2780,Mono
+2781,DC
+2782,CD8 T
+2783,Mono
+2784,Mono
+2785,Mono
+2786,Mono
+2787,CD8 T
+2788,CD8 T
+2789,Progenitor
+2790,NK
+2791,Mono
+2792,CD4 T
+2793,CD4 T
+2794,NK
+2795,Progenitor
+2796,Mono
+2797,CD4 T
+2798,Mono
+2799,Mono
+2800,CD8 T
+2801,Mono
+2802,Mono
+2803,B
+2804,CD8 T
+2805,B
+2806,NK
+2807,CD8 T
+2808,Progenitor
+2809,B
+2810,Mono
+2811,Mono
+2812,Mono
+2813,B
+2814,Mono
+2815,Mono
+2816,Mono
+2817,B
+2818,Mono
+2819,DC
+2820,Mono
+2821,CD4 T
+2822,Progenitor
+2823,CD4 T
+2824,Mono
+2825,DC
+2826,Mono
+2827,Mono
+2828,B
+2829,Mono
+2830,NK
+2831,CD4 T
+2832,NK
+2833,Mono
+2834,Mono
+2835,NK
+2836,Mono
+2837,Mono
+2838,DC
+2839,Mono
+2840,Progenitor
+2841,Mono
+2842,Mono
+2843,Mono
+2844,Mono
+2845,B
+2846,Mono
+2847,DC
+2848,Mono
+2849,DC
+2850,Mono
+2851,DC
+2852,Mono
+2853,Mono
+2854,Mono
+2855,Mono
+2856,Mono
+2857,Progenitor
+2858,DC
+2859,Mono
+2860,Mono
+2861,Mono
+2862,Mono
+2863,DC
+2864,Mono
+2865,Mono
+2866,Mono
+2867,Progenitor
+2868,Mono
+2869,Mono
+2870,Progenitor
+2871,Mono
+2872,Mono
+2873,Mono
+2874,DC
+2875,DC
+2876,CD4 T
+2877,Mono
+2878,Mono
+2879,Mono
+2880,Mono
+2881,Mono
+2882,Mono
+2883,Mono
+2884,Mono
+2885,Mono
+2886,Mono
+2887,Mono
+2888,Mono
+2889,Mono
+2890,CD8 T
+2891,Mono
+2892,Mono
+2893,Mono
+2894,Mono
+2895,Mono
+2896,Mono
+2897,Mono
+2898,Mono
+2899,Mono
+2900,Mono
+2901,Mono
+2902,Mono
+2903,Mono
+2904,CD4 T
+2905,Mono
+2906,Mono
+2907,Mono
+2908,Mono
+2909,CD8 T
+2910,Mono
+2911,CD8 T
+2912,Progenitor
+2913,Mono
+2914,CD8 T
+2915,Mono
+2916,Mono
+2917,Mono
+2918,Mono
+2919,Mono
+2920,DC
+2921,Mono
+2922,Mono
+2923,Mono
+2924,Mono
+2925,Mono
+2926,Mono
+2927,Mono
+2928,Mono
+2929,Mono
+2930,Mono
+2931,Mono
+2932,Mono
+2933,Mono
+2934,Mono
+2935,Mono
+2936,Mono
+2937,Mono
+2938,Mono
+2939,DC
+2940,Mono
+2941,CD4 T
+2942,Mono
+2943,DC
+2944,Mono
+2945,Mono
+2946,Mono
+2947,Progenitor
+2948,CD8 T
+2949,Mono
+2950,Mono
+2951,Mono
+2952,Mono
+2953,Mono
+2954,Mono
+2955,Mono
+2956,Progenitor
+2957,Mono
+2958,Mono
+2959,Mono
+2960,Mono
+2961,B
+2962,Mono
+2963,Mono
+2964,Mono
+2965,Mono
+2966,Mono
+2967,Mono
+2968,Mono
+2969,Mono
+2970,Mono
+2971,Mono
+2972,CD4 T
+2973,Mono
+2974,Mono
+2975,DC
+2976,Mono
+2977,Mono
+2978,Mono
+2979,Mono
+2980,Mono
+2981,Mono
+2982,Mono
+2983,Mono
+2984,Mono
+2985,Mono
+2986,Mono
+2987,Mono
+2988,Mono
+2989,Mono
+2990,Mono
+2991,Mono
+2992,Mono
+2993,Mono
+2994,Mono
+2995,Mono
+2996,Mono
+2997,Mono
+2998,Mono
+2999,Mono
+3000,Mono
+3001,Mono
+3002,DC
+3003,B
+3004,Mono
+3005,Progenitor
+3006,Mono
+3007,Mono
+3008,Mono
+3009,Progenitor
+3010,Mono
+3011,Mono
+3012,Mono
+3013,Mono
+3014,DC
+3015,Mono
+3016,Mono
+3017,Mono
+3018,Mono
+3019,Mono
+3020,Mono
+3021,Mono
+3022,Progenitor
+3023,Mono
+3024,Mono
+3025,Mono
+3026,Mono
+3027,CD8 T
+3028,Mono
+3029,Mono
+3030,Mono
+3031,Mono
+3032,Mono
+3033,Mono
+3034,Mono
+3035,DC
+3036,Mono
+3037,Progenitor
+3038,Mono
+3039,Mono
+3040,DC
+3041,Mono
+3042,Mono
+3043,Mono
+3044,Mono
+3045,Mono
+3046,Mono
+3047,Mono
+3048,Mono
+3049,Mono
+3050,Mono
+3051,DC
+3052,Mono
+3053,Progenitor
+3054,Mono
+3055,Mono
+3056,DC
+3057,Mono
+3058,Mono
+3059,Mono
+3060,Mono
+3061,Mono
+3062,Mono
+3063,Mono
+3064,DC
+3065,Mono
+3066,DC
+3067,Mono
+3068,Mono
+3069,Mono
+3070,Mono
+3071,Mono
+3072,Mono
+3073,Mono
+3074,Mono
+3075,Mono
+3076,Mono
+3077,CD8 T
+3078,Mono
+3079,Mono
+3080,DC
+3081,Mono
+3082,CD4 T
+3083,Mono
+3084,Mono
+3085,Mono
+3086,Mono
+3087,Mono
+3088,Mono
+3089,Mono
+3090,Mono
+3091,Mono
+3092,Mono
+3093,Mono
+3094,Mono
+3095,Mono
+3096,Mono
+3097,Mono
+3098,Mono
+3099,Mono
+3100,Mono
+3101,Mono
+3102,Mono
+3103,Mono
+3104,Mono
+3105,CD4 T
+3106,Mono
+3107,CD8 T
+3108,Mono
+3109,Mono
+3110,Mono
+3111,Mono
+3112,Mono
+3113,Mono
+3114,Mono
+3115,Mono
+3116,Mono
+3117,Mono
+3118,DC
+3119,Mono
+3120,CD4 T
+3121,Mono
+3122,Mono
+3123,Mono
+3124,CD8 T
+3125,Mono
+3126,Mono
+3127,Mono
+3128,DC
+3129,Mono
+3130,Mono
+3131,Mono
+3132,Progenitor
+3133,Mono
+3134,Mono
+3135,Mono
+3136,Mono
+3137,Mono
+3138,Mono
+3139,Mono
+3140,Mono
+3141,Mono
+3142,Mono
+3143,Mono
+3144,Mono
+3145,Mono
+3146,Mono
+3147,Mono
+3148,Mono
+3149,Mono
+3150,Mono
+3151,Mono
+3152,Mono
+3153,Mono
+3154,Mono
+3155,Mono
+3156,Mono
+3157,Mono
+3158,Mono
+3159,Mono
+3160,Mono
+3161,DC
+3162,NK
+3163,Mono
+3164,Mono
+3165,Mono
+3166,Mono
+3167,Mono
+3168,CD8 T
+3169,Mono
+3170,Mono
+3171,Mono
+3172,DC
+3173,Mono
+3174,Mono
+3175,Mono
+3176,Mono
+3177,Mono
+3178,Mono
+3179,Mono
+3180,NK
+3181,Mono
+3182,Mono
+3183,DC
+3184,Mono
+3185,Mono
+3186,B
+3187,Mono
+3188,Mono
+3189,Mono
+3190,Mono
+3191,Mono
+3192,Mono
+3193,Mono
+3194,DC
+3195,Mono
+3196,Mono
+3197,Mono
+3198,Mono
+3199,DC
+3200,Mono
+3201,Mono
+3202,Mono
+3203,Mono
+3204,Mono
+3205,Mono
+3206,Mono
+3207,Mono
+3208,Mono
+3209,Mono
+3210,Mono
+3211,Mono
+3212,Mono
+3213,Mono
+3214,Mono
+3215,Mono
+3216,Mono
+3217,Mono
+3218,Mono
+3219,DC
+3220,Mono
+3221,Mono
+3222,Mono
+3223,Mono
+3224,Mono
+3225,Mono
+3226,Mono
+3227,Mono
+3228,Mono
+3229,Mono
+3230,Mono
+3231,Mono
+3232,Mono
+3233,Mono
+3234,Mono
+3235,Mono
+3236,Mono
+3237,Mono
+3238,Mono
+3239,CD4 T
+3240,Mono
+3241,Mono
+3242,Mono
+3243,Mono
+3244,Mono
+3245,Mono
+3246,Progenitor
+3247,Mono
+3248,Mono
+3249,Mono
+3250,Mono
+3251,Mono
+3252,Mono
+3253,Progenitor
+3254,Mono
+3255,Mono
+3256,Mono
+3257,Mono
+3258,Mono
+3259,Mono
+3260,Progenitor
+3261,Mono
+3262,Mono
+3263,DC
+3264,NK
+3265,Mono
+3266,DC
+3267,Mono
+3268,Mono
+3269,Mono
+3270,Mono
+3271,CD4 T
+3272,Mono
+3273,Mono
+3274,Mono
+3275,Mono
+3276,Mono
+3277,Mono
+3278,Mono
+3279,Mono
+3280,Mono
+3281,Mono
+3282,Mono
+3283,CD8 T
+3284,DC
+3285,Mono
+3286,Mono
+3287,Mono
+3288,Mono
+3289,Mono
+3290,Mono
+3291,B
+3292,Mono
+3293,Mono
+3294,Mono
+3295,Mono
+3296,Mono
+3297,DC
+3298,Mono
+3299,Mono
+3300,Mono
+3301,Mono
+3302,Mono
+3303,DC
+3304,Mono
+3305,Mono
+3306,Mono
+3307,Mono
+3308,B
+3309,CD4 T
+3310,Mono
+3311,CD8 T
+3312,Mono
+3313,Mono
+3314,Mono
+3315,Mono
+3316,Mono
+3317,Mono
+3318,Mono
+3319,Mono
+3320,Mono
+3321,Mono
+3322,Mono
+3323,Mono
+3324,Mono
+3325,Mono
+3326,Mono
+3327,CD8 T
+3328,Mono
+3329,Mono
+3330,Mono
+3331,Mono
+3332,DC
+3333,Mono
+3334,NK
+3335,Progenitor
+3336,CD4 T
+3337,NK
+3338,Mono
+3339,Mono
+3340,CD8 T
+3341,Mono
+3342,NK
+3343,Mono
+3344,Mono
+3345,Mono
+3346,Progenitor
+3347,B
+3348,Mono
+3349,Mono
+3350,Mono
+3351,Mono
+3352,Mono
+3353,Mono
+3354,Mono
+3355,Mono
+3356,B
+3357,Mono
+3358,Mono
+3359,CD4 T
+3360,CD4 T
+3361,Mono
+3362,Mono
+3363,Mono
+3364,DC
+3365,DC
+3366,Progenitor
+3367,Mono
+3368,Mono
+3369,Mono
+3370,Progenitor
+3371,B
+3372,Progenitor
+3373,Mono
+3374,Mono
+3375,Mono
+3376,NK
+3377,B
+3378,B
+3379,CD8 T
+3380,CD8 T
+3381,Mono
+3382,Progenitor
+3383,B
+3384,B
+3385,Progenitor
+3386,B
+3387,Mono
+3388,Mono
+3389,Mono
+3390,Mono
+3391,NK
+3392,CD8 T
+3393,NK
+3394,Mono
+3395,CD8 T
+3396,Mono
+3397,Mono
+3398,Mono
+3399,Mono
+3400,Mono
+3401,DC
+3402,B
+3403,CD8 T
+3404,NK
+3405,Mono
+3406,Mono
+3407,CD8 T
+3408,Mono
+3409,Mono
+3410,Mono
+3411,Mono
+3412,Mono
+3413,CD4 T
+3414,Mono
+3415,Mono
+3416,Mono
+3417,CD4 T
+3418,Mono
+3419,B
+3420,Mono
+3421,Mono
+3422,CD8 T
+3423,Progenitor
+3424,Mono
+3425,CD8 T
+3426,Mono
+3427,Mono
+3428,B
+3429,Mono
+3430,NK
+3431,B
+3432,Progenitor
+3433,Progenitor
+3434,B
+3435,Mono
+3436,CD4 T
+3437,CD4 T
+3438,B
+3439,Mono
+3440,CD8 T
+3441,Mono
+3442,Mono
+3443,Mono
+3444,Mono
+3445,Mono
+3446,Mono
+3447,B
+3448,CD8 T
+3449,Mono
+3450,Mono
+3451,DC
+3452,B
+3453,Mono
+3454,CD8 T
+3455,Mono
+3456,CD8 T
+3457,B
+3458,Mono
+3459,Mono
+3460,Mono
+3461,Mono
+3462,Mono
+3463,NK
+3464,Mono
+3465,Mono
+3466,B
+3467,Mono
+3468,CD4 T
+3469,Mono
+3470,Mono
+3471,Mono
+3472,Mono
+3473,DC
+3474,Mono
+3475,CD8 T
+3476,CD8 T
+3477,Mono
+3478,Mono
+3479,Mono
+3480,CD4 T
+3481,Mono
+3482,Mono
+3483,DC
+3484,DC
+3485,Mono
+3486,B
+3487,CD8 T
+3488,Progenitor
+3489,CD8 T
+3490,Mono
+3491,Mono
+3492,B
+3493,Mono
+3494,Mono
+3495,DC
+3496,Mono
+3497,CD8 T
+3498,DC
+3499,CD8 T
+3500,Mono
+3501,Mono
+3502,Mono
+3503,Mono
+3504,CD8 T
+3505,Mono
+3506,CD8 T
+3507,NK
+3508,Mono
+3509,Mono
+3510,Mono
+3511,NK
+3512,CD4 T
+3513,Mono
+3514,Mono
+3515,Mono
+3516,Mono
+3517,Mono
+3518,CD4 T
+3519,Progenitor
+3520,Mono
+3521,Mono
+3522,NK
+3523,Mono
+3524,Mono
+3525,CD8 T
+3526,Mono
+3527,Mono
+3528,Mono
+3529,Progenitor
+3530,Mono
+3531,Mono
+3532,Mono
+3533,Progenitor
+3534,Mono
+3535,Mono
+3536,Mono
+3537,Mono
+3538,DC
+3539,Mono
+3540,Mono
+3541,Mono
+3542,Mono
+3543,Mono
+3544,B
+3545,Mono
+3546,Mono
+3547,Mono
+3548,Mono
+3549,Mono
+3550,CD8 T
+3551,CD4 T
+3552,Mono
+3553,B
+3554,Mono
+3555,Mono
+3556,Mono
+3557,Progenitor
+3558,Mono
+3559,Mono
+3560,Mono
+3561,NK
+3562,Mono
+3563,Mono
+3564,Mono
+3565,CD8 T
+3566,Mono
+3567,Mono
+3568,CD4 T
+3569,CD4 T
+3570,Mono
+3571,Mono
+3572,Mono
+3573,Mono
+3574,B
+3575,Mono
+3576,Mono
+3577,DC
+3578,Mono
+3579,Mono
+3580,Mono
+3581,Mono
+3582,Mono
+3583,Mono
+3584,B
+3585,Mono
+3586,NK
+3587,CD8 T
+3588,Mono
+3589,Mono
+3590,Progenitor
+3591,Mono
+3592,CD4 T
+3593,Mono
+3594,Mono
+3595,Mono
+3596,Mono
+3597,Progenitor
+3598,Mono
+3599,NK
+3600,Mono
+3601,Mono
+3602,Mono
+3603,Progenitor
+3604,Mono
+3605,Mono
+3606,CD4 T
+3607,Mono
+3608,NK
+3609,Mono
+3610,CD4 T
+3611,Mono
+3612,Mono
+3613,CD4 T
+3614,Mono
+3615,B
+3616,Progenitor
+3617,DC
+3618,Mono
+3619,Mono
+3620,Mono
+3621,Mono
+3622,CD4 T
+3623,B
+3624,Progenitor
+3625,Mono
+3626,CD4 T
+3627,DC
+3628,Mono
+3629,Mono
+3630,Mono
+3631,Mono
+3632,CD4 T
+3633,CD4 T
+3634,Mono
+3635,Mono
+3636,Mono
+3637,Mono
+3638,Mono
+3639,Mono
+3640,Progenitor
+3641,Progenitor
+3642,Mono
+3643,Mono
+3644,Mono
+3645,CD8 T
+3646,Progenitor
+3647,Progenitor
+3648,CD8 T
+3649,CD8 T
+3650,CD8 T
+3651,CD8 T
+3652,Progenitor
+3653,Mono
+3654,Mono
+3655,Mono
+3656,Mono
+3657,Mono
+3658,Mono
+3659,Mono
+3660,Mono
+3661,Mono
+3662,Mono
+3663,Mono
+3664,NK
+3665,B
+3666,Mono
+3667,Mono
+3668,Mono
+3669,Mono
+3670,Mono
+3671,Mono
+3672,Mono
+3673,CD8 T
+3674,Mono
+3675,DC
+3676,Mono
+3677,NK
+3678,Mono
+3679,Mono
+3680,Mono
+3681,Mono
+3682,Mono
+3683,other T
+3684,Mono
+3685,Mono
+3686,Mono
+3687,Mono
+3688,DC
+3689,Mono
+3690,Mono
+3691,NK
+3692,Mono
+3693,Mono
+3694,Progenitor
+3695,B
+3696,CD8 T
+3697,Mono
+3698,B
+3699,Mono
+3700,Mono
+3701,B
+3702,CD4 T
+3703,NK
+3704,Mono
+3705,NK
+3706,Mono
+3707,Mono
+3708,Mono
+3709,Mono
+3710,NK
+3711,B
+3712,Mono
+3713,CD4 T
+3714,NK
+3715,Mono
+3716,B
+3717,Mono
+3718,Mono
+3719,B
+3720,B
+3721,Mono
+3722,Mono
+3723,CD4 T
+3724,Mono
+3725,Mono
+3726,CD4 T
+3727,Progenitor
+3728,Mono
+3729,Mono
+3730,Mono
+3731,Mono
+3732,Mono
+3733,B
+3734,NK
+3735,Progenitor
+3736,Mono
+3737,Mono
+3738,CD4 T
+3739,NK
+3740,Mono
+3741,Mono
+3742,CD4 T
+3743,Mono
+3744,NK
+3745,CD4 T
+3746,Mono
+3747,Mono
+3748,CD8 T
+3749,Mono
+3750,CD8 T
+3751,CD4 T
+3752,Mono
+3753,DC
+3754,Mono
+3755,CD8 T
+3756,CD8 T
+3757,Mono
+3758,Mono
+3759,Mono
+3760,Progenitor
+3761,Mono
+3762,Mono
+3763,Mono
+3764,B
+3765,Mono
+3766,Mono
+3767,NK
+3768,Mono
+3769,DC
+3770,Mono
+3771,B
+3772,Mono
+3773,NK
+3774,Mono
+3775,B
+3776,Progenitor
+3777,CD8 T
+3778,CD8 T
+3779,Mono
+3780,CD4 T
+3781,DC
+3782,Mono
+3783,DC
+3784,Mono
+3785,B
+3786,Mono
+3787,Mono
+3788,Progenitor
+3789,NK
+3790,B
+3791,Mono
+3792,DC
+3793,Mono
+3794,Progenitor
+3795,NK
+3796,B
+3797,Mono
+3798,CD8 T
+3799,Progenitor
+3800,CD4 T
+3801,B
+3802,Mono
+3803,B
+3804,NK
+3805,NK
+3806,CD4 T
+3807,CD4 T
+3808,NK
+3809,CD4 T
+3810,Mono
+3811,NK
+3812,Mono
+3813,Progenitor
+3814,B
+3815,CD4 T
+3816,Progenitor
+3817,DC
+3818,B
+3819,CD8 T
+3820,NK
+3821,CD8 T
+3822,Progenitor
+3823,NK
+3824,CD4 T
+3825,CD4 T
+3826,DC
+3827,Mono
+3828,NK
+3829,Mono
+3830,Progenitor
+3831,CD8 T
+3832,Mono
+3833,CD4 T
+3834,NK
+3835,NK
+3836,Mono
+3837,Mono
+3838,NK
+3839,CD8 T
+3840,B
+3841,DC
+3842,Progenitor
+3843,CD4 T
+3844,CD4 T
+3845,NK
+3846,NK
+3847,Progenitor
+3848,CD4 T
+3849,CD8 T
+3850,Mono
+3851,Mono
+3852,Mono
+3853,DC
+3854,NK
+3855,CD8 T
+3856,CD8 T
+3857,CD4 T
+3858,Mono
+3859,CD8 T
+3860,B
+3861,CD8 T
+3862,NK
+3863,Mono
+3864,DC
+3865,CD8 T
+3866,Progenitor
+3867,Mono
+3868,Mono
+3869,NK
+3870,NK
+3871,B
+3872,CD8 T
+3873,Mono
+3874,NK
+3875,Mono
+3876,Progenitor
+3877,Mono
+3878,DC
+3879,CD4 T
+3880,CD8 T
+3881,NK
+3882,Mono
+3883,Mono
+3884,B
+3885,CD8 T
+3886,CD8 T
+3887,CD4 T
+3888,B
+3889,B
+3890,B
+3891,Mono
+3892,B
+3893,CD8 T
+3894,Mono
+3895,NK
+3896,DC
+3897,Mono
+3898,CD8 T
+3899,CD4 T
+3900,Mono
+3901,Mono
+3902,CD4 T
+3903,Mono
+3904,NK
+3905,Mono
+3906,B
+3907,Mono
+3908,DC
+3909,Mono
+3910,Mono
+3911,Mono
+3912,Mono
+3913,Mono
+3914,CD8 T
+3915,Mono
+3916,Mono
+3917,Mono
+3918,Mono
+3919,Mono
+3920,DC
+3921,NK
+3922,Mono
+3923,Mono
+3924,Mono
+3925,CD8 T
+3926,DC
+3927,Mono
+3928,Mono
+3929,Mono
+3930,CD8 T
+3931,Mono
+3932,B
+3933,CD4 T
+3934,Mono
+3935,B
+3936,Mono
+3937,CD8 T
+3938,Progenitor
+3939,Mono
+3940,Mono
+3941,Mono
+3942,Mono
+3943,CD8 T
+3944,Progenitor
+3945,Mono
+3946,Mono
+3947,Mono
+3948,Mono
+3949,Mono
+3950,Mono
+3951,NK
+3952,CD8 T
+3953,Mono
+3954,Mono
+3955,Mono
+3956,Mono
+3957,Mono
+3958,Mono
+3959,Mono
+3960,Mono
+3961,Mono
+3962,NK
+3963,Mono
+3964,Mono
+3965,NK
+3966,Mono
+3967,Mono
+3968,Mono
+3969,Mono
+3970,Progenitor
+3971,B
+3972,Progenitor
+3973,Mono
+3974,B
+3975,Mono
+3976,CD8 T
+3977,Mono
+3978,Mono
+3979,Mono
+3980,B
+3981,CD8 T
+3982,CD8 T
+3983,Mono
+3984,Mono
+3985,CD8 T
+3986,CD4 T
+3987,Mono
+3988,CD8 T
+3989,Mono
+3990,NK
+3991,CD4 T
+3992,Mono
+3993,Progenitor
+3994,Mono
+3995,Mono
+3996,NK
+3997,NK
+3998,Mono
+3999,Mono
+4000,Mono
+4001,Progenitor
+4002,Mono
+4003,Mono
+4004,Mono
+4005,NK
+4006,Progenitor
+4007,NK
+4008,Mono
+4009,Mono
+4010,CD8 T
+4011,CD8 T
+4012,Mono
+4013,Mono
+4014,NK
+4015,Mono
+4016,CD8 T
+4017,B
+4018,B
+4019,CD8 T
+4020,CD4 T
+4021,Progenitor
+4022,Mono
+4023,Mono
+4024,Mono
+4025,Mono
+4026,DC
+4027,Mono
+4028,NK
+4029,Mono
+4030,Mono
+4031,Mono
+4032,Mono
+4033,Mono
+4034,Mono
+4035,B
+4036,Mono
+4037,Mono
+4038,Mono
+4039,B
+4040,CD4 T
+4041,Mono
+4042,Mono
+4043,CD4 T
+4044,CD8 T
+4045,Mono
+4046,Progenitor
+4047,Progenitor
+4048,CD8 T
+4049,Mono
+4050,Mono
+4051,Mono
+4052,Mono
+4053,Mono
+4054,Mono
+4055,Progenitor
+4056,Mono
+4057,Mono
+4058,NK
+4059,Progenitor
+4060,Mono
+4061,CD8 T
+4062,CD4 T
+4063,Mono
+4064,Mono
+4065,Mono
+4066,Mono
+4067,Mono
+4068,Mono
+4069,Progenitor
+4070,Mono
+4071,CD8 T
+4072,NK
+4073,Progenitor
+4074,Mono
+4075,Mono
+4076,CD4 T
+4077,Mono
+4078,Mono
+4079,DC
+4080,Mono
+4081,Mono
+4082,CD8 T
+4083,NK
+4084,Progenitor
+4085,Mono
+4086,B
+4087,Mono
+4088,B
+4089,CD8 T
+4090,Mono
+4091,NK
+4092,Mono
+4093,Progenitor
+4094,DC
+4095,Mono
+4096,Mono
+4097,Mono
+4098,Mono
+4099,NK
+4100,Mono
+4101,Mono
+4102,CD8 T
+4103,CD4 T
+4104,B
+4105,CD8 T
+4106,Mono
+4107,Mono
+4108,Mono
+4109,CD4 T
+4110,B
+4111,Mono
+4112,B
+4113,NK
+4114,CD8 T
+4115,Mono
+4116,DC
+4117,Mono
+4118,other T
+4119,Mono
+4120,DC
+4121,Mono
+4122,Mono
+4123,CD4 T
+4124,Mono
+4125,Mono
+4126,Mono
+4127,B
+4128,Mono
+4129,Mono
+4130,DC
+4131,Mono
+4132,Mono
+4133,B
+4134,Mono
+4135,Mono
+4136,CD4 T
+4137,B
+4138,CD4 T
+4139,CD4 T
+4140,Mono
+4141,Mono
+4142,Mono
+4143,Mono
+4144,Mono
+4145,Mono
+4146,NK
+4147,Mono
+4148,Mono
+4149,Mono
+4150,Mono
+4151,Mono
+4152,CD4 T
+4153,CD4 T
+4154,Mono
+4155,B
+4156,Mono
+4157,Mono
+4158,Mono
+4159,NK
+4160,Mono
+4161,Mono
+4162,B
+4163,Mono
+4164,Progenitor
+4165,Mono
+4166,Mono
+4167,Progenitor
+4168,NK
+4169,Mono
+4170,DC
+4171,Mono
+4172,Progenitor
+4173,Progenitor
+4174,Mono
+4175,Mono
+4176,Mono
+4177,Mono
+4178,Mono
+4179,CD8 T
+4180,NK
+4181,CD8 T
+4182,Mono
+4183,DC
+4184,Mono
+4185,CD4 T
+4186,CD4 T
+4187,DC
+4188,Mono
+4189,CD4 T
+4190,NK
+4191,CD8 T
+4192,Mono
+4193,Mono
+4194,CD8 T
+4195,DC
+4196,CD4 T
+4197,Mono
+4198,NK
+4199,Mono
+4200,CD8 T
+4201,CD4 T
+4202,CD8 T
+4203,DC
+4204,Mono
+4205,NK
+4206,CD8 T
+4207,Mono
+4208,Mono
+4209,CD8 T
+4210,Mono
+4211,Mono
+4212,CD4 T
+4213,Mono
+4214,CD4 T
+4215,Mono
+4216,B
+4217,Mono
+4218,Mono
+4219,Mono
+4220,Progenitor
+4221,Mono
+4222,Mono
+4223,Mono
+4224,Mono
+4225,Mono
+4226,B
+4227,Mono
+4228,B
+4229,B
+4230,DC
+4231,DC
+4232,CD8 T
+4233,Mono
+4234,Progenitor
+4235,NK
+4236,Mono
+4237,CD8 T
+4238,NK
+4239,Mono
+4240,CD8 T
+4241,Mono
+4242,Mono
+4243,CD8 T
+4244,DC
+4245,CD8 T
+4246,CD4 T
+4247,Mono
+4248,Mono
+4249,Mono
+4250,Mono
+4251,Mono
+4252,DC
+4253,Mono
+4254,Mono
+4255,Progenitor
+4256,CD8 T
+4257,CD4 T
+4258,B
+4259,Progenitor
+4260,B
+4261,Mono
+4262,Mono
+4263,DC
+4264,NK
+4265,Mono
+4266,Mono
+4267,NK
+4268,Mono
+4269,CD8 T
+4270,Mono
+4271,CD8 T
+4272,B
+4273,Progenitor
+4274,Progenitor
+4275,DC
+4276,B
+4277,NK
+4278,Progenitor
+4279,Progenitor
+4280,DC
+4281,Progenitor
+4282,Mono
+4283,DC
+4284,Mono
+4285,B
+4286,NK
+4287,DC
+4288,Mono
+4289,Progenitor
+4290,Mono
+4291,B
+4292,Mono
+4293,Mono
+4294,Mono
+4295,Mono
+4296,Progenitor
+4297,Mono
+4298,Progenitor
+4299,DC
+4300,Mono
+4301,CD8 T
+4302,Mono
+4303,Mono
+4304,CD8 T
+4305,Mono
+4306,Mono
+4307,CD8 T
+4308,Mono
+4309,CD8 T
+4310,Mono
+4311,Mono
+4312,Mono
+4313,CD4 T
+4314,NK
+4315,Mono
+4316,Mono
+4317,B
+4318,NK
+4319,NK
+4320,CD4 T
+4321,Mono
+4322,CD8 T
+4323,CD8 T
+4324,Mono
+4325,CD8 T
+4326,Mono
+4327,NK
+4328,Mono
+4329,Mono
+4330,CD8 T
+4331,Mono
+4332,CD8 T
+4333,Mono
+4334,Mono
+4335,Mono
+4336,Mono
+4337,CD4 T
+4338,Mono
+4339,CD4 T
+4340,Mono
+4341,Mono
+4342,NK
+4343,Mono
+4344,CD8 T
+4345,Mono
+4346,NK
+4347,DC
+4348,NK
+4349,CD4 T
+4350,CD8 T
+4351,Mono
+4352,Progenitor
+4353,B
+4354,CD8 T
+4355,Mono
+4356,CD4 T
+4357,CD8 T
+4358,Mono
+4359,CD4 T
+4360,Mono
+4361,CD4 T
+4362,CD4 T
+4363,Mono
+4364,DC
+4365,Mono
+4366,CD8 T
+4367,CD8 T
+4368,CD8 T
+4369,CD4 T
+4370,Mono
+4371,Mono
+4372,Mono
+4373,Mono
+4374,Mono
+4375,Mono
+4376,Mono
+4377,Mono
+4378,Mono
+4379,Mono
+4380,Mono
+4381,Mono
+4382,Mono
+4383,Mono
+4384,Mono
+4385,Mono
+4386,Mono
+4387,Mono
+4388,Mono
+4389,Mono
+4390,Mono
+4391,Mono
+4392,Mono
+4393,Mono
+4394,Mono
+4395,Mono
+4396,Mono
+4397,Mono
+4398,Mono
+4399,Mono
+4400,Mono
+4401,Mono
+4402,Mono
+4403,Mono
+4404,Mono
+4405,Mono
+4406,Mono
+4407,Mono
+4408,Mono
+4409,Mono
+4410,Mono
+4411,Mono
+4412,Mono
+4413,Mono
+4414,Mono
+4415,Mono
+4416,Mono
+4417,Mono
+4418,Mono
+4419,Mono
+4420,Mono
+4421,Mono
+4422,Mono
+4423,Mono
+4424,Mono
+4425,Mono
+4426,Mono
+4427,Mono
+4428,Mono
+4429,Mono
+4430,Mono
+4431,Mono
+4432,Mono
+4433,B
+4434,Mono
+4435,Mono
+4436,DC
+4437,Mono
+4438,Mono
+4439,Mono
+4440,Mono
+4441,Mono
+4442,Mono
+4443,Mono
+4444,Mono
+4445,Mono
+4446,Mono
+4447,Progenitor
+4448,Mono
+4449,Mono
+4450,Mono
+4451,CD8 T
+4452,CD4 T
+4453,Mono
+4454,CD4 T
+4455,CD8 T
+4456,B
+4457,Mono
+4458,Mono
+4459,Mono
+4460,Mono
+4461,CD8 T
+4462,CD4 T
+4463,Mono
+4464,Mono
+4465,CD8 T
+4466,CD4 T
+4467,CD8 T
+4468,Mono
+4469,CD8 T
+4470,Mono
+4471,CD4 T
+4472,Mono
+4473,Progenitor
+4474,CD8 T
+4475,Mono
+4476,CD8 T
+4477,Mono
+4478,CD4 T
+4479,Mono
+4480,Progenitor
+4481,Mono
+4482,Mono
+4483,Mono
+4484,Mono
+4485,Mono
+4486,Mono
+4487,Mono
+4488,Mono
+4489,Mono
+4490,Mono
+4491,Mono
+4492,Mono
+4493,Mono
+4494,Mono
+4495,Mono
+4496,B
+4497,Mono
+4498,CD8 T
+4499,Mono
+4500,Mono
+4501,Mono
+4502,Mono
+4503,Mono
+4504,Mono
+4505,Mono
+4506,Mono
+4507,Mono
+4508,Mono
+4509,Mono
+4510,Mono
+4511,Mono
+4512,Mono
+4513,Mono
+4514,Mono
+4515,Mono
+4516,Mono
+4517,Mono
+4518,Mono
+4519,Mono
+4520,Mono
+4521,Mono
+4522,Mono
+4523,Mono
+4524,Progenitor
+4525,Mono
+4526,Mono
+4527,Mono
+4528,B
+4529,CD8 T
+4530,Mono
+4531,Progenitor
+4532,Mono
+4533,Mono
+4534,Progenitor
+4535,Mono
+4536,Mono
+4537,Mono
+4538,CD8 T
+4539,Mono
+4540,Mono
+4541,CD8 T
+4542,Mono
+4543,Mono
+4544,Mono
+4545,Progenitor
+4546,Mono
+4547,Mono
+4548,NK
+4549,CD8 T
+4550,Mono
+4551,Mono
+4552,NK
+4553,DC
+4554,Mono
+4555,DC
+4556,Mono
+4557,CD8 T
+4558,Mono
+4559,NK
+4560,Mono
+4561,Mono
+4562,Mono
+4563,CD8 T
+4564,Mono
+4565,Progenitor
+4566,Mono
+4567,CD8 T
+4568,CD4 T
+4569,Mono
+4570,CD4 T
+4571,CD8 T
+4572,Mono
+4573,Mono
+4574,CD8 T
+4575,Mono
+4576,Mono
+4577,B
+4578,CD4 T
+4579,Mono
+4580,CD8 T
+4581,B
+4582,Mono
+4583,CD4 T
+4584,Mono
+4585,Mono
+4586,CD4 T
+4587,Mono
+4588,Mono
+4589,Progenitor
+4590,Progenitor
+4591,Mono
+4592,other T
+4593,B
+4594,Mono
+4595,CD8 T
+4596,CD8 T
+4597,Progenitor
+4598,CD8 T
+4599,Mono
+4600,CD4 T
+4601,Mono
+4602,B
+4603,CD4 T
+4604,B
+4605,Mono
+4606,Mono
+4607,CD4 T
+4608,CD8 T
+4609,DC
+4610,B
+4611,CD4 T
+4612,Mono
+4613,Mono
+4614,Mono
+4615,DC
+4616,DC
+4617,Mono
+4618,CD4 T
+4619,Mono
+4620,Mono
+4621,CD4 T
+4622,Mono
+4623,Mono
+4624,Progenitor
+4625,Mono
+4626,CD8 T
+4627,NK
+4628,Mono
+4629,Mono
+4630,NK
+4631,CD8 T
+4632,B
+4633,CD8 T
+4634,Mono
+4635,B
+4636,Mono
+4637,DC
+4638,Mono
+4639,Mono
+4640,CD8 T
+4641,CD8 T
+4642,Mono
+4643,B
+4644,CD8 T
+4645,CD8 T
+4646,Mono
+4647,Mono
+4648,Mono
+4649,Mono
+4650,Mono
+4651,CD4 T
+4652,Mono
+4653,CD8 T
+4654,Mono
+4655,Mono
+4656,Progenitor
+4657,NK
+4658,B
+4659,Mono
+4660,Mono
+4661,CD4 T
+4662,CD8 T
+4663,Progenitor
+4664,Mono
+4665,Mono
+4666,CD8 T
+4667,Progenitor
+4668,Mono
+4669,CD8 T
+4670,Mono
+4671,CD8 T
+4672,NK
+4673,Mono
+4674,DC
+4675,CD8 T
+4676,Mono
+4677,CD4 T
+4678,Mono
+4679,Mono
+4680,Mono
+4681,Mono
+4682,CD4 T
+4683,B
+4684,B
+4685,DC
+4686,CD8 T
+4687,Mono
+4688,Progenitor
+4689,Mono
+4690,CD8 T
+4691,CD8 T
+4692,B
+4693,Mono
+4694,CD4 T
+4695,Mono
+4696,Mono
+4697,Mono
+4698,Mono
+4699,Mono
+4700,Mono
+4701,NK
+4702,Mono
+4703,CD8 T
+4704,Mono
+4705,Mono
+4706,Mono
+4707,Mono
+4708,CD8 T
+4709,NK
+4710,Mono
+4711,NK
+4712,Progenitor
+4713,B
+4714,Mono
+4715,Mono
+4716,Mono
+4717,Mono
+4718,Mono
+4719,NK
+4720,NK
+4721,Mono
+4722,CD8 T
+4723,CD8 T
+4724,Mono
+4725,CD8 T
+4726,CD8 T
+4727,NK
+4728,DC
+4729,NK
+4730,Mono
+4731,CD8 T
+4732,Mono
+4733,Mono
+4734,CD8 T
+4735,Mono
+4736,Mono
+4737,Mono
+4738,CD4 T
+4739,Mono
+4740,Mono
+4741,Mono
+4742,B
+4743,Mono
+4744,Progenitor
+4745,Mono
+4746,Mono
+4747,Progenitor
+4748,Mono
+4749,Mono
+4750,Mono
+4751,Mono
+4752,Mono
+4753,B
+4754,B
+4755,Mono
+4756,Mono
+4757,Mono
+4758,DC
+4759,Mono
+4760,CD4 T
+4761,Mono
+4762,Mono
+4763,B
+4764,NK
+4765,Mono
+4766,Mono
+4767,CD8 T
+4768,DC
+4769,Progenitor
+4770,CD4 T
+4771,Mono
+4772,CD4 T
+4773,Progenitor
+4774,Mono
+4775,DC
+4776,Mono
+4777,Mono
+4778,Progenitor
+4779,CD8 T
+4780,Mono
+4781,Mono
+4782,Mono
+4783,Mono
+4784,B
+4785,CD4 T
+4786,B
+4787,DC
+4788,DC
+4789,DC
+4790,Mono
+4791,Mono
+4792,Mono
+4793,Mono
+4794,Mono
+4795,DC
+4796,DC
+4797,Mono
+4798,Mono
+4799,Mono
+4800,Mono
+4801,Mono
+4802,Mono
+4803,Mono
+4804,Mono
+4805,Mono
+4806,CD4 T
+4807,B
+4808,CD8 T
+4809,CD4 T
+4810,Mono
+4811,Progenitor
+4812,Mono
+4813,Mono
+4814,Mono
+4815,Progenitor
+4816,Mono
+4817,Mono
+4818,Mono
+4819,CD4 T
+4820,Mono
+4821,Mono
+4822,CD8 T
+4823,NK
+4824,CD4 T
+4825,CD4 T
+4826,CD8 T
+4827,Mono
+4828,NK
+4829,Mono
+4830,CD8 T
+4831,CD8 T
+4832,CD4 T
+4833,B
+4834,Mono
+4835,NK
+4836,DC
+4837,Mono
+4838,Mono
+4839,Mono
+4840,Mono
+4841,CD8 T
+4842,Mono
+4843,Mono
+4844,Mono
+4845,CD4 T
+4846,Mono
+4847,Mono
+4848,DC
+4849,CD4 T
+4850,B
+4851,CD4 T
+4852,Mono
+4853,Mono
+4854,Mono
+4855,Mono
+4856,CD4 T
+4857,Mono
+4858,Mono
+4859,Mono
+4860,Mono
+4861,CD8 T
+4862,Mono
+4863,CD4 T
+4864,Mono
+4865,Mono
+4866,NK
+4867,Mono
+4868,Mono
+4869,DC
+4870,Mono
+4871,DC
+4872,CD8 T
+4873,CD8 T
+4874,other T
+4875,NK
+4876,Mono
+4877,Mono
+4878,NK
+4879,Mono
+4880,Mono
+4881,Mono
+4882,Mono
+4883,Progenitor
+4884,CD8 T
+4885,CD4 T
+4886,B
+4887,CD4 T
+4888,CD4 T
+4889,Mono
+4890,Mono
+4891,NK
+4892,Progenitor
+4893,CD8 T
+4894,Mono
+4895,Progenitor
+4896,NK
+4897,CD8 T
+4898,Mono
+4899,CD8 T
+4900,CD4 T
+4901,Mono
+4902,NK
+4903,CD8 T
+4904,CD8 T
+4905,Mono
+4906,Mono
+4907,Mono
+4908,Mono
+4909,DC
+4910,Mono
+4911,B
+4912,Mono
+4913,Mono
+4914,NK
+4915,Mono
+4916,CD8 T
+4917,Mono
+4918,Mono
+4919,NK
+4920,B
+4921,CD4 T
+4922,Mono
+4923,Mono
+4924,Mono
+4925,Mono
+4926,Mono
+4927,Mono
+4928,Mono
+4929,NK
+4930,CD4 T
+4931,CD8 T
+4932,CD8 T
+4933,Mono
+4934,CD8 T
+4935,Mono
+4936,CD8 T
+4937,CD8 T
+4938,CD4 T
+4939,B
+4940,Progenitor
+4941,CD4 T
+4942,B
+4943,Mono
+4944,CD8 T
+4945,Mono
+4946,NK
+4947,Mono
+4948,NK
+4949,Mono
+4950,NK
+4951,Mono
+4952,Mono
+4953,Mono
+4954,CD8 T
+4955,Mono
+4956,CD4 T
+4957,Mono
+4958,CD8 T
+4959,Mono
+4960,Progenitor
+4961,Mono
+4962,CD4 T
+4963,CD4 T
+4964,Mono
+4965,Mono
+4966,Mono
+4967,Mono
+4968,B
+4969,Mono
+4970,Mono
+4971,Progenitor
+4972,Mono
+4973,Mono
+4974,Mono
+4975,Mono
+4976,Mono
+4977,Progenitor
+4978,Progenitor
+4979,Mono
+4980,Progenitor
+4981,Mono
+4982,Mono
+4983,Mono
+4984,NK
+4985,B
+4986,Mono
+4987,CD8 T
+4988,Mono
+4989,Mono
+4990,DC
+4991,Mono
+4992,CD4 T
+4993,Mono
+4994,Progenitor
+4995,DC
+4996,Mono
+4997,B
+4998,NK
+4999,Progenitor
+5000,Mono
+5001,Mono
+5002,CD4 T
+5003,Mono
+5004,DC
+5005,Progenitor
+5006,NK
+5007,NK
+5008,Mono
+5009,Mono
+5010,CD8 T
+5011,NK
+5012,NK
+5013,Mono
+5014,Progenitor
+5015,DC
+5016,CD4 T
+5017,B
+5018,Progenitor
+5019,CD8 T
+5020,CD4 T
+5021,Mono
+5022,DC
+5023,Progenitor
+5024,B
+5025,NK
+5026,B
+5027,NK
+5028,B
+5029,B
+5030,CD8 T
+5031,Mono
+5032,Mono
+5033,B
+5034,CD8 T
+5035,CD4 T
+5036,Progenitor
+5037,Mono
+5038,Mono
+5039,Mono
+5040,DC
+5041,CD4 T
+5042,Mono
+5043,Mono
+5044,CD8 T
+5045,Mono
+5046,CD4 T
+5047,DC
+5048,CD8 T
+5049,NK
+5050,Mono
+5051,B
+5052,CD8 T
+5053,B
+5054,Mono
+5055,Mono
+5056,Mono
+5057,CD8 T
+5058,Mono
+5059,Progenitor
+5060,Mono
+5061,other T
+5062,CD4 T
+5063,Mono
+5064,Mono
+5065,Mono
+5066,Mono
+5067,CD8 T
+5068,Mono
+5069,Mono
+5070,Mono
+5071,Mono
+5072,DC
+5073,Mono
+5074,Mono
+5075,Mono
+5076,DC
+5077,Mono
+5078,Mono
+5079,B
+5080,Mono
+5081,CD4 T
+5082,CD4 T
+5083,CD8 T
+5084,CD8 T
+5085,Mono
+5086,CD8 T
+5087,CD8 T
+5088,Mono
+5089,NK
+5090,B
+5091,DC
+5092,CD4 T
+5093,Mono
+5094,Mono
+5095,B
+5096,B
+5097,B
+5098,B
+5099,B
+5100,Mono
+5101,Mono
+5102,CD8 T
+5103,Mono
+5104,Mono
+5105,Mono
+5106,B
+5107,DC
+5108,Mono
+5109,NK
+5110,Mono
+5111,Mono
+5112,Mono
+5113,Mono
+5114,Mono
+5115,B
+5116,Mono
+5117,CD8 T
+5118,Mono
+5119,Progenitor
+5120,DC
+5121,Mono
+5122,Mono
+5123,Mono
+5124,Mono
+5125,CD8 T
+5126,Mono
+5127,Mono
+5128,Mono
+5129,Mono
+5130,B
+5131,Mono
+5132,Mono
+5133,Mono
+5134,B
+5135,Mono
+5136,CD4 T
+5137,Progenitor
+5138,Mono
+5139,B
+5140,CD8 T
+5141,Mono
+5142,Progenitor
+5143,NK
+5144,Progenitor
+5145,Mono
+5146,Progenitor
+5147,Mono
+5148,Mono
+5149,DC
+5150,Mono
+5151,Mono
+5152,Mono
+5153,Progenitor
+5154,DC
+5155,B
+5156,Mono
+5157,Progenitor
+5158,Progenitor
+5159,Mono
+5160,Mono
+5161,Mono
+5162,Mono
+5163,Mono
+5164,Mono
+5165,DC
+5166,Mono
+5167,Mono
+5168,Mono
+5169,Mono
+5170,CD4 T
+5171,Mono
+5172,Mono
+5173,DC
+5174,Mono
+5175,Mono
+5176,Mono
+5177,Mono
+5178,Mono
+5179,Mono
+5180,Mono
+5181,Mono
+5182,Mono
+5183,Mono
+5184,Mono
+5185,B
+5186,DC
+5187,Mono
+5188,DC
+5189,Mono
+5190,Mono
+5191,Mono
+5192,Progenitor
+5193,Progenitor
+5194,Mono
+5195,DC
+5196,Mono
+5197,Progenitor
+5198,Progenitor
+5199,Progenitor
+5200,DC
+5201,Mono
+5202,Mono
+5203,DC
+5204,Mono
+5205,Mono
+5206,Mono
+5207,Mono
+5208,Mono
+5209,Progenitor
+5210,B
+5211,Mono
+5212,Mono
+5213,Mono
+5214,Mono
+5215,Mono
+5216,Mono
+5217,Mono
+5218,Mono
+5219,Progenitor
+5220,Mono
+5221,Mono
+5222,Mono
+5223,Mono
+5224,Mono
+5225,Mono
+5226,Mono
+5227,Progenitor
+5228,Mono
+5229,Mono
+5230,Mono
+5231,Mono
+5232,CD4 T
+5233,Mono
+5234,Mono
+5235,Mono
+5236,Mono
+5237,Mono
+5238,Mono
+5239,Mono
+5240,Mono
+5241,Mono
+5242,Mono
+5243,Mono
+5244,DC
+5245,Mono
+5246,B
+5247,Mono
+5248,Mono
+5249,Mono
+5250,Mono
+5251,DC
+5252,Mono
+5253,Mono
+5254,DC
+5255,Mono
+5256,Mono
+5257,Mono
+5258,CD8 T
+5259,Mono
+5260,Mono
+5261,Mono
+5262,Mono
+5263,Mono
+5264,Mono
+5265,Mono
+5266,Mono
+5267,Mono
+5268,Mono
+5269,Progenitor
+5270,B
+5271,Mono
+5272,DC
+5273,B
+5274,Mono
+5275,DC
+5276,Mono
+5277,B
+5278,Progenitor
+5279,Mono
+5280,Mono
+5281,DC
+5282,Progenitor
+5283,Progenitor
+5284,Progenitor
+5285,Mono
+5286,Progenitor
+5287,Mono
+5288,Mono
+5289,Mono
+5290,Progenitor
+5291,Mono
+5292,Mono
+5293,Mono
+5294,Mono
+5295,CD8 T
+5296,DC
+5297,Mono
+5298,Mono
+5299,Mono
+5300,NK
+5301,CD4 T
+5302,Progenitor
+5303,Mono
+5304,NK
+5305,Mono
+5306,NK
+5307,DC
+5308,DC
+5309,CD4 T
+5310,Mono
+5311,CD8 T
+5312,Mono
+5313,Mono
+5314,NK
+5315,Mono
+5316,Progenitor
+5317,B
+5318,Mono
+5319,Mono
+5320,B
+5321,Mono
+5322,Progenitor
+5323,Progenitor
+5324,Mono
+5325,B
+5326,Mono
+5327,DC
+5328,Progenitor
+5329,Progenitor
+5330,DC
+5331,DC
+5332,CD8 T
+5333,Mono
+5334,Mono
+5335,Progenitor
+5336,Mono
+5337,Mono
+5338,B
+5339,Mono
+5340,Mono
+5341,Mono
+5342,Mono
+5343,CD8 T
+5344,CD4 T
+5345,Mono
+5346,Mono
+5347,Mono
+5348,DC
+5349,CD4 T
+5350,CD8 T
+5351,Progenitor
+5352,CD8 T
+5353,Mono
+5354,CD8 T
+5355,DC
+5356,CD8 T
+5357,B
+5358,B
+5359,Mono
+5360,Progenitor
+5361,Mono
+5362,CD8 T
+5363,CD4 T
+5364,Mono
+5365,DC
+5366,Mono
+5367,Mono
+5368,Mono
+5369,Mono
+5370,Mono
+5371,CD8 T
+5372,B
+5373,CD8 T
+5374,B
+5375,Mono
+5376,Progenitor
+5377,Mono
+5378,Mono
+5379,CD8 T
+5380,Mono
+5381,Progenitor
+5382,Mono
+5383,Mono
+5384,Mono
+5385,NK
+5386,Mono
+5387,Progenitor
+5388,DC
+5389,B
+5390,CD8 T
+5391,Progenitor
+5392,DC
+5393,CD8 T
+5394,DC
+5395,CD8 T
+5396,Mono
+5397,B
+5398,CD8 T
+5399,NK
+5400,Mono
+5401,Mono
+5402,DC
+5403,Mono
+5404,Mono
+5405,Mono
+5406,B
+5407,Mono
+5408,B
+5409,CD4 T
+5410,Progenitor
+5411,Mono
+5412,DC
+5413,DC
+5414,Mono
+5415,Mono
+5416,CD8 T
+5417,DC
+5418,B
+5419,CD4 T
+5420,CD8 T
+5421,Mono
+5422,Mono
+5423,CD4 T
+5424,Mono
+5425,CD8 T
+5426,CD8 T
+5427,Mono
+5428,Mono
+5429,Mono
+5430,Mono
+5431,NK
+5432,B
+5433,Mono
+5434,CD8 T
+5435,B
+5436,CD4 T
+5437,Mono
+5438,Progenitor
+5439,Mono
+5440,CD8 T
+5441,CD8 T
+5442,Mono
+5443,CD4 T
+5444,Mono
+5445,NK
+5446,Mono
+5447,CD8 T
+5448,B
+5449,CD4 T
+5450,B
+5451,Progenitor
+5452,CD8 T
+5453,Mono
+5454,Mono
+5455,Mono
+5456,Mono
+5457,DC
+5458,Mono
+5459,Mono
+5460,B
+5461,NK
+5462,B
+5463,Mono
+5464,Mono
+5465,Mono
+5466,Mono
+5467,Mono
+5468,Progenitor
+5469,Mono
+5470,Mono
+5471,Mono
+5472,Mono
+5473,Mono
+5474,Mono
+5475,CD8 T
+5476,Mono
+5477,Mono
+5478,Mono
+5479,Progenitor
+5480,Mono
+5481,Mono
+5482,Mono
+5483,CD8 T
+5484,Mono
+5485,NK
+5486,Mono
+5487,Mono
+5488,Mono
+5489,Mono
+5490,Mono
+5491,Mono
+5492,Mono
+5493,Mono
+5494,Mono
+5495,Mono
+5496,Mono
+5497,Mono
+5498,Mono
+5499,Progenitor
+5500,Mono
+5501,Mono
+5502,Progenitor
+5503,Mono
+5504,CD8 T
+5505,CD8 T
+5506,Mono
+5507,Mono
+5508,CD4 T
+5509,Mono
+5510,Mono
+5511,Mono
+5512,Mono
+5513,NK
+5514,CD8 T
+5515,NK
+5516,Mono
+5517,Mono
+5518,Mono
+5519,NK
+5520,Mono
+5521,Progenitor
+5522,B
+5523,Mono
+5524,CD4 T
+5525,NK
+5526,Mono
+5527,B
+5528,CD8 T
+5529,Mono
+5530,Mono
+5531,Progenitor
+5532,NK
+5533,CD8 T
+5534,CD8 T
+5535,DC
+5536,Mono
+5537,Mono
+5538,Progenitor
+5539,Mono
+5540,Mono
+5541,NK
+5542,Mono
+5543,B
+5544,Mono
+5545,B
+5546,Mono
+5547,Progenitor
+5548,B
+5549,CD4 T
+5550,Mono
+5551,Progenitor
+5552,Mono
+5553,Mono
+5554,CD4 T
+5555,Mono
+5556,B
+5557,CD8 T
+5558,Mono
+5559,CD4 T
+5560,CD8 T
+5561,Progenitor
+5562,CD8 T
+5563,Mono
+5564,Mono
+5565,DC
+5566,Mono
+5567,CD8 T
+5568,Mono
+5569,Mono
+5570,B
+5571,NK
+5572,CD4 T
+5573,DC
+5574,NK
+5575,CD8 T
+5576,NK
+5577,B
+5578,CD4 T
+5579,Mono
+5580,CD4 T
+5581,NK
+5582,B
+5583,Mono
+5584,CD8 T
+5585,Mono
+5586,Mono
+5587,DC
+5588,CD8 T
+5589,B
+5590,Mono
+5591,Mono
+5592,CD4 T
+5593,CD8 T
+5594,CD8 T
+5595,Mono
+5596,CD4 T
+5597,Mono
+5598,CD4 T
+5599,Mono
+5600,NK
+5601,Mono
+5602,B
+5603,B
+5604,Mono
+5605,Mono
+5606,Mono
+5607,Mono
+5608,Mono
+5609,CD8 T
+5610,CD4 T
+5611,Mono
+5612,Mono
+5613,Mono
+5614,CD4 T
+5615,CD8 T
+5616,Mono
+5617,CD8 T
+5618,Mono
+5619,Mono
+5620,Mono
+5621,DC
+5622,Mono
+5623,CD8 T
+5624,CD4 T
+5625,Mono
+5626,Progenitor
+5627,Mono
+5628,B
+5629,Mono
+5630,Progenitor
+5631,Mono
+5632,B
+5633,CD4 T
+5634,Progenitor
+5635,Mono
+5636,CD8 T
+5637,Mono
+5638,CD8 T
+5639,Mono
+5640,Progenitor
+5641,Mono
+5642,B
+5643,CD8 T
+5644,CD4 T
+5645,Mono
+5646,CD8 T
+5647,CD4 T
+5648,CD8 T
+5649,CD8 T
+5650,NK
+5651,Mono
+5652,Mono
+5653,Progenitor
+5654,Mono
+5655,DC
+5656,Progenitor
+5657,CD8 T
+5658,Mono
+5659,Mono
+5660,Mono
+5661,Mono
+5662,CD4 T
+5663,Mono
+5664,Mono
+5665,B
+5666,Mono
+5667,CD4 T
+5668,NK
+5669,B
+5670,B
+5671,Progenitor
+5672,Mono
+5673,Progenitor
+5674,NK
+5675,Mono
+5676,DC
+5677,Progenitor
+5678,NK
+5679,B
+5680,Mono
+5681,CD8 T
+5682,Progenitor
+5683,Mono
+5684,DC
+5685,Mono
+5686,DC
+5687,CD4 T
+5688,CD8 T
+5689,CD8 T
+5690,CD8 T
+5691,NK
+5692,CD8 T
+5693,CD8 T
+5694,CD8 T
+5695,NK
+5696,CD8 T
+5697,CD4 T
+5698,CD8 T
+5699,CD4 T
+5700,Mono
+5701,CD8 T
+5702,B
+5703,CD4 T
+5704,B
+5705,Progenitor
+5706,CD4 T
+5707,Mono
+5708,CD8 T
+5709,Mono
+5710,Mono
+5711,NK
+5712,B
+5713,B
+5714,Mono
+5715,CD8 T
+5716,Progenitor
+5717,CD4 T
+5718,Mono
+5719,CD8 T
+5720,CD4 T
+5721,Mono
+5722,CD8 T
+5723,DC
+5724,other T
+5725,CD8 T
+5726,CD8 T
+5727,Mono
+5728,NK
+5729,CD4 T
+5730,Mono
+5731,CD8 T
+5732,NK
+5733,CD8 T
+5734,Progenitor
+5735,Mono
+5736,Mono
+5737,CD8 T
+5738,Mono
+5739,Mono
+5740,DC
+5741,CD4 T
+5742,DC
+5743,Mono
+5744,NK
+5745,CD4 T
+5746,CD8 T
+5747,CD4 T
+5748,Progenitor
+5749,CD8 T
+5750,Progenitor
+5751,Progenitor
+5752,CD8 T
+5753,B
+5754,Progenitor
+5755,Mono
+5756,CD4 T
+5757,CD8 T
+5758,Mono
+5759,Progenitor
+5760,Mono
+5761,Mono
+5762,B
+5763,Mono
+5764,Mono
+5765,B
+5766,Mono
+5767,CD8 T
+5768,CD4 T
+5769,B
+5770,B
+5771,Mono
+5772,CD4 T
+5773,Mono
+5774,CD4 T
+5775,CD8 T
+5776,CD8 T
+5777,CD8 T
+5778,CD8 T
+5779,B
+5780,Progenitor
+5781,CD8 T
+5782,Mono
+5783,Mono
+5784,Mono
+5785,CD8 T
+5786,NK
+5787,NK
+5788,NK
+5789,NK
+5790,CD8 T
+5791,Mono
+5792,Mono
+5793,DC
+5794,Mono
+5795,Progenitor
+5796,CD4 T
+5797,Mono
+5798,DC
+5799,Mono
+5800,Mono
+5801,B
+5802,Mono
+5803,DC
+5804,CD4 T
+5805,Mono
+5806,NK
+5807,CD8 T
+5808,B
+5809,CD8 T
+5810,CD8 T
+5811,CD8 T
+5812,Mono
+5813,Mono
+5814,NK
+5815,CD8 T
+5816,Mono
+5817,NK
+5818,CD8 T
+5819,Mono
+5820,B
+5821,Mono
+5822,CD8 T
+5823,CD8 T
+5824,Mono
+5825,Progenitor
+5826,Mono
+5827,Mono
+5828,CD4 T
+5829,CD4 T
+5830,Mono
+5831,Mono
+5832,CD8 T
+5833,DC
+5834,Mono
+5835,Mono
+5836,Mono
+5837,CD8 T
+5838,Mono
+5839,NK
+5840,Mono
+5841,CD4 T
+5842,Mono
+5843,CD4 T
+5844,NK
+5845,CD8 T
+5846,CD8 T
+5847,NK
+5848,Mono
+5849,CD8 T
+5850,CD8 T
+5851,CD4 T
+5852,Mono
+5853,Mono
+5854,Mono
+5855,DC
+5856,Mono
+5857,Progenitor
+5858,Mono
+5859,NK
+5860,Mono
+5861,Mono
+5862,Mono
+5863,CD8 T
+5864,NK
+5865,NK
+5866,CD4 T
+5867,Mono
+5868,Mono
+5869,Mono
+5870,B
+5871,Mono
+5872,Mono
+5873,DC
+5874,Mono
+5875,NK
+5876,CD4 T
+5877,Mono
+5878,B
+5879,B
+5880,DC
+5881,CD8 T
+5882,DC
+5883,Mono
+5884,Mono
+5885,DC
+5886,CD8 T
+5887,Mono
+5888,CD4 T
+5889,CD4 T
+5890,CD8 T
+5891,Mono
+5892,Mono
+5893,Mono
+5894,Mono
+5895,CD8 T
+5896,Progenitor
+5897,NK
+5898,Mono
+5899,B
+5900,B
+5901,NK
+5902,Mono
+5903,Progenitor
+5904,Mono
+5905,CD4 T
+5906,CD8 T
+5907,CD8 T
+5908,CD4 T
+5909,CD8 T
+5910,NK
+5911,Mono
+5912,Mono
+5913,Mono
+5914,Mono
+5915,DC
+5916,CD4 T
+5917,CD8 T
+5918,Mono
+5919,Progenitor
+5920,CD4 T
+5921,Progenitor
+5922,Mono
+5923,Mono
+5924,NK
+5925,Mono
+5926,CD8 T
+5927,DC
+5928,Mono
+5929,Mono
+5930,CD4 T
+5931,Mono
+5932,CD4 T
+5933,Mono
+5934,CD8 T
+5935,B
+5936,CD8 T
+5937,Progenitor
+5938,DC
+5939,Mono
+5940,CD8 T
+5941,Mono
+5942,DC
+5943,NK
+5944,Mono
+5945,Mono
+5946,DC
+5947,Mono
+5948,Mono
+5949,Mono
+5950,Progenitor
+5951,Mono
+5952,Mono
+5953,Mono
+5954,Mono
+5955,Mono
+5956,CD8 T
+5957,NK
+5958,Mono
+5959,Mono
+5960,CD8 T
+5961,Mono
+5962,B
+5963,CD8 T
+5964,Mono
+5965,CD4 T
+5966,Progenitor
+5967,DC
+5968,CD4 T
+5969,Mono
+5970,DC
+5971,NK
+5972,Mono
+5973,Mono
+5974,Mono
+5975,Mono
+5976,Mono
+5977,CD4 T
+5978,Mono
+5979,B
+5980,NK
+5981,DC
+5982,Mono
+5983,Mono
+5984,Mono
+5985,Mono
+5986,NK
+5987,NK
+5988,NK
+5989,CD8 T
+5990,Mono
+5991,NK
+5992,Progenitor
+5993,NK
+5994,CD4 T
+5995,B
+5996,B
+5997,Mono
+5998,CD8 T
+5999,CD8 T
+6000,Mono
+6001,Mono
+6002,CD8 T
+6003,NK
+6004,Mono
+6005,Progenitor
+6006,CD8 T
+6007,B
+6008,CD8 T
+6009,B
+6010,Progenitor
+6011,CD4 T
+6012,Mono
+6013,Mono
+6014,CD4 T
+6015,CD8 T
+6016,Mono
+6017,Mono
+6018,Mono
+6019,Mono
+6020,Mono
+6021,CD8 T
+6022,Mono
+6023,Mono
+6024,Mono
+6025,Mono
+6026,Mono
+6027,CD8 T
+6028,Mono
+6029,Mono
+6030,Mono
+6031,Mono
+6032,Mono
+6033,Mono
+6034,B
+6035,CD8 T
+6036,Mono
+6037,Mono
+6038,Mono
+6039,Mono
+6040,B
+6041,CD8 T
+6042,Mono
+6043,NK
+6044,Mono
+6045,Mono
+6046,Mono
+6047,Mono
+6048,Progenitor
+6049,DC
+6050,Mono
+6051,B
+6052,Mono
+6053,B
+6054,CD4 T
+6055,CD8 T
+6056,B
+6057,B
+6058,Mono
+6059,CD8 T
+6060,Mono
+6061,Mono
+6062,Mono
+6063,Mono
+6064,Mono
+6065,Mono
+6066,Mono
+6067,CD4 T
+6068,Mono
+6069,NK
+6070,DC
+6071,Mono
+6072,Mono
+6073,Mono
+6074,B
+6075,Progenitor
+6076,CD4 T
+6077,B
+6078,Mono
+6079,Mono
+6080,Mono
+6081,Mono
+6082,Mono
+6083,Progenitor
+6084,DC
+6085,CD8 T
+6086,CD8 T
+6087,Mono
+6088,CD4 T
+6089,NK
+6090,Mono
+6091,DC
+6092,B
+6093,Mono
+6094,Mono
+6095,Mono
+6096,Mono
+6097,B
+6098,CD4 T
+6099,CD8 T
+6100,CD8 T
+6101,Mono
+6102,Mono
+6103,CD4 T
+6104,CD8 T
+6105,B
+6106,B
+6107,NK
+6108,Mono
+6109,Mono
+6110,CD8 T
+6111,CD8 T
+6112,Mono
+6113,Mono
+6114,NK
+6115,Mono
+6116,Mono
+6117,Mono
+6118,Progenitor
+6119,Mono
+6120,Mono
+6121,DC
+6122,B
+6123,CD8 T
+6124,CD4 T
+6125,CD8 T
+6126,Mono
+6127,Mono
+6128,Mono
+6129,CD8 T
+6130,B
+6131,Mono
+6132,Mono
+6133,CD8 T
+6134,Mono
+6135,CD8 T
+6136,Mono
+6137,Mono
+6138,Mono
+6139,Mono
+6140,CD8 T
+6141,CD4 T
+6142,Mono
+6143,Mono
+6144,Mono
+6145,Mono
+6146,CD8 T
+6147,CD4 T
+6148,CD8 T
+6149,Mono
+6150,Mono
+6151,NK
+6152,Mono
+6153,Mono
+6154,Mono
+6155,Mono
+6156,B
+6157,Mono
+6158,Progenitor
+6159,Mono
+6160,Mono
+6161,CD8 T
+6162,B
+6163,Mono
+6164,CD8 T
+6165,Mono
+6166,Mono
+6167,CD8 T
+6168,Mono
+6169,Mono
+6170,CD8 T
+6171,Mono
+6172,Mono
+6173,Mono
+6174,Mono
+6175,Mono
+6176,Mono
+6177,Mono
+6178,Mono
+6179,CD8 T
+6180,Mono
+6181,Mono
+6182,CD4 T
+6183,CD8 T
+6184,CD8 T
+6185,Mono
+6186,Progenitor
+6187,Mono
+6188,CD8 T
+6189,Mono
+6190,Mono
+6191,CD4 T
+6192,Mono
+6193,Mono
+6194,B
+6195,NK
+6196,other T
+6197,CD4 T
+6198,DC
+6199,Mono
+6200,Mono
+6201,Progenitor
+6202,CD4 T
+6203,Mono
+6204,Mono
+6205,Mono
+6206,Mono
+6207,Mono
+6208,Progenitor
+6209,NK
+6210,DC
+6211,Mono
+6212,CD8 T
+6213,Mono
+6214,Mono
+6215,CD8 T
+6216,Mono
+6217,Mono
+6218,Progenitor
+6219,Mono
+6220,Mono
+6221,CD8 T
+6222,Mono
+6223,Mono
+6224,NK
+6225,Mono
+6226,DC
+6227,Mono
+6228,Progenitor
+6229,Progenitor
+6230,B
+6231,B
+6232,Progenitor
+6233,Progenitor
+6234,Progenitor
+6235,Mono
+6236,CD4 T
+6237,Mono
+6238,B
+6239,Mono
+6240,Mono
+6241,B
+6242,B
+6243,NK
+6244,Mono
+6245,Progenitor
+6246,Mono
+6247,DC
+6248,Mono
+6249,Progenitor
+6250,Mono
+6251,CD4 T
+6252,Mono
+6253,Mono
+6254,Mono
+6255,Progenitor
+6256,Mono
+6257,Mono
+6258,NK
+6259,Mono
+6260,NK
+6261,Mono
+6262,Mono
+6263,DC
+6264,Mono
+6265,Mono
+6266,Mono
+6267,Progenitor
+6268,Mono
+6269,B
+6270,Mono
+6271,Mono
+6272,NK
+6273,B
+6274,Progenitor
+6275,Mono
+6276,CD4 T
+6277,CD8 T
+6278,CD4 T
+6279,Mono
+6280,B
+6281,Mono
+6282,DC
+6283,Mono
+6284,CD4 T
+6285,Mono
+6286,CD8 T
+6287,NK
+6288,CD4 T
+6289,Mono
+6290,Progenitor
+6291,Mono
+6292,Mono
+6293,Mono
+6294,CD4 T
+6295,Mono
+6296,Mono
+6297,CD8 T
+6298,NK
+6299,Mono
+6300,CD8 T
+6301,Mono
+6302,Mono
+6303,Mono
+6304,Mono
+6305,Mono
+6306,Mono
+6307,Mono
+6308,Progenitor
+6309,Mono
+6310,Mono
+6311,CD4 T
+6312,Mono
+6313,Mono
+6314,Mono
+6315,Mono
+6316,Mono
+6317,Mono
+6318,CD8 T
+6319,Mono
+6320,B
+6321,Mono
+6322,Mono
+6323,Mono
+6324,Mono
+6325,Progenitor
+6326,Mono
+6327,Mono
+6328,Mono
+6329,Mono
+6330,NK
+6331,Mono
+6332,Mono
+6333,B
+6334,Mono
+6335,CD4 T
+6336,CD4 T
+6337,Mono
+6338,Mono
+6339,CD4 T
+6340,CD8 T
+6341,Progenitor
+6342,CD8 T
+6343,Mono
+6344,Mono
+6345,CD8 T
+6346,NK
+6347,DC
+6348,NK
+6349,Mono
+6350,Mono
+6351,Mono
+6352,CD4 T
+6353,Mono
+6354,Mono
+6355,Mono
+6356,Mono
+6357,Mono
+6358,CD8 T
+6359,Mono
+6360,Mono
+6361,Mono
+6362,Mono
+6363,CD4 T
+6364,Mono
+6365,Mono
+6366,NK
+6367,Progenitor
+6368,NK
+6369,Mono
+6370,B
+6371,CD4 T
+6372,Mono
+6373,Progenitor
+6374,CD4 T
+6375,Mono
+6376,Mono
+6377,NK
+6378,B
+6379,B
+6380,B
+6381,Mono
+6382,Mono
+6383,CD8 T
+6384,Mono
+6385,CD8 T
+6386,CD4 T
+6387,CD8 T
+6388,Mono
+6389,CD8 T
+6390,Mono
+6391,CD4 T
+6392,Mono
+6393,DC
+6394,Mono
+6395,Mono
+6396,NK
+6397,CD8 T
+6398,CD4 T
+6399,Mono
+6400,Mono
+6401,B
+6402,NK
+6403,B
+6404,Mono
+6405,Mono
+6406,CD8 T
+6407,DC
+6408,Mono
+6409,Mono
+6410,Mono
+6411,Mono
+6412,Mono
+6413,DC
+6414,NK
+6415,Mono
+6416,Progenitor
+6417,CD8 T
+6418,Mono
+6419,Mono
+6420,Mono
+6421,CD8 T
+6422,B
+6423,Mono
+6424,Progenitor
+6425,Mono
+6426,CD8 T
+6427,B
+6428,Mono
+6429,CD8 T
+6430,NK
+6431,NK
+6432,CD8 T
+6433,NK
+6434,CD8 T
+6435,Mono
+6436,CD4 T
+6437,CD4 T
+6438,Mono
+6439,B
+6440,Mono
+6441,CD8 T
+6442,CD4 T
+6443,Mono
+6444,Mono
+6445,Mono
+6446,CD8 T
+6447,DC
+6448,Mono
+6449,CD8 T
+6450,CD4 T
+6451,Mono
+6452,Mono
+6453,Mono
+6454,CD8 T
+6455,B
+6456,CD8 T
+6457,Mono
+6458,Mono
+6459,Mono
+6460,Mono
+6461,Mono
+6462,B
+6463,Mono
+6464,Mono
+6465,Mono
+6466,NK
+6467,CD4 T
+6468,Progenitor
+6469,Mono
+6470,Mono
+6471,Mono
+6472,Mono
+6473,DC
+6474,Mono
+6475,Mono
+6476,Mono
+6477,Mono
+6478,Mono
+6479,B
+6480,DC
+6481,Progenitor
+6482,Mono
+6483,DC
+6484,Mono
+6485,NK
+6486,Mono
+6487,Mono
+6488,CD8 T
+6489,CD8 T
+6490,Mono
+6491,Progenitor
+6492,Mono
+6493,Mono
+6494,Mono
+6495,Mono
+6496,CD8 T
+6497,NK
+6498,NK
+6499,Mono
+6500,Mono
+6501,Mono
+6502,Mono
+6503,B
+6504,Mono
+6505,DC
+6506,Mono
+6507,NK
+6508,Mono
+6509,Mono
+6510,Mono
+6511,CD4 T
+6512,NK
+6513,Mono
+6514,Mono
+6515,B
+6516,Mono
+6517,Mono
+6518,DC
+6519,Mono
+6520,B
+6521,Progenitor
+6522,NK
+6523,Mono
+6524,B
+6525,CD8 T
+6526,CD8 T
+6527,NK
+6528,Mono
+6529,CD8 T
+6530,Mono
+6531,Mono
+6532,CD8 T
+6533,CD8 T
+6534,Mono
+6535,Mono
+6536,Mono
+6537,NK
+6538,NK
+6539,Mono
+6540,Mono
+6541,CD4 T
+6542,Mono
+6543,DC
+6544,Mono
+6545,NK
+6546,CD8 T
+6547,Mono
+6548,Mono
+6549,B
+6550,Mono
+6551,Mono
+6552,CD4 T
+6553,CD8 T
+6554,CD8 T
+6555,Progenitor
+6556,Mono
+6557,CD8 T
+6558,Progenitor
+6559,Mono
+6560,Mono
+6561,Progenitor
+6562,NK
+6563,CD8 T
+6564,Mono
+6565,CD4 T
+6566,Mono
+6567,B
+6568,CD4 T
+6569,Mono
+6570,Mono
+6571,Mono
+6572,Progenitor
+6573,Mono
+6574,Progenitor
+6575,B
+6576,CD4 T
+6577,CD4 T
+6578,Mono
+6579,Mono
+6580,Progenitor
+6581,DC
+6582,CD8 T
+6583,Mono
+6584,NK
+6585,Mono
+6586,Mono
+6587,NK
+6588,B
+6589,Mono
+6590,CD8 T
+6591,Progenitor
+6592,Progenitor
+6593,CD8 T
+6594,B
+6595,CD4 T
+6596,Mono
+6597,NK
+6598,CD4 T
+6599,Mono
+6600,Mono
+6601,CD8 T
+6602,CD4 T
+6603,CD4 T
+6604,Mono
+6605,NK
+6606,Mono
+6607,NK
+6608,CD8 T
+6609,CD8 T
+6610,Mono
+6611,CD8 T
+6612,Mono
+6613,Mono
+6614,Mono
+6615,Mono
+6616,CD4 T
+6617,CD8 T
+6618,CD4 T
+6619,NK
+6620,CD8 T
+6621,Mono
+6622,CD8 T
+6623,CD4 T
+6624,Mono
+6625,NK
+6626,Progenitor
+6627,CD8 T
+6628,Progenitor
+6629,CD4 T
+6630,Mono
+6631,Mono
+6632,CD4 T
+6633,CD8 T
+6634,CD8 T
+6635,NK
+6636,Mono
+6637,Mono
+6638,NK
+6639,Mono
+6640,B
+6641,Mono
+6642,CD8 T
+6643,CD8 T
+6644,Mono
+6645,Mono
+6646,CD4 T
+6647,B
+6648,CD4 T
+6649,Mono
+6650,Mono
+6651,Progenitor
+6652,Mono
+6653,CD8 T
+6654,CD8 T
+6655,Mono
+6656,CD8 T
+6657,NK
+6658,Mono
+6659,Mono
+6660,Mono
+6661,CD8 T
+6662,NK
+6663,CD8 T
+6664,Mono
+6665,Mono
+6666,CD8 T
+6667,Mono
+6668,Mono
+6669,Mono
+6670,NK
+6671,DC
+6672,Mono
+6673,CD4 T
+6674,NK
+6675,Mono
+6676,NK
+6677,B
+6678,NK
+6679,Mono
+6680,Mono
+6681,NK
+6682,CD8 T
+6683,Progenitor
+6684,Mono
+6685,Mono
+6686,B
+6687,Mono
+6688,Mono
+6689,Mono
+6690,B
+6691,B
+6692,Mono
+6693,Progenitor
+6694,CD8 T
+6695,CD4 T
+6696,DC
+6697,CD4 T
+6698,NK
+6699,NK
+6700,Mono
+6701,Mono
+6702,Mono
+6703,DC
+6704,Mono
+6705,Mono
+6706,Progenitor
+6707,NK
+6708,Mono
+6709,NK
+6710,Mono
+6711,CD8 T
+6712,CD8 T
+6713,CD8 T
+6714,CD8 T
+6715,CD8 T
+6716,CD4 T
+6717,CD4 T
+6718,Mono
+6719,Mono
+6720,Mono
+6721,NK
+6722,Mono
+6723,NK
+6724,Mono
+6725,NK
+6726,CD8 T
+6727,Mono
+6728,NK
+6729,NK
+6730,CD4 T
+6731,Mono
+6732,NK
+6733,Mono
+6734,CD4 T
+6735,Mono
+6736,Mono
+6737,Mono
+6738,Mono
+6739,CD4 T
+6740,DC
+6741,Mono
+6742,Mono
+6743,CD4 T
+6744,Mono
+6745,CD8 T
+6746,Mono
+6747,CD8 T
+6748,Mono
+6749,CD4 T
+6750,CD8 T
+6751,CD8 T
+6752,NK
+6753,NK
+6754,B
+6755,other T
+6756,Mono
+6757,CD8 T
+6758,CD4 T
+6759,Mono
+6760,CD8 T
+6761,Mono
+6762,CD4 T
+6763,NK
+6764,Progenitor
+6765,CD8 T
+6766,Mono
+6767,CD8 T
+6768,CD8 T
+6769,Mono
+6770,NK
+6771,B
+6772,CD8 T
+6773,B
+6774,B
+6775,CD8 T
+6776,NK
+6777,CD4 T
+6778,Progenitor
+6779,CD4 T
+6780,CD8 T
+6781,Mono
+6782,CD4 T
+6783,NK
+6784,CD8 T
+6785,CD4 T
+6786,Mono
+6787,CD8 T
+6788,Mono
+6789,B
+6790,Mono
+6791,NK
+6792,Mono
+6793,Mono
+6794,Mono
+6795,NK
+6796,Mono
+6797,Mono
+6798,CD4 T
+6799,Progenitor
+6800,NK
+6801,B
+6802,Mono
+6803,CD8 T
+6804,CD8 T
+6805,Progenitor
+6806,Mono
+6807,Mono
+6808,NK
+6809,CD4 T
+6810,Mono
+6811,CD4 T
+6812,NK
+6813,Progenitor
+6814,CD8 T
+6815,CD4 T
+6816,B
+6817,Mono
+6818,NK
+6819,Mono
+6820,Progenitor
+6821,Mono
+6822,CD8 T
+6823,Mono
+6824,Mono
+6825,CD8 T
+6826,B
+6827,Progenitor
+6828,CD4 T
+6829,Mono
+6830,NK
+6831,NK
+6832,Mono
+6833,Progenitor
+6834,CD8 T
+6835,CD8 T
+6836,CD8 T
+6837,Mono
+6838,CD8 T
+6839,Mono
+6840,Mono
+6841,CD8 T
+6842,CD8 T
+6843,CD4 T
+6844,CD8 T
+6845,CD8 T
+6846,CD4 T
+6847,Mono
+6848,Progenitor
+6849,CD8 T
+6850,DC
+6851,CD4 T
+6852,other T
+6853,Mono
+6854,Mono
+6855,Mono
+6856,CD8 T
+6857,Mono
+6858,CD8 T
+6859,B
+6860,B
+6861,CD8 T
+6862,CD8 T
+6863,CD8 T
+6864,Mono
+6865,Mono
+6866,CD8 T
+6867,Mono
+6868,Mono
+6869,B
+6870,Progenitor
+6871,Mono
+6872,Mono
+6873,CD4 T
+6874,Mono
+6875,Mono
+6876,Progenitor
+6877,NK
+6878,Mono
+6879,Mono
+6880,Mono
+6881,B
+6882,Mono
+6883,Mono
+6884,CD8 T
+6885,B
+6886,CD8 T
+6887,CD8 T
+6888,Mono
+6889,Mono
+6890,NK
+6891,Mono
+6892,Progenitor
+6893,CD4 T
+6894,NK
+6895,CD8 T
+6896,CD8 T
+6897,Mono
+6898,Mono
+6899,CD8 T
+6900,Progenitor
+6901,Mono
+6902,Mono
+6903,DC
+6904,Mono
+6905,Progenitor
+6906,B
+6907,Mono
+6908,CD8 T
+6909,Mono
+6910,Mono
+6911,DC
+6912,CD8 T
+6913,B
+6914,CD8 T
+6915,B
+6916,CD8 T
+6917,Mono
+6918,B
+6919,CD4 T
+6920,Mono
+6921,CD8 T
+6922,CD4 T
+6923,CD4 T
+6924,B
+6925,CD8 T
+6926,Mono
+6927,CD8 T
+6928,Progenitor
+6929,Progenitor
+6930,NK
+6931,Progenitor
+6932,Progenitor
+6933,B
+6934,Mono
+6935,Progenitor
+6936,B
+6937,Mono
+6938,DC
+6939,B
+6940,Mono
+6941,DC
+6942,Mono
+6943,Mono
+6944,CD4 T
+6945,Progenitor
+6946,B
+6947,NK
+6948,CD4 T
+6949,Progenitor
+6950,B
+6951,NK
+6952,CD8 T
+6953,Progenitor
+6954,CD8 T
+6955,Mono
+6956,CD8 T
+6957,CD4 T
+6958,CD8 T
+6959,NK
+6960,CD4 T
+6961,Mono
+6962,Mono
+6963,CD4 T
+6964,Mono
+6965,Progenitor
+6966,DC
+6967,Mono
+6968,B
+6969,CD4 T
+6970,Mono
+6971,B
+6972,CD8 T
+6973,Progenitor
+6974,Progenitor
+6975,CD8 T
+6976,Progenitor
+6977,CD8 T
+6978,B
+6979,Mono
+6980,CD8 T
+6981,NK
+6982,CD8 T
+6983,Mono
+6984,B
+6985,Progenitor
+6986,Mono
+6987,Mono
+6988,B
+6989,CD8 T
+6990,Mono
+6991,DC
+6992,B
+6993,NK
+6994,Mono
+6995,Mono
+6996,Mono
+6997,NK
+6998,NK
+6999,Mono
+7000,NK
+7001,Progenitor
+7002,Progenitor
+7003,CD8 T
+7004,DC
+7005,DC
+7006,Mono
+7007,B
+7008,Mono
+7009,CD4 T
+7010,NK
+7011,Mono
+7012,Progenitor
+7013,Mono
+7014,Progenitor
+7015,Mono
+7016,Progenitor
+7017,CD8 T
+7018,Mono
+7019,CD4 T
+7020,Progenitor
+7021,B
+7022,CD8 T
+7023,Progenitor
+7024,other T
+7025,Mono
+7026,Mono
+7027,Mono
+7028,Progenitor
+7029,CD8 T
+7030,CD4 T
+7031,Progenitor
+7032,B
+7033,NK
+7034,NK
+7035,Mono
+7036,Mono
+7037,CD8 T
+7038,Mono
+7039,Mono
+7040,NK
+7041,CD8 T
+7042,CD8 T
+7043,NK
+7044,Mono
+7045,CD8 T
+7046,NK
+7047,CD4 T
+7048,NK
+7049,CD8 T
+7050,CD8 T
+7051,Mono
+7052,Mono
+7053,B
+7054,Mono
+7055,Progenitor
+7056,CD8 T
+7057,B
+7058,Mono
+7059,Mono
+7060,Mono
+7061,DC
+7062,CD4 T
+7063,Mono
+7064,CD8 T
+7065,other T
+7066,Mono
+7067,Mono
+7068,Mono
+7069,CD8 T
+7070,CD4 T
+7071,Mono
+7072,Progenitor
+7073,CD8 T
+7074,CD4 T
+7075,Progenitor
+7076,Mono
+7077,Mono
+7078,CD4 T
+7079,Mono
+7080,Progenitor
+7081,B
+7082,B
+7083,Mono
+7084,CD4 T
+7085,Mono
+7086,B
+7087,Mono
+7088,DC
+7089,NK
+7090,Mono
+7091,B
+7092,Progenitor
+7093,CD8 T
+7094,Mono
+7095,NK
+7096,B
+7097,CD8 T
+7098,B
+7099,NK
+7100,B
+7101,NK
+7102,B
+7103,Progenitor
+7104,CD8 T
+7105,Mono
+7106,Mono
+7107,Mono
+7108,Progenitor
+7109,Progenitor
+7110,CD8 T
+7111,Mono
+7112,B
+7113,CD8 T
+7114,Mono
+7115,Mono
+7116,CD8 T
+7117,Progenitor
+7118,Mono
+7119,Progenitor
+7120,B
+7121,Mono
+7122,Mono
+7123,Mono
+7124,B
+7125,Mono
+7126,Mono
+7127,Mono
+7128,B
+7129,Mono
+7130,B
+7131,Mono
+7132,B
+7133,DC
+7134,B
+7135,Progenitor
+7136,B
+7137,B
+7138,DC
+7139,Progenitor
+7140,Mono
+7141,CD8 T
+7142,B
+7143,CD8 T
+7144,CD4 T
+7145,B
+7146,B
+7147,B
+7148,B
+7149,B
+7150,CD8 T
+7151,B
+7152,CD8 T
+7153,B
+7154,B
+7155,CD8 T
+7156,Progenitor
+7157,CD8 T
+7158,B
+7159,CD8 T
+7160,CD4 T
+7161,B
+7162,B
+7163,CD8 T
+7164,Progenitor
+7165,Mono
+7166,Mono
+7167,Mono
+7168,B
+7169,B
+7170,CD8 T
+7171,B
+7172,CD8 T
+7173,Mono
+7174,Mono
+7175,B
+7176,Mono
+7177,NK
+7178,Mono
+7179,CD4 T
+7180,Mono
+7181,Progenitor
+7182,Mono
+7183,Mono
+7184,Mono
+7185,Mono
+7186,CD4 T
+7187,Mono
+7188,Mono
+7189,Mono
+7190,B
+7191,Mono
+7192,Mono
+7193,Mono
+7194,Progenitor
+7195,Mono
+7196,DC
+7197,Mono
+7198,Mono
+7199,Mono
+7200,CD4 T
+7201,Mono
+7202,Mono
+7203,Mono
+7204,CD8 T
+7205,DC
+7206,CD8 T
+7207,CD4 T
+7208,Progenitor
+7209,Mono
+7210,Mono
+7211,Mono
+7212,CD4 T
+7213,Mono
+7214,Mono
+7215,Mono
+7216,Mono
+7217,Mono
+7218,DC
+7219,CD8 T
+7220,CD4 T
+7221,B
+7222,CD4 T
+7223,NK
+7224,CD4 T
+7225,B
+7226,CD4 T
+7227,NK
+7228,Progenitor
+7229,Mono
+7230,B
+7231,CD8 T
+7232,CD8 T
+7233,Mono
+7234,Progenitor
+7235,NK
+7236,CD4 T
+7237,Mono
+7238,CD8 T
+7239,Mono
+7240,Mono
+7241,Mono
+7242,NK
+7243,NK
+7244,NK
+7245,Mono
+7246,Mono
+7247,Mono
+7248,Mono
+7249,NK
+7250,NK
+7251,B
+7252,NK
+7253,Mono
+7254,Mono
+7255,Mono
+7256,Mono
+7257,Mono
+7258,Mono
+7259,CD4 T
+7260,NK
+7261,CD4 T
+7262,CD8 T
+7263,Mono
+7264,CD4 T
+7265,Mono
+7266,B
+7267,NK
+7268,CD4 T
+7269,NK
+7270,CD8 T
+7271,Mono
+7272,CD8 T
+7273,CD8 T
+7274,Mono
+7275,CD8 T
+7276,CD4 T
+7277,CD8 T
+7278,Mono
+7279,Mono
+7280,Mono
+7281,Mono
+7282,CD8 T
+7283,CD4 T
+7284,Progenitor
+7285,DC
+7286,CD4 T
+7287,CD8 T
+7288,Mono
+7289,NK
+7290,Mono
+7291,CD8 T
+7292,Mono
+7293,DC
+7294,CD8 T
+7295,CD4 T
+7296,DC
+7297,CD8 T
+7298,Mono
+7299,CD4 T
+7300,Mono
+7301,Progenitor
+7302,Mono
+7303,Mono
+7304,Mono
+7305,Mono
+7306,Mono
+7307,Progenitor
+7308,Mono
+7309,Progenitor
+7310,Mono
+7311,Mono
+7312,Mono
+7313,NK
+7314,Mono
+7315,CD4 T
+7316,DC
+7317,Mono
+7318,CD8 T
+7319,Mono
+7320,Mono
+7321,CD8 T
+7322,Mono
+7323,DC
+7324,CD4 T
+7325,B
+7326,DC
+7327,Mono
+7328,CD8 T
+7329,Mono
+7330,Mono
+7331,Mono
+7332,Progenitor
+7333,Mono
+7334,Mono
+7335,CD4 T
+7336,Mono
+7337,CD4 T
+7338,Mono
+7339,Progenitor
+7340,CD8 T
+7341,CD8 T
+7342,CD4 T
+7343,Mono
+7344,B
+7345,Mono
+7346,Mono
+7347,CD4 T
+7348,Mono
+7349,CD8 T
+7350,DC
+7351,CD8 T
+7352,CD8 T
+7353,CD4 T
+7354,NK
+7355,Mono
+7356,Mono
+7357,Mono
+7358,Mono
+7359,Mono
+7360,Mono
+7361,Mono
+7362,CD8 T
+7363,Mono
+7364,B
+7365,Progenitor
+7366,Mono
+7367,Mono
+7368,NK
+7369,Progenitor
+7370,CD8 T
+7371,Progenitor
+7372,Mono
+7373,CD4 T
+7374,CD4 T
+7375,Mono
+7376,Mono
+7377,CD8 T
+7378,Mono
+7379,Mono
+7380,CD8 T
+7381,CD8 T
+7382,Mono
+7383,B
+7384,CD8 T
+7385,NK
+7386,Mono
+7387,Mono
+7388,Mono
+7389,Mono
+7390,Mono
+7391,Mono
+7392,Progenitor
+7393,Mono
+7394,CD8 T
+7395,NK
+7396,NK
+7397,Progenitor
+7398,Mono
+7399,Mono
+7400,B
+7401,Mono
+7402,Mono
+7403,CD4 T
+7404,B
+7405,Progenitor
+7406,CD4 T
+7407,Mono
+7408,Mono
+7409,DC
+7410,CD4 T
+7411,NK
+7412,Mono
+7413,Mono
+7414,CD8 T
+7415,Mono
+7416,Mono
+7417,Progenitor
+7418,Mono
+7419,CD4 T
+7420,B
+7421,CD8 T
+7422,CD8 T
+7423,CD4 T
+7424,Mono
+7425,Mono
+7426,B
+7427,CD8 T
+7428,B
+7429,Mono
+7430,CD4 T
+7431,NK
+7432,Mono
+7433,CD8 T
+7434,NK
+7435,Progenitor
+7436,Mono
+7437,Mono
+7438,NK
+7439,CD4 T
+7440,other T
+7441,Progenitor
+7442,NK
+7443,Mono
+7444,DC
+7445,NK
+7446,Mono
+7447,DC
+7448,CD4 T
+7449,CD8 T
+7450,Mono
+7451,DC
+7452,Mono
+7453,CD4 T
+7454,Progenitor
+7455,B
+7456,Mono
+7457,Mono
+7458,CD8 T
+7459,Progenitor
+7460,CD8 T
+7461,Mono
+7462,CD4 T
+7463,NK
+7464,CD4 T
+7465,NK
+7466,Mono
+7467,Mono
+7468,Mono
+7469,Mono
+7470,Mono
+7471,Progenitor
+7472,Mono
+7473,Mono
+7474,B
+7475,DC
+7476,B
+7477,Progenitor
+7478,B
+7479,B
+7480,CD4 T
+7481,CD4 T
+7482,CD4 T
+7483,CD8 T
+7484,B
+7485,DC
+7486,B
+7487,Mono
+7488,Mono
+7489,Progenitor
+7490,B
+7491,CD8 T
+7492,CD8 T
+7493,Mono
+7494,CD8 T
+7495,CD4 T
+7496,CD4 T
+7497,NK
+7498,B
+7499,CD8 T
+7500,CD4 T
+7501,B
+7502,B
+7503,CD8 T
+7504,CD8 T
+7505,Mono
+7506,B
+7507,Mono
+7508,Mono
+7509,B
+7510,B
+7511,Mono
+7512,B
+7513,B
+7514,CD8 T
+7515,NK
+7516,NK
+7517,Mono
+7518,B
+7519,CD8 T
+7520,CD8 T
+7521,Mono
+7522,Mono
+7523,Mono
+7524,Mono
+7525,CD4 T
+7526,CD8 T
+7527,Mono
+7528,Mono
+7529,B
+7530,Mono
+7531,B
+7532,CD4 T
+7533,CD4 T
+7534,Mono
+7535,Mono
+7536,CD4 T
+7537,CD4 T
+7538,Mono
+7539,CD8 T
+7540,Progenitor
+7541,Mono
+7542,Mono
+7543,CD4 T
+7544,CD8 T
+7545,Mono
+7546,Mono
+7547,CD4 T
+7548,DC
+7549,Mono
+7550,CD8 T
+7551,CD4 T
+7552,Mono
+7553,CD8 T
+7554,Mono
+7555,B
+7556,CD8 T
+7557,NK
+7558,CD8 T
+7559,Mono
+7560,CD8 T
+7561,Mono
+7562,B
+7563,CD8 T
+7564,CD4 T
+7565,CD8 T
+7566,Mono
+7567,CD4 T
+7568,Mono
+7569,B
+7570,CD8 T
+7571,Mono
+7572,B
+7573,CD8 T
+7574,B
+7575,Mono
+7576,CD4 T
+7577,Mono
+7578,Mono
+7579,CD4 T
+7580,Mono
+7581,Mono
+7582,NK
+7583,Mono
+7584,CD4 T
+7585,Progenitor
+7586,Mono
+7587,CD8 T
+7588,Mono
+7589,Mono
+7590,Progenitor
+7591,B
+7592,CD8 T
+7593,Mono
+7594,DC
+7595,other T
+7596,Mono
+7597,CD8 T
+7598,Mono
+7599,NK
+7600,CD4 T
+7601,Progenitor
+7602,Mono
+7603,Mono
+7604,NK
+7605,Mono
+7606,Mono
+7607,CD4 T
+7608,Progenitor
+7609,Mono
+7610,Progenitor
+7611,Mono
+7612,Progenitor
+7613,B
+7614,NK
+7615,Progenitor
+7616,Mono
+7617,Mono
+7618,Mono
+7619,CD4 T
+7620,Progenitor
+7621,CD4 T
+7622,B
+7623,B
+7624,Mono
+7625,Progenitor
+7626,Mono
+7627,Progenitor
+7628,Progenitor
+7629,Mono
+7630,Progenitor
+7631,CD4 T
+7632,CD4 T
+7633,CD4 T
+7634,CD4 T
+7635,CD8 T
+7636,CD8 T
+7637,Mono
+7638,CD4 T
+7639,Mono
+7640,CD4 T
+7641,CD4 T
+7642,CD4 T
+7643,Mono
+7644,CD4 T
+7645,CD8 T
+7646,CD4 T
+7647,CD8 T
+7648,CD4 T
+7649,CD8 T
+7650,Mono
+7651,Mono
+7652,Mono
+7653,CD8 T
+7654,Mono
+7655,DC
+7656,Mono
+7657,Mono
+7658,Progenitor
+7659,CD8 T
+7660,Progenitor
+7661,CD4 T
+7662,B
+7663,Progenitor
+7664,CD8 T
+7665,Mono
+7666,Mono
+7667,CD8 T
+7668,CD4 T
+7669,Mono
+7670,Mono
+7671,CD4 T
+7672,Mono
+7673,Mono
+7674,DC
+7675,Mono
+7676,B
+7677,CD4 T
+7678,NK
+7679,Mono
+7680,CD8 T
+7681,B
+7682,CD8 T
+7683,CD8 T
+7684,CD8 T
+7685,Mono
+7686,Mono
+7687,Mono
+7688,CD8 T
+7689,NK
+7690,CD8 T
+7691,Progenitor
+7692,other T
+7693,Progenitor
+7694,NK
+7695,NK
+7696,CD8 T
+7697,Mono
+7698,CD4 T
+7699,Progenitor
+7700,Mono
+7701,Mono
+7702,Mono
+7703,Mono
+7704,NK
+7705,CD4 T
+7706,Mono
+7707,Mono
+7708,Mono
+7709,Mono
+7710,CD8 T
+7711,Mono
+7712,CD8 T
+7713,Mono
+7714,Mono
+7715,CD4 T
+7716,NK
+7717,Mono
+7718,Mono
+7719,CD4 T
+7720,CD4 T
+7721,Mono
+7722,CD8 T
+7723,Mono
+7724,B
+7725,B
+7726,Mono
+7727,CD8 T
+7728,CD4 T
+7729,CD8 T
+7730,Progenitor
+7731,CD4 T
+7732,Mono
+7733,CD8 T
+7734,Mono
+7735,B
+7736,Mono
+7737,NK
+7738,Mono
+7739,Mono
+7740,Mono
+7741,CD8 T
+7742,Mono
+7743,Mono
+7744,Mono
+7745,B
+7746,CD4 T
+7747,Mono
+7748,Mono
+7749,Progenitor
+7750,Mono
+7751,Mono
+7752,Mono
+7753,CD8 T
+7754,Mono
+7755,CD8 T
+7756,CD8 T
+7757,Mono
+7758,Mono
+7759,CD4 T
+7760,B
+7761,Mono
+7762,B
+7763,B
+7764,Progenitor
+7765,Mono
+7766,Mono
+7767,NK
+7768,Progenitor
+7769,NK
+7770,Mono
+7771,Mono
+7772,NK
+7773,CD4 T
+7774,CD8 T
+7775,Mono
+7776,B
+7777,Mono
+7778,Mono
+7779,DC
+7780,Mono
+7781,CD8 T
+7782,CD8 T
+7783,Mono
+7784,Mono
+7785,CD4 T
+7786,Mono
+7787,CD4 T
+7788,Mono
+7789,Mono
+7790,Mono
+7791,Mono
+7792,Mono
+7793,CD4 T
+7794,Mono
+7795,B
+7796,NK
+7797,Mono
+7798,B
+7799,Mono
+7800,other T
+7801,Mono
+7802,CD4 T
+7803,CD4 T
+7804,CD8 T
+7805,Mono
+7806,CD4 T
+7807,Mono
+7808,CD8 T
+7809,CD8 T
+7810,Mono
+7811,CD4 T
+7812,Mono
+7813,CD8 T
+7814,Mono
+7815,NK
+7816,CD4 T
+7817,Mono
+7818,Mono
+7819,DC
+7820,CD8 T
+7821,CD8 T
+7822,NK
+7823,Mono
+7824,CD8 T
+7825,Mono
+7826,CD4 T
+7827,CD4 T
+7828,CD4 T
+7829,CD8 T
+7830,Mono
+7831,Mono
+7832,CD8 T
+7833,Mono
+7834,CD8 T
+7835,Mono
+7836,Mono
+7837,NK
+7838,Mono
+7839,Mono
+7840,Mono
+7841,Mono
+7842,CD8 T
+7843,Mono
+7844,Mono
+7845,Mono
+7846,DC
+7847,CD4 T
+7848,Progenitor
+7849,B
+7850,CD4 T
+7851,Mono
+7852,NK
+7853,Mono
+7854,NK
+7855,Mono
+7856,CD4 T
+7857,CD4 T
+7858,CD4 T
+7859,Mono
+7860,Mono
+7861,Mono
+7862,Mono
+7863,Mono
+7864,Mono
+7865,Mono
+7866,Mono
+7867,B
+7868,NK
+7869,CD8 T
+7870,Mono
+7871,CD4 T
+7872,CD4 T
+7873,CD4 T
+7874,Mono
+7875,CD8 T
+7876,NK
+7877,Progenitor
+7878,Mono
+7879,Mono
+7880,NK
+7881,Mono
+7882,NK
+7883,CD4 T
+7884,B
+7885,NK
+7886,NK
+7887,CD4 T
+7888,Mono
+7889,CD8 T
+7890,CD4 T
+7891,B
+7892,Mono
+7893,Mono
+7894,Mono
+7895,CD8 T
+7896,Mono
+7897,B
+7898,Mono
+7899,Mono
+7900,Mono
+7901,NK
+7902,B
+7903,CD4 T
+7904,Mono
+7905,CD4 T
+7906,Mono
+7907,CD8 T
+7908,Mono
+7909,CD4 T
+7910,Mono
+7911,Mono
+7912,Mono
+7913,CD8 T
+7914,CD4 T
+7915,Progenitor
+7916,NK
+7917,NK
+7918,Progenitor
+7919,B
+7920,NK
+7921,Mono
+7922,NK
+7923,Mono
+7924,Mono
+7925,Mono
+7926,CD8 T
+7927,Mono
+7928,Mono
+7929,Mono
+7930,Progenitor
+7931,Mono
+7932,B
+7933,CD4 T
+7934,Mono
+7935,Progenitor
+7936,Mono
+7937,Mono
+7938,CD4 T
+7939,B
+7940,B
+7941,Mono
+7942,CD8 T
+7943,CD8 T
+7944,Progenitor
+7945,Mono
+7946,CD4 T
+7947,CD4 T
+7948,B
+7949,Mono
+7950,Mono
+7951,other T
+7952,CD4 T
+7953,Mono
+7954,Mono
+7955,Mono
+7956,Progenitor
+7957,Mono
+7958,Mono
+7959,Mono
+7960,Mono
+7961,Mono
+7962,B
+7963,Mono
+7964,Mono
+7965,CD8 T
+7966,CD8 T
+7967,Mono
+7968,CD8 T
+7969,Mono
+7970,Mono
+7971,Progenitor
+7972,Mono
+7973,B
+7974,CD4 T
+7975,Mono
+7976,Mono
+7977,CD4 T
+7978,Mono
+7979,CD8 T
+7980,Mono
+7981,CD4 T
+7982,CD4 T
+7983,CD8 T
+7984,Mono
+7985,Mono
+7986,Mono
+7987,Mono
+7988,CD8 T
+7989,Mono
+7990,CD8 T
+7991,Mono
+7992,B
+7993,B
+7994,Mono
+7995,CD4 T
+7996,CD8 T
+7997,NK
+7998,CD8 T
+7999,B
+8000,Progenitor
+8001,Mono
+8002,Mono
+8003,Mono
+8004,Mono
+8005,CD8 T
+8006,DC
+8007,Mono
+8008,Mono
+8009,DC
+8010,CD4 T
+8011,B
+8012,Mono
+8013,Mono
+8014,CD8 T
+8015,B
+8016,Mono
+8017,Mono
+8018,Mono
+8019,Mono
+8020,Mono
+8021,Mono
+8022,Mono
+8023,Mono
+8024,Progenitor
+8025,NK
+8026,Progenitor
+8027,Mono
+8028,CD4 T
+8029,Mono
+8030,DC
+8031,Mono
+8032,Mono
+8033,CD4 T
+8034,NK
+8035,CD4 T
+8036,Mono
+8037,DC
+8038,CD4 T
+8039,Mono
+8040,Mono
+8041,CD8 T
+8042,CD4 T
+8043,DC
+8044,Mono
+8045,DC
+8046,CD8 T
+8047,B
+8048,Mono
+8049,Mono
+8050,Mono
+8051,DC
+8052,Mono
+8053,NK
+8054,Mono
+8055,Mono
+8056,Mono
+8057,Mono
+8058,Mono
+8059,Mono
+8060,Mono
+8061,Mono
+8062,Progenitor
+8063,NK
+8064,Progenitor
+8065,CD8 T
+8066,Mono
+8067,CD8 T
+8068,B
+8069,Progenitor
+8070,Mono
+8071,Mono
+8072,Mono
+8073,B
+8074,CD4 T
+8075,B
+8076,B
+8077,B
+8078,B
+8079,B
+8080,CD8 T
+8081,Mono
+8082,Mono
+8083,NK
+8084,Progenitor
+8085,B
+8086,Mono
+8087,Mono
+8088,B
+8089,Progenitor
+8090,B
+8091,B
+8092,Mono
+8093,B
+8094,B
+8095,Progenitor
+8096,CD4 T
+8097,B
+8098,Progenitor
+8099,CD8 T
+8100,B
+8101,B
+8102,B
+8103,B
+8104,Mono
+8105,CD4 T
+8106,CD4 T
+8107,B
+8108,DC
+8109,Mono
+8110,CD4 T
+8111,CD4 T
+8112,CD4 T
+8113,CD8 T
+8114,Mono
+8115,Mono
+8116,B
+8117,B
+8118,Progenitor
+8119,B
+8120,B
+8121,Mono
+8122,CD8 T
+8123,CD4 T
+8124,Progenitor
+8125,B
+8126,Progenitor
+8127,Progenitor
+8128,B
+8129,Progenitor
+8130,B
+8131,CD4 T
+8132,CD4 T
+8133,CD4 T
+8134,other T
+8135,Mono
+8136,Progenitor
+8137,Mono
+8138,Mono
+8139,Mono
+8140,B
+8141,Mono
+8142,Mono
+8143,CD4 T
+8144,Mono
+8145,Mono
+8146,DC
+8147,CD4 T
+8148,Mono
+8149,CD4 T
+8150,Mono
+8151,Mono
+8152,Mono
+8153,Mono
+8154,Mono
+8155,Mono
+8156,Mono
+8157,Mono
+8158,Mono
+8159,Mono
+8160,Mono
+8161,Mono
+8162,Mono
+8163,Mono
+8164,Mono
+8165,CD8 T
+8166,Mono
+8167,Mono
+8168,CD8 T
+8169,Mono
+8170,CD4 T
+8171,Mono
+8172,Mono
+8173,Mono
+8174,CD8 T
+8175,Mono
+8176,Progenitor
+8177,Mono
+8178,Mono
+8179,B
+8180,Mono
+8181,Mono
+8182,CD4 T
+8183,Mono
+8184,Mono
+8185,NK
+8186,Mono
+8187,Mono
+8188,B
+8189,B
+8190,Mono
+8191,Mono
+8192,B
+8193,CD4 T
+8194,Mono
+8195,B
+8196,Mono
+8197,NK
+8198,Progenitor
+8199,Mono
+8200,B
+8201,NK
+8202,Mono
+8203,Mono
+8204,Mono
+8205,Mono
+8206,Mono
+8207,Mono
+8208,Mono
+8209,Mono
+8210,Mono
+8211,Mono
+8212,Mono
+8213,Mono
+8214,Mono
+8215,Mono
+8216,Mono
+8217,Mono
+8218,Mono
+8219,Mono
+8220,Mono
+8221,Mono
+8222,Progenitor
+8223,B
+8224,B
+8225,B
+8226,Progenitor
+8227,CD4 T
+8228,B
+8229,CD4 T
+8230,CD4 T
+8231,CD4 T
+8232,NK
+8233,CD4 T
+8234,CD8 T
+8235,Mono
+8236,Mono
+8237,Mono
+8238,Mono
+8239,CD4 T
+8240,Mono
+8241,Mono
+8242,Mono
+8243,Mono
+8244,Mono
+8245,CD8 T
+8246,CD4 T
+8247,B
+8248,CD4 T
+8249,NK
+8250,B
+8251,CD4 T
+8252,Mono
+8253,CD4 T
+8254,CD4 T
+8255,NK
+8256,CD8 T
+8257,CD4 T
+8258,Mono
+8259,CD8 T
+8260,CD8 T
+8261,CD8 T
+8262,NK
+8263,Mono
+8264,CD4 T
+8265,CD8 T
+8266,NK
+8267,CD8 T
+8268,Mono
+8269,Mono
+8270,NK
+8271,B
+8272,Mono
+8273,CD8 T
+8274,Mono
+8275,CD4 T
+8276,CD4 T
+8277,CD4 T
+8278,Progenitor
+8279,Progenitor
+8280,CD4 T
+8281,Mono
+8282,NK
+8283,CD4 T
+8284,CD8 T
+8285,Mono
+8286,Mono
+8287,Mono
+8288,CD8 T
+8289,Mono
+8290,CD8 T
+8291,CD4 T
+8292,Progenitor
+8293,NK
+8294,Mono
+8295,Mono
+8296,CD8 T
+8297,NK
+8298,CD8 T
+8299,NK
+8300,CD8 T
+8301,CD8 T
+8302,Mono
+8303,CD4 T
+8304,Mono
+8305,CD8 T
+8306,CD4 T
+8307,B
+8308,NK
+8309,NK
+8310,CD8 T
+8311,NK
+8312,NK
+8313,Progenitor
+8314,CD8 T
+8315,Mono
+8316,CD8 T
+8317,Mono
+8318,Mono
+8319,NK
+8320,CD8 T
+8321,CD4 T
+8322,CD4 T
+8323,NK
+8324,CD4 T
+8325,CD4 T
+8326,B
+8327,B
+8328,Mono
+8329,DC
+8330,Mono
+8331,Mono
+8332,DC
+8333,CD4 T
+8334,NK
+8335,Mono
+8336,Mono
+8337,Mono
+8338,NK
+8339,CD4 T
+8340,CD4 T
+8341,CD4 T
+8342,NK
+8343,CD4 T
+8344,Mono
+8345,NK
+8346,other T
+8347,NK
+8348,Mono
+8349,Mono
+8350,Mono
+8351,Mono
+8352,Mono
+8353,DC
+8354,Mono
+8355,CD4 T
+8356,CD8 T
+8357,Mono
+8358,B
+8359,Mono
+8360,Progenitor
+8361,B
+8362,CD8 T
+8363,Mono
+8364,Mono
+8365,B
+8366,Mono
+8367,Mono
+8368,Mono
+8369,Mono
+8370,Mono
+8371,Mono
+8372,Mono
+8373,Progenitor
+8374,Mono
+8375,Progenitor
+8376,Mono
+8377,CD8 T
+8378,CD8 T
+8379,CD8 T
+8380,CD8 T
+8381,Mono
+8382,CD8 T
+8383,CD4 T
+8384,Mono
+8385,Mono
+8386,Mono
+8387,NK
+8388,CD4 T
+8389,Mono
+8390,Progenitor
+8391,Mono
+8392,Mono
+8393,B
+8394,Mono
+8395,DC
+8396,CD8 T
+8397,Progenitor
+8398,Mono
+8399,Mono
+8400,CD4 T
+8401,NK
+8402,Mono
+8403,Mono
+8404,Mono
+8405,Mono
+8406,Mono
+8407,Mono
+8408,CD8 T
+8409,CD8 T
+8410,Mono
+8411,Progenitor
+8412,Mono
+8413,Mono
+8414,Mono
+8415,Mono
+8416,CD4 T
+8417,CD4 T
+8418,Mono
+8419,B
+8420,B
+8421,Mono
+8422,CD4 T
+8423,CD8 T
+8424,Mono
+8425,Mono
+8426,Mono
+8427,CD4 T
+8428,CD4 T
+8429,B
+8430,CD8 T
+8431,Mono
+8432,CD8 T
+8433,DC
+8434,CD4 T
+8435,Mono
+8436,Mono
+8437,Mono
+8438,NK
+8439,B
+8440,Mono
+8441,CD8 T
+8442,Mono
+8443,Mono
+8444,CD8 T
+8445,Mono
+8446,Mono
+8447,B
+8448,Progenitor
+8449,Mono
+8450,CD8 T
+8451,CD4 T
+8452,Mono
+8453,Mono
+8454,CD8 T
+8455,B
+8456,Mono
+8457,CD8 T
+8458,Mono
+8459,Mono
+8460,Mono
+8461,Mono
+8462,Mono
+8463,Mono
+8464,Mono
+8465,CD8 T
+8466,Mono
+8467,Progenitor
+8468,Mono
+8469,Mono
+8470,Mono
+8471,CD8 T
+8472,B
+8473,CD4 T
+8474,Mono
+8475,Mono
+8476,CD8 T
+8477,Mono
+8478,CD4 T
+8479,B
+8480,CD4 T
+8481,CD4 T
+8482,Mono
+8483,CD4 T
+8484,CD8 T
+8485,Mono
+8486,Mono
+8487,Mono
+8488,Mono
+8489,Mono
+8490,CD8 T
+8491,NK
+8492,Mono
+8493,CD8 T
+8494,DC
+8495,B
+8496,Progenitor
+8497,CD8 T
+8498,CD8 T
+8499,Mono
+8500,Mono
+8501,Mono
+8502,CD4 T
+8503,DC
+8504,Mono
+8505,B
+8506,Mono
+8507,CD4 T
+8508,Mono
+8509,CD8 T
+8510,CD8 T
+8511,CD4 T
+8512,Mono
+8513,CD4 T
+8514,Mono
+8515,CD4 T
+8516,CD4 T
+8517,Mono
+8518,Mono
+8519,Mono
+8520,Mono
+8521,Mono
+8522,CD8 T
+8523,Mono
+8524,Mono
+8525,Mono
+8526,NK
+8527,Mono
+8528,Mono
+8529,Progenitor
+8530,CD4 T
+8531,Progenitor
+8532,CD8 T
+8533,Progenitor
+8534,Mono
+8535,Mono
+8536,Mono
+8537,Mono
+8538,CD4 T
+8539,Mono
+8540,CD8 T
+8541,CD4 T
+8542,CD8 T
+8543,B
+8544,CD8 T
+8545,CD8 T
+8546,CD8 T
+8547,NK
+8548,Mono
+8549,Mono
+8550,B
+8551,CD8 T
+8552,Mono
+8553,CD4 T
+8554,CD8 T
+8555,Progenitor
+8556,Mono
+8557,B
+8558,Mono
+8559,Mono
+8560,Progenitor
+8561,Mono
+8562,Mono
+8563,CD8 T
+8564,Mono
+8565,Mono
+8566,Mono
+8567,Mono
+8568,NK
+8569,CD4 T
+8570,Mono
+8571,NK
+8572,B
+8573,Mono
+8574,CD4 T
+8575,Mono
+8576,Progenitor
+8577,NK
+8578,Mono
+8579,Mono
+8580,Mono
+8581,CD8 T
+8582,Mono
+8583,Mono
+8584,CD8 T
+8585,Mono
+8586,Mono
+8587,Mono
+8588,Mono
+8589,NK
+8590,CD8 T
+8591,CD4 T
+8592,CD4 T
+8593,Mono
+8594,Mono
+8595,Mono
+8596,CD4 T
+8597,Progenitor
+8598,Mono
+8599,CD4 T
+8600,CD8 T
+8601,NK
+8602,Mono
+8603,CD4 T
+8604,Mono
+8605,Mono
+8606,CD4 T
+8607,CD4 T
+8608,Mono
+8609,CD8 T
+8610,Mono
+8611,Progenitor
+8612,CD8 T
+8613,Mono
+8614,CD4 T
+8615,Mono
+8616,CD4 T
+8617,B
+8618,CD8 T
+8619,CD4 T
+8620,Progenitor
+8621,CD4 T
+8622,CD4 T
+8623,Mono
+8624,CD4 T
+8625,B
+8626,Mono
+8627,Mono
+8628,Mono
+8629,Mono
+8630,Mono
+8631,CD8 T
+8632,Mono
+8633,Progenitor
+8634,Mono
+8635,CD8 T
+8636,Progenitor
+8637,CD8 T
+8638,B
+8639,CD8 T
+8640,B
+8641,Progenitor
+8642,Mono
+8643,Mono
+8644,CD8 T
+8645,CD8 T
+8646,B
+8647,Mono
+8648,Mono
+8649,Mono
+8650,NK
+8651,Progenitor
+8652,Progenitor
+8653,B
+8654,Mono
+8655,Mono
+8656,CD8 T
+8657,Mono
+8658,Mono
+8659,B
+8660,NK
+8661,DC
+8662,CD4 T
+8663,Mono
+8664,Mono
+8665,CD8 T
+8666,Mono
+8667,CD8 T
+8668,Mono
+8669,Progenitor
+8670,Mono
+8671,Mono
+8672,CD8 T
+8673,CD8 T
+8674,NK
+8675,CD8 T
+8676,Progenitor
+8677,Progenitor
+8678,B
+8679,CD4 T
+8680,Progenitor
+8681,Mono
+8682,Mono
+8683,B
+8684,B
+8685,NK
+8686,Mono
+8687,Mono
+8688,Mono
+8689,NK
+8690,Mono
+8691,CD8 T
+8692,Mono
+8693,Mono
+8694,Mono
+8695,Progenitor
+8696,Mono
+8697,Progenitor
+8698,Mono
+8699,CD8 T
+8700,Mono
+8701,Mono
+8702,Mono
+8703,Mono
+8704,NK
+8705,Mono
+8706,Mono
+8707,B
+8708,Mono
+8709,B
+8710,other T
+8711,Mono
+8712,CD8 T
+8713,NK
+8714,CD4 T
+8715,Mono
+8716,Mono
+8717,CD8 T
+8718,CD4 T
+8719,B
+8720,NK
+8721,Mono
+8722,Mono
+8723,Progenitor
+8724,CD4 T
+8725,Mono
+8726,Mono
+8727,Mono
+8728,CD8 T
+8729,B
+8730,NK
+8731,B
+8732,CD8 T
+8733,Mono
+8734,CD8 T
+8735,Mono
+8736,CD8 T
+8737,CD8 T
+8738,Mono
+8739,Mono
+8740,Progenitor
+8741,Mono
+8742,CD4 T
+8743,CD4 T
+8744,CD4 T
+8745,B
+8746,CD8 T
+8747,B
+8748,Mono
+8749,Mono
+8750,B
+8751,CD8 T
+8752,NK
+8753,NK
+8754,Mono
+8755,Mono
+8756,Mono
+8757,CD8 T
+8758,CD8 T
+8759,Mono
+8760,Mono
+8761,Mono
+8762,Mono
+8763,CD4 T
+8764,Mono
+8765,Mono
+8766,Mono
+8767,Mono
+8768,CD8 T
+8769,CD4 T
+8770,Mono
+8771,Progenitor
+8772,Mono
+8773,CD4 T
+8774,Progenitor
+8775,Mono
+8776,Mono
+8777,CD8 T
+8778,CD4 T
+8779,CD8 T
+8780,Mono
+8781,NK
+8782,Mono
+8783,Mono
+8784,Mono
+8785,CD8 T
+8786,CD8 T
+8787,CD4 T
+8788,Mono
+8789,Mono
+8790,CD4 T
+8791,Mono
+8792,Mono
+8793,Mono
+8794,Mono
+8795,B
+8796,Progenitor
+8797,Mono
+8798,Mono
+8799,NK
+8800,Mono
+8801,CD8 T
+8802,Mono
+8803,Mono
+8804,CD4 T
+8805,CD8 T
+8806,Mono
+8807,Mono
+8808,other T
+8809,Mono
+8810,Mono
+8811,Mono
+8812,Mono
+8813,Mono
+8814,DC
+8815,CD8 T
+8816,Mono
+8817,CD8 T
+8818,Progenitor
+8819,Mono
+8820,Mono
+8821,B
+8822,CD4 T
+8823,Mono
+8824,Mono
+8825,Mono
+8826,CD8 T
+8827,Mono
+8828,Mono
+8829,Mono
+8830,CD8 T
+8831,Mono
+8832,NK
+8833,Mono
+8834,CD4 T
+8835,Mono
+8836,Mono
+8837,NK
+8838,NK
+8839,Mono
+8840,B
+8841,Mono
+8842,Mono
+8843,CD8 T
+8844,NK
+8845,CD4 T
+8846,Mono
+8847,Mono
+8848,CD4 T
+8849,CD4 T
+8850,Mono
+8851,NK
+8852,CD8 T
+8853,Mono
+8854,B
+8855,Mono
+8856,Progenitor
+8857,B
+8858,CD8 T
+8859,Mono
+8860,CD4 T
+8861,CD8 T
+8862,Progenitor
+8863,CD4 T
+8864,Progenitor
+8865,CD4 T
+8866,Mono
+8867,B
+8868,CD8 T
+8869,Mono
+8870,NK
+8871,NK
+8872,B
+8873,Mono
+8874,Mono
+8875,NK
+8876,Mono
+8877,CD8 T
+8878,Mono
+8879,CD4 T
+8880,CD4 T
+8881,CD4 T
+8882,Progenitor
+8883,DC
+8884,NK
+8885,Mono
+8886,Mono
+8887,Mono
+8888,Mono
+8889,Mono
+8890,Mono
+8891,Mono
+8892,Mono
+8893,Progenitor
+8894,Mono
+8895,Mono
+8896,Mono
+8897,CD8 T
+8898,Mono
+8899,Mono
+8900,Mono
+8901,CD4 T
+8902,CD4 T
+8903,Mono
+8904,Mono
+8905,CD4 T
+8906,Mono
+8907,Mono
+8908,CD4 T
+8909,CD8 T
+8910,Mono
+8911,Mono
+8912,DC
+8913,Mono
+8914,CD4 T
+8915,CD8 T
+8916,Mono
+8917,Mono
+8918,CD4 T
+8919,Mono
+8920,Mono
+8921,CD8 T
+8922,CD4 T
+8923,CD8 T
+8924,Mono
+8925,Mono
+8926,Mono
+8927,CD4 T
+8928,CD4 T
+8929,CD4 T
+8930,CD8 T
+8931,Mono
+8932,Mono
+8933,Mono
+8934,Mono
+8935,Mono
+8936,CD4 T
+8937,CD8 T
+8938,Mono
+8939,CD4 T
+8940,CD4 T
+8941,NK
+8942,Mono
+8943,Mono
+8944,CD8 T
+8945,CD4 T
+8946,CD4 T
+8947,Mono
+8948,Mono
+8949,CD4 T
+8950,Mono
+8951,Mono
+8952,CD8 T
+8953,CD4 T
+8954,CD4 T
+8955,Progenitor
+8956,CD8 T
+8957,B
+8958,Mono
+8959,CD4 T
+8960,CD8 T
+8961,Mono
+8962,other T
+8963,Mono
+8964,Mono
+8965,Mono
+8966,Mono
+8967,CD8 T
+8968,Mono
+8969,CD4 T
+8970,Mono
+8971,Mono
+8972,Mono
+8973,CD8 T
+8974,DC
+8975,B
+8976,Progenitor
+8977,Mono
+8978,Mono
+8979,Progenitor
+8980,CD8 T
+8981,Mono
+8982,Mono
+8983,Mono
+8984,CD4 T
+8985,Mono
+8986,CD8 T
+8987,Mono
+8988,CD8 T
+8989,Mono
+8990,Mono
+8991,Mono
+8992,CD8 T
+8993,CD8 T
+8994,Mono
+8995,CD8 T
+8996,Mono
+8997,Mono
+8998,Mono
+8999,Mono
+9000,Mono
+9001,Mono
+9002,Mono
+9003,CD8 T
+9004,CD8 T
+9005,Mono
+9006,Mono
+9007,CD8 T
+9008,Mono
+9009,CD4 T
+9010,Mono
+9011,Mono
+9012,Mono
+9013,Mono
+9014,Mono
+9015,Mono
+9016,Progenitor
+9017,Mono
+9018,NK
+9019,CD8 T
+9020,CD4 T
+9021,Mono
+9022,CD8 T
+9023,DC
+9024,CD4 T
+9025,CD8 T
+9026,B
+9027,CD4 T
+9028,Mono
+9029,B
+9030,CD4 T
+9031,CD8 T
+9032,CD4 T
+9033,CD4 T
+9034,Mono
+9035,Mono
+9036,Progenitor
+9037,Mono
+9038,Mono
+9039,Mono
+9040,Mono
+9041,Mono
+9042,Mono
+9043,Mono
+9044,Mono
+9045,NK
+9046,CD4 T
+9047,CD8 T
+9048,DC
+9049,B
+9050,CD8 T
+9051,CD4 T
+9052,Mono
+9053,Mono
+9054,CD4 T
+9055,NK
+9056,Mono
+9057,CD4 T
+9058,Mono
+9059,Mono
+9060,Mono
+9061,DC
+9062,CD8 T
+9063,Mono
+9064,CD8 T
+9065,Mono
+9066,Mono
+9067,Mono
+9068,Progenitor
+9069,Mono
+9070,Mono
+9071,Mono
+9072,Mono
+9073,Mono
+9074,CD4 T
+9075,Mono
+9076,CD4 T
+9077,Mono
+9078,Mono
+9079,Mono
+9080,Mono
+9081,Progenitor
+9082,Mono
+9083,Mono
+9084,CD8 T
+9085,Mono
+9086,Progenitor
+9087,Mono
+9088,CD4 T
+9089,Progenitor
+9090,B
+9091,Mono
+9092,Progenitor
+9093,Mono
+9094,Mono
+9095,Mono
+9096,Mono
+9097,Mono
+9098,B
+9099,Mono
+9100,Mono
+9101,Mono
+9102,Progenitor
+9103,Mono
+9104,CD4 T
+9105,CD4 T
+9106,Mono
+9107,Mono
+9108,CD4 T
+9109,Mono
+9110,CD4 T
+9111,Progenitor
+9112,Mono
+9113,B
+9114,CD4 T
+9115,Mono
+9116,NK
+9117,B
+9118,Mono
+9119,Mono
+9120,Mono
+9121,NK
+9122,CD4 T
+9123,DC
+9124,Mono
+9125,CD8 T
+9126,Mono
+9127,Mono
+9128,Progenitor
+9129,B
+9130,Mono
+9131,CD4 T
+9132,CD8 T
+9133,CD8 T
+9134,B
+9135,Mono
+9136,CD8 T
+9137,DC
+9138,CD4 T
+9139,CD4 T
+9140,NK
+9141,CD4 T
+9142,Mono
+9143,Mono
+9144,NK
+9145,CD4 T
+9146,B
+9147,NK
+9148,CD4 T
+9149,B
+9150,Mono
+9151,Mono
+9152,NK
+9153,Mono
+9154,NK
+9155,Mono
+9156,Mono
+9157,CD8 T
+9158,CD4 T
+9159,Mono
+9160,CD4 T
+9161,CD4 T
+9162,Mono
+9163,CD4 T
+9164,Mono
+9165,CD8 T
+9166,DC
+9167,CD8 T
+9168,Mono
+9169,CD8 T
+9170,Progenitor
+9171,Mono
+9172,Mono
+9173,CD8 T
+9174,Mono
+9175,Mono
+9176,Mono
+9177,Mono
+9178,CD4 T
+9179,Mono
+9180,Mono
+9181,Mono
+9182,Mono
+9183,Progenitor
+9184,CD8 T
+9185,CD8 T
+9186,CD4 T
+9187,Mono
+9188,Mono
+9189,Mono
+9190,Mono
+9191,CD8 T
+9192,CD4 T
+9193,CD8 T
+9194,CD4 T
+9195,CD8 T
+9196,B
+9197,Progenitor
+9198,CD8 T
+9199,B
+9200,Mono
+9201,NK
+9202,Mono
+9203,NK
+9204,Mono
+9205,CD8 T
+9206,Mono
+9207,Mono
+9208,Mono
+9209,Mono
+9210,CD8 T
+9211,Mono
+9212,Mono
+9213,Mono
+9214,CD8 T
+9215,Mono
+9216,CD4 T
+9217,Mono
+9218,CD4 T
+9219,Progenitor
+9220,CD8 T
+9221,Mono
+9222,Mono
+9223,CD8 T
+9224,CD8 T
+9225,Mono
+9226,Mono
+9227,Mono
+9228,CD4 T
+9229,CD4 T
+9230,Mono
+9231,CD4 T
+9232,CD8 T
+9233,Mono
+9234,Mono
+9235,B
+9236,Mono
+9237,CD4 T
+9238,CD4 T
+9239,CD4 T
+9240,Mono
+9241,B
+9242,Mono
+9243,Progenitor
+9244,CD8 T
+9245,B
+9246,Mono
+9247,Mono
+9248,CD4 T
+9249,NK
+9250,CD4 T
+9251,Mono
+9252,CD8 T
+9253,Progenitor
+9254,B
+9255,Mono
+9256,Progenitor
+9257,Mono
+9258,B
+9259,Mono
+9260,CD4 T
+9261,Mono
+9262,Mono
+9263,CD8 T
+9264,Mono
+9265,Progenitor
+9266,Mono
+9267,Mono
+9268,Mono
+9269,B
+9270,Mono
+9271,CD4 T
+9272,NK
+9273,Mono
+9274,B
+9275,Mono
+9276,Progenitor
+9277,Mono
+9278,other T
+9279,B
+9280,Mono
+9281,Mono
+9282,CD4 T
+9283,Mono
+9284,NK
+9285,B
+9286,Mono
+9287,Mono
+9288,NK
+9289,Mono
+9290,CD4 T
+9291,Progenitor
+9292,Mono
+9293,Progenitor
+9294,DC
+9295,Progenitor
+9296,CD8 T
+9297,CD8 T
+9298,CD4 T
+9299,CD8 T
+9300,B
+9301,Progenitor
+9302,Mono
+9303,NK
+9304,CD8 T
+9305,DC
+9306,NK
+9307,Mono
+9308,Progenitor
+9309,NK
+9310,Progenitor
+9311,Mono
+9312,Mono
+9313,Mono
+9314,Mono
+9315,Progenitor
+9316,Mono
+9317,Mono
+9318,Mono
+9319,Mono
+9320,CD8 T
+9321,Mono
+9322,Mono
+9323,Mono
+9324,Mono
+9325,CD4 T
+9326,Mono
+9327,Mono
+9328,B
+9329,CD8 T
+9330,Progenitor
+9331,Mono
+9332,Mono
+9333,Mono
+9334,Mono
+9335,CD4 T
+9336,Mono
+9337,Mono
+9338,Mono
+9339,Mono
+9340,Mono
+9341,Mono
+9342,Mono
+9343,Mono
+9344,Mono
+9345,NK
+9346,Mono
+9347,Mono
+9348,Mono
+9349,B
+9350,Mono
+9351,Mono
+9352,Progenitor
+9353,CD8 T
+9354,Mono
+9355,Mono
+9356,Mono
+9357,Mono
+9358,Mono
+9359,Mono
+9360,Mono
+9361,CD8 T
+9362,CD8 T
+9363,Mono
+9364,B
+9365,Mono
+9366,Mono
+9367,B
+9368,Mono
+9369,Mono
+9370,NK
+9371,Mono
+9372,Mono
+9373,Mono
+9374,CD8 T
+9375,CD4 T
+9376,Mono
+9377,B
+9378,CD4 T
+9379,Mono
+9380,Mono
+9381,Progenitor
+9382,Mono
+9383,Mono
+9384,Mono
+9385,CD8 T
+9386,B
+9387,Mono
+9388,CD8 T
+9389,Mono
+9390,Mono
+9391,Mono
+9392,CD8 T
+9393,CD4 T
+9394,CD4 T
+9395,CD8 T
+9396,CD4 T
+9397,Mono
+9398,Progenitor
+9399,CD8 T
+9400,Mono
+9401,Mono
+9402,Mono
+9403,Mono
+9404,Mono
+9405,Mono
+9406,Mono
+9407,Mono
+9408,CD4 T
+9409,Mono
+9410,Mono
+9411,Mono
+9412,B
+9413,Mono
+9414,Mono
+9415,Mono
+9416,Mono
+9417,Mono
+9418,Mono
+9419,Mono
+9420,Mono
+9421,Mono
+9422,Mono
+9423,Mono
+9424,CD4 T
+9425,Progenitor
+9426,Mono
+9427,CD4 T
+9428,CD4 T
+9429,CD4 T
+9430,Mono
+9431,Mono
+9432,CD8 T
+9433,CD4 T
+9434,Mono
+9435,Mono
+9436,CD4 T
+9437,CD4 T
+9438,Mono
+9439,Progenitor
+9440,Progenitor
+9441,Mono
+9442,Mono
+9443,Mono
+9444,CD4 T
+9445,CD4 T
+9446,Mono
+9447,Mono
+9448,B
+9449,Mono
+9450,CD4 T
+9451,Mono
+9452,CD8 T
+9453,Mono
+9454,CD4 T
+9455,Mono
+9456,CD4 T
+9457,Mono
+9458,CD8 T
+9459,Mono
+9460,CD4 T
+9461,Mono
+9462,CD8 T
+9463,Mono
+9464,B
+9465,NK
+9466,CD8 T
+9467,Mono
+9468,CD8 T
+9469,Mono
+9470,Mono
+9471,CD4 T
+9472,Mono
+9473,Mono
+9474,other T
+9475,Mono
+9476,Mono
+9477,B
+9478,Mono
+9479,CD8 T
+9480,Mono
+9481,Mono
+9482,NK
+9483,Progenitor
+9484,Mono
+9485,Mono
+9486,Mono
+9487,Mono
+9488,Mono
+9489,Mono
+9490,CD8 T
+9491,Mono
+9492,CD4 T
+9493,Mono
+9494,CD8 T
+9495,Mono
+9496,Mono
+9497,CD8 T
+9498,Mono
+9499,CD4 T
+9500,CD8 T
+9501,Mono
+9502,NK
+9503,CD8 T
+9504,CD8 T
+9505,CD4 T
+9506,Mono
+9507,CD4 T
+9508,Mono
+9509,Mono
+9510,Mono
+9511,Progenitor
+9512,NK
+9513,Mono
+9514,Mono
+9515,Mono
+9516,Mono
+9517,Mono
+9518,CD8 T
+9519,Mono
+9520,Mono
+9521,B
+9522,Mono
+9523,Mono
+9524,CD4 T
+9525,CD4 T
+9526,Mono
+9527,Mono
+9528,Mono
+9529,CD4 T
+9530,CD4 T
+9531,Mono
+9532,CD8 T
+9533,CD8 T
+9534,Mono
+9535,NK
+9536,B
+9537,NK
+9538,B
+9539,Mono
+9540,CD8 T
+9541,CD8 T
+9542,NK
+9543,CD8 T
+9544,Mono
+9545,CD4 T
+9546,Mono
+9547,Mono
+9548,CD8 T
+9549,CD4 T
+9550,CD8 T
+9551,NK
+9552,Mono
+9553,Mono
+9554,Mono
+9555,Mono
+9556,CD4 T
+9557,CD8 T
+9558,CD4 T
+9559,Mono
+9560,Mono
+9561,Mono
+9562,Mono
+9563,B
+9564,CD4 T
+9565,Mono
+9566,CD4 T
+9567,CD8 T
+9568,CD8 T
+9569,Progenitor
+9570,Progenitor
+9571,Mono
+9572,CD8 T
+9573,CD8 T
+9574,B
+9575,Mono
+9576,Mono
+9577,Mono
+9578,Mono
+9579,Mono
+9580,Mono
+9581,Mono
+9582,CD4 T
+9583,CD4 T
+9584,CD8 T
+9585,CD4 T
+9586,Mono
+9587,CD4 T
+9588,CD4 T
+9589,B
+9590,Mono
+9591,Mono
+9592,Mono
+9593,Mono
+9594,Mono
+9595,Mono
+9596,Mono
+9597,B
+9598,Mono
+9599,CD4 T
+9600,B
+9601,Progenitor
+9602,B
+9603,Mono
+9604,CD4 T
+9605,NK
+9606,B
+9607,Mono
+9608,CD4 T
+9609,CD4 T
+9610,CD8 T
+9611,B
+9612,Mono
+9613,Mono
+9614,CD4 T
+9615,NK
+9616,Mono
+9617,Mono
+9618,B
+9619,Mono
+9620,B
+9621,Mono
+9622,Mono
+9623,Mono
+9624,Mono
+9625,CD8 T
+9626,Mono
+9627,CD8 T
+9628,Mono
+9629,Mono
+9630,B
+9631,CD8 T
+9632,Progenitor
+9633,Mono
+9634,Mono
+9635,Mono
+9636,Mono
+9637,Progenitor
+9638,Mono
+9639,Mono
+9640,Mono
+9641,Mono
+9642,Mono
+9643,Mono
+9644,Mono
+9645,Mono
+9646,Mono
+9647,Mono
+9648,Mono
+9649,CD8 T
+9650,Progenitor
+9651,Mono
+9652,NK
+9653,CD8 T
+9654,Progenitor
+9655,NK
+9656,Progenitor
+9657,Mono
+9658,CD4 T
+9659,CD4 T
+9660,CD8 T
+9661,Mono
+9662,Mono
+9663,CD8 T
+9664,Mono
+9665,Mono
+9666,CD8 T
+9667,Mono
+9668,Mono
+9669,Mono
+9670,CD4 T
+9671,Mono
+9672,CD8 T
+9673,Mono
+9674,NK
+9675,B
+9676,CD4 T
+9677,CD8 T
+9678,Mono
+9679,Mono
+9680,CD4 T
+9681,CD4 T
+9682,CD4 T
+9683,Mono
+9684,CD8 T
+9685,Mono
+9686,Mono
+9687,Mono
+9688,Mono
+9689,Progenitor
+9690,Mono
+9691,Mono
+9692,Mono
+9693,Mono
+9694,Mono
+9695,Mono
+9696,Progenitor
+9697,CD4 T
+9698,Mono
+9699,CD8 T
+9700,Mono
+9701,B
+9702,DC
+9703,CD8 T
+9704,DC
+9705,Mono
+9706,Mono
+9707,Mono
+9708,Mono
+9709,Mono
+9710,Mono
+9711,CD4 T
+9712,CD4 T
+9713,Mono
+9714,Mono
+9715,Mono
+9716,B
+9717,Mono
+9718,Mono
+9719,B
+9720,Mono
+9721,Mono
+9722,CD8 T
+9723,Mono
+9724,Mono
+9725,Mono
+9726,B
+9727,Mono
+9728,Mono
+9729,CD8 T
+9730,Mono
+9731,Mono
+9732,Mono
+9733,CD8 T
+9734,B
+9735,CD4 T
+9736,CD4 T
+9737,NK
+9738,Progenitor
+9739,CD4 T
+9740,Mono
+9741,Mono
+9742,Mono
+9743,CD4 T
+9744,CD8 T
+9745,Mono
+9746,Mono
+9747,Mono
+9748,Mono
+9749,Progenitor
+9750,Mono
+9751,Mono
+9752,Mono
+9753,Mono
+9754,Mono
+9755,B
+9756,Mono
+9757,CD8 T
+9758,CD4 T
+9759,CD4 T
+9760,Mono
+9761,Mono
+9762,CD4 T
+9763,Mono
+9764,Progenitor
+9765,B
+9766,Mono
+9767,Mono
+9768,B
+9769,Mono
+9770,Mono
+9771,Mono
+9772,B
+9773,CD4 T
+9774,Mono
+9775,Mono
+9776,Mono
+9777,Mono
+9778,CD8 T
+9779,Mono
+9780,CD8 T
+9781,Progenitor
+9782,Mono
+9783,CD4 T
+9784,CD4 T
+9785,Mono
+9786,Mono
+9787,Mono
+9788,Mono
+9789,B
+9790,Mono
+9791,CD4 T
+9792,Mono
+9793,CD4 T
+9794,Mono
+9795,Mono
+9796,CD8 T
+9797,Mono
+9798,Mono
+9799,Mono
+9800,CD4 T
+9801,CD8 T
+9802,Mono
+9803,NK
+9804,Mono
+9805,CD4 T
+9806,Mono
+9807,Mono
+9808,Mono
+9809,DC
+9810,Progenitor
+9811,Mono
+9812,Mono
+9813,CD8 T
+9814,CD8 T
+9815,CD8 T
+9816,Mono
+9817,Mono
+9818,CD4 T
+9819,Mono
+9820,NK
+9821,CD4 T
+9822,other T
+9823,Mono
+9824,CD4 T
+9825,CD4 T
+9826,Mono
+9827,CD4 T
+9828,CD4 T
+9829,Mono
+9830,Mono
+9831,CD8 T
+9832,CD8 T
+9833,Progenitor
+9834,Mono
+9835,Mono
+9836,CD8 T
+9837,CD8 T
+9838,Mono
+9839,B
+9840,Mono
+9841,Mono
+9842,CD8 T
+9843,Mono
+9844,Mono
+9845,CD4 T
+9846,CD4 T
+9847,Progenitor
+9848,CD4 T
+9849,Progenitor
+9850,DC
+9851,B
+9852,CD8 T
+9853,CD4 T
+9854,CD4 T
+9855,Mono
+9856,CD4 T
+9857,B
+9858,CD4 T
+9859,Mono
+9860,Progenitor
+9861,Mono
+9862,Mono
+9863,CD4 T
+9864,Mono
+9865,Mono
+9866,CD4 T
+9867,CD4 T
+9868,CD4 T
+9869,CD8 T
+9870,Mono
+9871,CD8 T
+9872,Mono
+9873,CD4 T
+9874,B
+9875,Mono
+9876,Mono
+9877,Mono
+9878,Mono
+9879,Mono
+9880,Mono
+9881,CD4 T
+9882,Mono
+9883,CD8 T
+9884,CD4 T
+9885,Mono
+9886,Mono
+9887,CD4 T
+9888,Mono
+9889,CD8 T
+9890,Mono
+9891,CD8 T
+9892,NK
+9893,Mono
+9894,Mono
+9895,Mono
+9896,Mono
+9897,B
+9898,Mono
+9899,Mono
+9900,B
+9901,Progenitor
+9902,CD8 T
+9903,NK
+9904,Mono
+9905,Mono
+9906,CD4 T
+9907,CD4 T
+9908,CD4 T
+9909,Mono
+9910,Mono
+9911,Mono
+9912,Mono
+9913,CD8 T
+9914,Mono
+9915,Mono
+9916,Mono
+9917,Mono
+9918,CD8 T
+9919,Mono
+9920,Mono
+9921,Mono
+9922,Mono
+9923,Progenitor
+9924,CD4 T
+9925,Mono
+9926,Mono
+9927,Mono
+9928,CD8 T
+9929,CD4 T
+9930,CD4 T
+9931,CD8 T
+9932,Mono
+9933,CD8 T
+9934,CD8 T
+9935,CD8 T
+9936,CD8 T
+9937,CD8 T
+9938,CD4 T
+9939,Mono
+9940,Mono
+9941,Mono
+9942,Mono
+9943,CD8 T
+9944,Mono
+9945,Mono
+9946,CD8 T
+9947,Mono
+9948,Mono
+9949,CD4 T
+9950,Mono
+9951,Mono
+9952,Mono
+9953,Mono
+9954,CD4 T
+9955,B
+9956,Mono
+9957,CD4 T
+9958,Mono
+9959,CD4 T
+9960,CD4 T
+9961,Mono
+9962,CD4 T
+9963,Mono
+9964,Mono
+9965,CD4 T
+9966,Mono
+9967,B
+9968,CD4 T
+9969,B
+9970,Mono
+9971,Mono
+9972,Mono
+9973,Mono
+9974,Mono
+9975,CD4 T
+9976,Mono
+9977,Mono
+9978,NK
+9979,Mono
+9980,CD4 T
+9981,Mono
+9982,CD4 T
+9983,Mono
+9984,Mono
+9985,NK
+9986,Mono
+9987,Progenitor
+9988,Mono
+9989,Mono
+9990,CD4 T
+9991,Mono
+9992,Progenitor
+9993,Mono
+9994,CD8 T
+9995,CD8 T
+9996,Mono
+9997,CD4 T
+9998,CD4 T
+9999,CD4 T
+10000,Mono
+10001,Mono
+10002,Mono
+10003,Mono
+10004,Mono
+10005,Mono
+10006,Mono
+10007,Mono
+10008,Mono
+10009,Mono
+10010,Mono
+10011,CD8 T
+10012,CD8 T
+10013,Mono
+10014,B
+10015,Mono
+10016,CD8 T
+10017,Mono
+10018,Mono
+10019,Mono
+10020,Mono
+10021,Mono
+10022,NK
+10023,CD4 T
+10024,Mono
+10025,CD8 T
+10026,Mono
+10027,Mono
+10028,CD4 T
+10029,B
+10030,Mono
+10031,B
+10032,B
+10033,Mono
+10034,CD4 T
+10035,Mono
+10036,Mono
+10037,CD4 T
+10038,Mono
+10039,Mono
+10040,CD8 T
+10041,CD4 T
+10042,CD4 T
+10043,Mono
+10044,B
+10045,CD8 T
+10046,CD8 T
+10047,CD4 T
+10048,CD8 T
+10049,NK
+10050,Mono
+10051,B
+10052,Mono
+10053,CD4 T
+10054,Mono
+10055,CD4 T
+10056,Mono
+10057,B
+10058,CD4 T
+10059,CD4 T
+10060,CD8 T
+10061,Mono
+10062,CD4 T
+10063,Mono
+10064,Mono
+10065,Mono
+10066,Mono
+10067,Mono
+10068,Progenitor
+10069,Progenitor
+10070,CD4 T
+10071,CD4 T
+10072,CD4 T
+10073,Mono
+10074,Mono
+10075,B
+10076,Mono
+10077,CD4 T
+10078,Mono
+10079,Mono
+10080,Mono
+10081,Mono
+10082,B
+10083,Mono
+10084,CD4 T
+10085,Mono
+10086,CD8 T
+10087,Mono
+10088,CD8 T
+10089,Mono
+10090,B
+10091,Mono
+10092,CD8 T
+10093,Mono
+10094,Mono
+10095,Mono
+10096,CD8 T
+10097,Mono
+10098,NK
+10099,CD4 T
+10100,Mono
+10101,Mono
+10102,CD8 T
+10103,Mono
+10104,Mono
+10105,Mono
+10106,Mono
+10107,CD4 T
+10108,B
+10109,CD4 T
+10110,CD4 T
+10111,CD4 T
+10112,Mono
+10113,Progenitor
+10114,CD4 T
+10115,Mono
+10116,Mono
+10117,CD4 T
+10118,CD4 T
+10119,CD4 T
+10120,Mono
+10121,Mono
+10122,CD8 T
+10123,Mono
+10124,B
+10125,CD8 T
+10126,Mono
+10127,Mono
+10128,CD8 T
+10129,CD4 T
+10130,CD4 T
+10131,Mono
+10132,CD4 T
+10133,Mono
+10134,CD8 T
+10135,Mono
+10136,Mono
+10137,Mono
+10138,Mono
+10139,Mono
+10140,Mono
+10141,CD8 T
+10142,CD8 T
+10143,Mono
+10144,Mono
+10145,Mono
+10146,CD4 T
+10147,Mono
+10148,Mono
+10149,Mono
+10150,CD4 T
+10151,Mono
+10152,CD4 T
+10153,Mono
+10154,CD4 T
+10155,Mono
+10156,Mono
+10157,CD4 T
+10158,Mono
+10159,Mono
+10160,Mono
+10161,Mono
+10162,Mono
+10163,CD4 T
+10164,Progenitor
+10165,Mono
+10166,Mono
+10167,CD4 T
+10168,Mono
+10169,CD4 T
+10170,Mono
+10171,B
+10172,CD4 T
+10173,Mono
+10174,CD4 T
+10175,Progenitor
+10176,CD8 T
+10177,CD4 T
+10178,B
+10179,CD4 T
+10180,Mono
+10181,Mono
+10182,Mono
+10183,Mono
+10184,Mono
+10185,CD8 T
+10186,CD4 T
+10187,Mono
+10188,Mono
+10189,Mono
+10190,CD4 T
+10191,CD8 T
+10192,CD8 T
+10193,Mono
+10194,CD8 T
+10195,CD4 T
+10196,Mono
+10197,Mono
+10198,Mono
+10199,CD8 T
+10200,Mono
+10201,Mono
+10202,Mono
+10203,Mono
+10204,Mono
+10205,Mono
+10206,Mono
+10207,Mono
+10208,CD8 T
+10209,CD4 T
+10210,Mono
+10211,Mono
+10212,Mono
+10213,CD8 T
+10214,CD8 T
+10215,Progenitor
+10216,Progenitor
+10217,Mono
+10218,CD4 T
+10219,Mono
+10220,CD4 T
+10221,DC
+10222,CD4 T
+10223,CD4 T
+10224,CD8 T
+10225,CD4 T
+10226,Mono
+10227,Mono
+10228,CD4 T
+10229,CD8 T
+10230,Mono
+10231,CD4 T
+10232,Mono
+10233,Mono
+10234,CD4 T
+10235,CD4 T
+10236,CD4 T
+10237,Mono
+10238,CD4 T
+10239,CD8 T
+10240,Mono
+10241,Progenitor
+10242,CD4 T
+10243,CD8 T
+10244,Mono
+10245,CD8 T
+10246,CD8 T
+10247,CD4 T
+10248,Mono
+10249,CD4 T
+10250,CD8 T
+10251,CD4 T
+10252,Mono
+10253,CD8 T
+10254,Mono
+10255,Mono
+10256,Mono
+10257,CD4 T
+10258,Mono
+10259,Mono
+10260,Mono
+10261,CD4 T
+10262,Mono
+10263,Mono
+10264,Progenitor
+10265,Mono
+10266,Mono
+10267,Mono
+10268,CD4 T
+10269,Mono
+10270,Mono
+10271,Mono
+10272,B
+10273,Mono
+10274,CD4 T
+10275,CD8 T
+10276,CD4 T
+10277,CD4 T
+10278,Mono
+10279,Progenitor
+10280,Progenitor
+10281,Mono
+10282,Mono
+10283,Mono
+10284,Mono
+10285,Mono
+10286,CD4 T
+10287,Mono
+10288,Mono
+10289,Mono
+10290,CD8 T
+10291,Mono
+10292,Mono
+10293,CD4 T
+10294,CD8 T
+10295,Mono
+10296,CD4 T
+10297,Mono
+10298,CD4 T
+10299,Mono
+10300,Mono
+10301,CD4 T
+10302,Mono
+10303,Mono
+10304,Mono
+10305,Mono
+10306,Mono
+10307,CD8 T
+10308,CD4 T
+10309,CD4 T
+10310,CD4 T
+10311,Mono
+10312,Mono
+10313,CD4 T
+10314,B
+10315,Mono
+10316,CD4 T
+10317,Mono
+10318,CD8 T
+10319,Mono
+10320,Mono
+10321,Mono
+10322,NK
+10323,Mono
+10324,Mono
+10325,Mono
+10326,Progenitor
+10327,CD4 T
+10328,B
+10329,Mono
+10330,B
+10331,Mono
+10332,Progenitor
+10333,Mono
+10334,CD4 T
+10335,Progenitor
+10336,CD4 T
+10337,CD8 T
+10338,CD4 T
+10339,CD8 T
+10340,CD4 T
+10341,CD4 T
+10342,CD4 T
+10343,CD4 T
+10344,Mono
+10345,Progenitor
+10346,Mono
+10347,Mono
+10348,Mono
+10349,Mono
+10350,Mono
+10351,CD4 T
+10352,Mono
+10353,CD4 T
+10354,CD4 T
+10355,CD8 T
+10356,CD4 T
+10357,Mono
+10358,CD4 T
+10359,Mono
+10360,CD4 T
+10361,Mono
+10362,CD4 T
+10363,Progenitor
+10364,Mono
+10365,Mono
+10366,B
+10367,CD4 T
+10368,Mono
+10369,CD4 T
+10370,CD4 T
+10371,CD4 T
+10372,Mono
+10373,CD8 T
+10374,Mono
+10375,CD8 T
+10376,CD8 T
+10377,Mono
+10378,Mono
+10379,Mono
+10380,Mono
+10381,Mono
+10382,Mono
+10383,Mono
+10384,Progenitor
+10385,CD4 T
+10386,Mono
+10387,Mono
+10388,Progenitor
+10389,Progenitor
+10390,Mono
+10391,Mono
+10392,CD8 T
+10393,CD4 T
+10394,Mono
+10395,Mono
+10396,CD8 T
+10397,Mono
+10398,Mono
+10399,CD4 T
+10400,Mono
+10401,CD4 T
+10402,Mono
+10403,CD4 T
+10404,CD4 T
+10405,Progenitor
+10406,Mono
+10407,Mono
+10408,CD4 T
+10409,CD4 T
+10410,CD4 T
+10411,CD4 T
+10412,CD4 T
+10413,CD8 T
+10414,Mono
+10415,Mono
+10416,Mono
+10417,CD4 T
+10418,CD8 T
+10419,Mono
+10420,Mono
+10421,Mono
+10422,CD8 T
+10423,Mono
+10424,CD4 T
+10425,Mono
+10426,CD4 T
+10427,Mono
+10428,CD4 T
+10429,Mono
+10430,CD8 T
+10431,Progenitor
+10432,CD4 T
+10433,Mono
+10434,Progenitor
+10435,Mono
+10436,CD8 T
+10437,CD4 T
+10438,CD8 T
+10439,B
+10440,CD4 T
+10441,CD4 T
+10442,CD8 T
+10443,Mono
+10444,Mono
+10445,CD4 T
+10446,Mono
+10447,Mono
+10448,CD8 T
+10449,Mono
+10450,Mono
+10451,Mono
+10452,B
+10453,CD4 T
+10454,Mono
+10455,CD4 T
+10456,Mono
+10457,Mono
+10458,CD4 T
+10459,Progenitor
+10460,Mono
+10461,Mono
+10462,Mono
+10463,CD8 T
+10464,CD4 T
+10465,CD8 T
+10466,CD4 T
+10467,CD8 T
+10468,Mono
+10469,CD4 T
+10470,CD4 T
+10471,Mono
+10472,Mono
+10473,CD4 T
+10474,Mono
+10475,Mono
+10476,Mono
+10477,CD4 T
+10478,Mono
+10479,Mono
+10480,Mono
+10481,Mono
+10482,Mono
+10483,CD4 T
+10484,CD4 T
+10485,Mono
+10486,Mono
+10487,Mono
+10488,Mono
+10489,CD8 T
+10490,Mono
+10491,CD4 T
+10492,Mono
+10493,CD4 T
+10494,CD8 T
+10495,Mono
+10496,Mono
+10497,Mono
+10498,Mono
+10499,CD4 T
+10500,CD4 T
+10501,Progenitor
+10502,Mono
+10503,B
+10504,B
+10505,B
+10506,B
+10507,CD8 T
+10508,CD8 T
+10509,CD4 T
+10510,B
+10511,CD4 T
+10512,CD4 T
+10513,CD4 T
+10514,Progenitor
+10515,B
+10516,Mono
+10517,CD8 T
+10518,Mono
+10519,Mono
+10520,CD8 T
+10521,B
+10522,Progenitor
+10523,Mono
+10524,CD4 T
+10525,Mono
+10526,Mono
+10527,CD4 T
+10528,CD4 T
+10529,Progenitor
+10530,CD4 T
+10531,Mono
+10532,CD4 T
+10533,CD4 T
+10534,CD4 T
+10535,Mono
+10536,CD4 T
+10537,CD8 T
+10538,CD4 T
+10539,CD4 T
+10540,Progenitor
+10541,CD4 T
+10542,Progenitor
+10543,CD4 T
+10544,Mono
+10545,CD8 T
+10546,Mono
+10547,Mono
+10548,Mono
+10549,CD4 T
+10550,Mono
+10551,CD4 T
+10552,CD4 T
+10553,CD4 T
+10554,CD8 T
+10555,Mono
+10556,CD4 T
+10557,Mono
+10558,CD4 T
+10559,B
+10560,Mono
+10561,Mono
+10562,CD4 T
+10563,CD8 T
+10564,Mono
+10565,Progenitor
+10566,Mono
+10567,CD8 T
+10568,CD4 T
+10569,CD4 T
+10570,Mono
+10571,Mono
+10572,Mono
+10573,CD4 T
+10574,CD8 T
+10575,Mono
+10576,Mono
+10577,B
+10578,CD8 T
+10579,Mono
+10580,Mono
+10581,Mono
+10582,B
+10583,CD4 T
+10584,Mono
+10585,CD8 T
+10586,CD4 T
+10587,Mono
+10588,CD8 T
+10589,CD4 T
+10590,CD4 T
+10591,Mono
+10592,Mono
+10593,CD4 T
+10594,Progenitor
+10595,CD4 T
+10596,CD8 T
+10597,other T
+10598,CD4 T
+10599,Mono
+10600,CD8 T
+10601,Mono
+10602,Mono
+10603,Mono
+10604,CD4 T
+10605,CD4 T
+10606,Mono
+10607,CD4 T
+10608,CD8 T
+10609,CD8 T
+10610,CD8 T
+10611,Mono
+10612,CD8 T
+10613,Mono
+10614,Mono
+10615,Mono
+10616,CD4 T
+10617,CD4 T
+10618,CD4 T
+10619,Mono
+10620,CD4 T
+10621,B
+10622,CD8 T
+10623,CD4 T
+10624,Mono
+10625,CD4 T
+10626,Mono
+10627,CD4 T
+10628,Mono
+10629,CD8 T
+10630,Mono
+10631,Mono
+10632,CD8 T
+10633,CD4 T
+10634,Mono
+10635,Progenitor
+10636,Mono
+10637,CD8 T
+10638,Mono
+10639,Mono
+10640,CD4 T
+10641,CD4 T
+10642,CD8 T
+10643,CD4 T
+10644,CD4 T
+10645,CD4 T
+10646,CD4 T
+10647,CD8 T
+10648,CD8 T
+10649,Mono
+10650,CD4 T
+10651,CD4 T
+10652,CD4 T
+10653,CD8 T
+10654,Mono
+10655,Mono
+10656,CD4 T
+10657,CD4 T
+10658,CD4 T
+10659,CD8 T
+10660,CD4 T
+10661,CD4 T
+10662,Mono
+10663,CD4 T
+10664,CD4 T
+10665,CD4 T
+10666,CD4 T
+10667,CD4 T
+10668,CD4 T
+10669,CD4 T
+10670,CD4 T
+10671,CD4 T
