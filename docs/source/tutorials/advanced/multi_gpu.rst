@@ -24,13 +24,9 @@ Set up the trainer in your training script with the following settings:
         strategy='ddp'                 # Enable distributed training with DDP
     )
 
-- ``devices='auto'``: This will automatically detect and use all available GPUs. 
-Alternatively, specify a specific number of GPUs by setting devices=n, 
-where n is the desired number of GPUs (e.g., devices=2 for two GPUs).
+- ``devices='auto'``: This will automatically detect and use all available GPUs. Alternatively, specify a specific number of GPUs by setting devices=n, where n is the desired number of GPUs (e.g., devices=2 for two GPUs).
 
-- ``strategy='ddp'``: Use the Distributed Data Parallel (DDP) strategy 
-for training across multiple GPUs on a single node. DDP helps to parallelize 
-the model training by splitting the data and computing on different GPUs, improving performance.
+- ``strategy='ddp'``: Use the Distributed Data Parallel (DDP) strategy for training across multiple GPUs on a single node. DDP helps to parallelize the model training by splitting the data and computing on different GPUs, improving performance.
 
 .. note::
     Run 'ddp' in ``.py`` script: For multi-GPU training, it is recommended to run 
