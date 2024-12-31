@@ -6,10 +6,10 @@ To enable Distributed Data Parallel (DDP) training, configure the data sampler a
 .. code-block:: python
 
     # If using this method:
-    model.configure_data(sampler='ddp')
+    model.configure_data(sampler_type='ddp')
 
     # Or, if using this method:
-    model.configure_data_from_dir(sampler='ddp')
+    model.configure_data_from_dir(sampler_type='ddp')
 
 
 
