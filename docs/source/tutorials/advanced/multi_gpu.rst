@@ -3,6 +3,7 @@ Training with Multi-GPU
 
 1. Use the Distributed Sampler for DDP Training
 To enable Distributed Data Parallel (DDP) training, configure the data sampler as follows:
+
 .. code-block:: python
 
     # If using this method:
@@ -15,6 +16,7 @@ To enable Distributed Data Parallel (DDP) training, configure the data sampler a
 
 2. Configure the Trainer for Multi-GPU Training
 Set up the trainer in your training script with the following settings:
+
 .. code-block:: python
 
     trainer = L.Trainer(
