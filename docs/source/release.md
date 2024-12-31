@@ -1,5 +1,9 @@
 # Release notes
 
+## v0.1.4 2024-12-21
+
+1. debug: MIDAS.get_emb_umap(), correct load_predicted()
+
 ## v0.1.3 2024-12-21
 
 1. Integrate with Lightning to enable multi-GPU training.
