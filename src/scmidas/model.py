@@ -1205,7 +1205,7 @@ class MIDAS(L.LightningModule):
                 List of AnnData objects and UMAP figures.
         """
         logging.info(f'Loading predicted data from: {pred_dir}')
-        pred = load_predicted(pred_dir, self.s_joint, self.combs, self.mods)
+        pred = load_predicted(pred_dir, self.combs)
 
         # Extract biological and technical embeddings and batch labels
         bio_embedding = pred['z']['joint'][:, :self.dim_c]  # Biological embedding
