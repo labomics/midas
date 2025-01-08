@@ -115,7 +115,7 @@ Option 2: CSV per Cell
 .. tip::
     Both **Option 1** and **Option 2** can be combined for flexible data handling.
 
-Step 2: Define Data Dimensions
+Step 2: Defining Data Dimensions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Specify the dimensions for each modality. 
@@ -139,7 +139,7 @@ Example:
     This is useful for high-dimensional data like ATAC-seq, 
     where splitting occurs based on chromosomes.
 
-Step 3: Specify Transformation Rules
+Step 3: Specifying Transformation Rules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For certain modalities, 
@@ -150,7 +150,7 @@ In this example, we binarize the ATAC data and leave RNA and ADT data unchanged:
 
     transform = {'atac': 'binarize'}  # Binarize ATAC data, leave RNA and ADT unchanged
 
-Step 4: Combine Configuration
+Step 4: Combining Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Integrate the configurations, data paths, and transformations to set up MIDAS:
