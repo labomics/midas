@@ -825,7 +825,7 @@ class MIDAS(L.LightningModule):
 
         Returns:
             cls
-                Returns the configured class instance.
+                Returns MIDAS instance.
         """
 
         # Set class-level attributes
@@ -1205,7 +1205,7 @@ class MIDAS(L.LightningModule):
                 List of AnnData objects and UMAP figures.
         """
         logging.info(f'Loading predicted data from: {pred_dir}')
-        pred = load_predicted(pred_dir, self.s_joint, self.combs, self.mods)
+        pred = load_predicted(pred_dir, self.combs)
 
         # Extract biological and technical embeddings and batch labels
         bio_embedding = pred['z']['joint'][:, :self.dim_c]  # Biological embedding
@@ -1614,8 +1614,7 @@ class MIDAS(L.LightningModule):
             mask : list of dict
                 List of mask dictionaries, where keys are modalities and values are mask file paths.
             transform : dict, optional
-                Transformations to apply to specific modalities, default is binarization for 
-                'atac', 'met', and 'acc'.
+                Transformations to apply to specific modalities.
 
         Returns:
             datasets : list
