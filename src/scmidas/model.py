@@ -547,7 +547,7 @@ class VAE(nn.Module):
 
         for modality, z_x_mu_mod in z_x_mu.items():
             # Combine modality-specific and batch-specific latent variables
-            z_uni_mu, z_uni_logvar = self.poe([z_x_mu_mod[modality]] + z_s_mu, [z_x_logvar[modality]] + z_s_logvar)
+            z_uni_mu, z_uni_logvar = self.poe([z_x_mu_mod] + z_s_mu, [z_x_logvar[modality]] + z_s_logvar)
             z_uni[modality] = self.sample_gaussian(z_uni_mu, z_uni_logvar)
 
             # Extract shared latent representation (biological information)
