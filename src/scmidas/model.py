@@ -571,7 +571,7 @@ class VAE(nn.Module):
         # Adjust dimensions based on pre-encoding layers
         for key in filter_keys(self.__dict__, 'dims_before_enc_'):
             modality = key.split('_')[-1]
-            if (len(self.dims_x[modality]) > 1) and (modality in self.dims_x):
+            if  (modality in self.dims_x) and (len(self.dims_x[modality]) > 1):
                 dims_h[modality] = [sum([self.__dict__[key][-1]] * len(self.dims_x[modality]))]
         return dims_h
 
