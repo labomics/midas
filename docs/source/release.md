@@ -4,7 +4,7 @@
 
 **v0.1.6 2025-1-20**
 
-1. fix bug: add condition for dims_h. Only when  len(dims_x['atac'])>1, we use the 'dims_brefore_enc_atac' configuration.
+1. fix bug: add condition for dims_h. Only when len(dims_x['atac'])>1, we use the 'dims_brefore_enc_atac' configuration.
 
 **v0.1.5 2025-1-17**
 
