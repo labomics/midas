@@ -12,6 +12,14 @@
 2. Integrate with TensorBoard to facilitate loss visualization.
 3. Enhance MIDAS to support easier integration of new modalities.
 
+**v0.1.5 2025-1-17**
+
+1. fix bug: remove gaussian sampling during inferring for modality-specific embeddings.
+
+**v0.1.6 2025-1-20**
+
+1. fix bug: add condition for dims_h. On when  len(dims_x['atac'])>1, we use the 'dims_brefore_enc_atac' configuration.
+
 ## V 0.0.X
 
 **v0.0.18 2024-07-29**
