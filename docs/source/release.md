@@ -2,6 +2,14 @@
 
 ## V 0.1.X
 
+**v0.1.6 2025-1-20**
+
+1. fix bug: add condition for dims_h. Only when  len(dims_x['atac'])>1, we use the 'dims_brefore_enc_atac' configuration.
+
+**v0.1.5 2025-1-17**
+
+1. fix bug: remove gaussian sampling during inferring for modality-specific embeddings.
+
 **v0.1.4 2024-12-31**
 
 1. debug: MIDAS.get_emb_umap(), correct load_predicted()
@@ -11,14 +19,6 @@
 1. Integrate with Lightning to enable multi-GPU training.
 2. Integrate with TensorBoard to facilitate loss visualization.
 3. Enhance MIDAS to support easier integration of new modalities.
-
-**v0.1.5 2025-1-17**
-
-1. fix bug: remove gaussian sampling during inferring for modality-specific embeddings.
-
-**v0.1.6 2025-1-20**
-
-1. fix bug: add condition for dims_h. Only when  len(dims_x['atac'])>1, we use the 'dims_brefore_enc_atac' configuration.
 
 ## V 0.0.X
 
