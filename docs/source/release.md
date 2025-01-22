@@ -2,6 +2,10 @@
 
 ## V 0.1.X
 
+**v0.1.7 2025-1-22**
+
+1. fix bug: #22
+
 **v0.1.6 2025-1-20**
 
 1. fix bug: add condition for dims_h. Only when len(dims_x['atac'])>1, we use the 'dims_brefore_enc_atac' configuration.
