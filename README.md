@@ -19,13 +19,7 @@
 ```bash
 conda create -n scmidas python=3.12
 conda activate scmidas
-conda install scmidas
-```
-
-or:
-
-```bash
-pip install scmidas
+pip install scmidas==0.1.7
 ```
 
 ## 🔥New
