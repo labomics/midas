@@ -1068,7 +1068,7 @@ class MIDAS(L.LightningModule):
         if batch_correct:
             logging.info('Calculating u_centroid ...')
             
-            pred = load_predicted(pred_dir, self.s_joint, self.combs, self.mods)
+            pred = load_predicted(pred_dir, self.combs)
             u = torch.from_numpy(pred['z']['joint'][:, self.dim_c:])
             s = torch.from_numpy(pred['s']['joint'])
 
