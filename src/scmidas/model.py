@@ -1100,19 +1100,19 @@ class MIDAS(L.LightningModule):
         Save a model checkpoint at the end of each training epoch with a meaningful filename.
         """
         # Save the checkpoint periodically based on n_save
-        if self.current_epoch!=0 and self.current_epoch % self.n_save == 0:
+        if self.current_epoch!=0 and (self.current_epoch+1) % self.n_save == 0:
             os.makedirs(self.save_model_path, exist_ok=True)
             
             # Get the current timestamp
             timestamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
 
             # Generate a descriptive checkpoint filename
-            checkpoint_filename = f'model_epoch{self.current_epoch}_{timestamp}.pt'
+            checkpoint_filename = f'model_epoch{self.current_epoch+1}_{timestamp}.pt'
             checkpoint_path = os.path.join(self.save_model_path, checkpoint_filename)
             
             # Save the checkpoint
             self.save_checkpoint(checkpoint_path)
-            logging.info(f'Checkpoint saved for epoch "{self.current_epoch}" at "{checkpoint_path}".')
+            logging.info(f'Checkpoint saved for epoch "{self.current_epoch+1}" at "{checkpoint_path}".')
 
     def on_train_end(self):
         """
