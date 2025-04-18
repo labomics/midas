@@ -1,7 +1,7 @@
 # MIDAS: a deep generative model for mosaic integration and knowledge transfer of single-cell multimodal data.
 
 <div align=center>
-<img src="docs/source/_static/img/midas_logo_vertical4.png" width="400px">
+<img src="docs/source/_static/img/midas_logo_vertical.png" width="400px">
 </div>
 
 <p align="center"> MIDAS turns mosaic data into imputed and batch-corrected data to support single-cell multimodal analysis. </p>

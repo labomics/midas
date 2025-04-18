@@ -6,7 +6,7 @@
 Welcome to MIDAS's documentation!
 =======================================
 
-.. figure:: ./_static/img/midas_logo_vertical4.png
+.. figure:: ./_static/img/midas_logo_vertical.png
    :width: 400
    :alt: midas figure
    :align: center
