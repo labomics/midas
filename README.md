@@ -22,6 +22,7 @@ conda activate scmidas
 pip install scmidas==0.1.7
 ```
 
+
 ## 🔥New
 
 > - MIDAS supports not only RNA, ADT, and ATAC data but also allows seamless integration of additional modalities with straightforward configuration.
