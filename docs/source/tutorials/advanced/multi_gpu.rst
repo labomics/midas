@@ -1,17 +1,15 @@
-Training with Multi-GPU
-========================
+Training with Multiple GPUs
+===========================
 
 1. Use the Distributed Sampler for DDP Training
 To enable Distributed Data Parallel (DDP) training, configure the data sampler as follows:
 
 .. code-block:: python
 
-    # If using this method:
-    MIDAS.configure_data(sampler_type='ddp')
+    from lightning import seed_everything
+    seed_everything(42)
 
-    # Or, if using this method:
-    MIDAS.configure_data_from_dir(sampler_type='ddp')
-
+    model = MIDAS.configure_data_from_dir(configs, dataset, sampler_type='ddp')
 
 
 2. Configure the Trainer for Multi-GPU Training
@@ -20,7 +18,7 @@ Set up the trainer in your training script with the following settings:
 .. code-block:: python
 
     trainer = L.Trainer(
-        devices='auto',                # Automatically use all available GPUs
+        devices='gpu',                # Automatically use all available GPUs
         strategy='ddp'                 # Enable distributed training with DDP
     )
 

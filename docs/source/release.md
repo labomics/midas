@@ -2,6 +2,17 @@
 
 ## V 0.1.X
 
+**v0.1.8 2025-6-12**
+
+1. Fixed a bug preventing the optimizer from being initialized after MIDAS.load_checkpoint().
+2. Added support for .mtx input format.
+3. Updated documentation and tutorials.
+4. Add returns for MIDAS.predict(). Improve effeciency.
+5. Add UMAP visualization during training. See MIDAS.configure_data_from_dir(viz_umap_tb=True).
+6. Add data.download_models().
+7. Update demo data.
+
+
 **v0.1.7 2025-1-22**
 
 1. fix bug: #22

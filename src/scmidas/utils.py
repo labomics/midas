@@ -8,6 +8,10 @@ from glob import glob
 from collections import defaultdict
 from typing import List, Tuple, Dict, Union, Any
 
+from scipy.io import mmread, mmwrite
+from scipy.sparse import csr_matrix
+import scipy.sparse as sp
+
 # Third-Party Library Imports
 import numpy as np
 import torch
@@ -24,7 +28,7 @@ def load_csv(filename: str) -> list:
             Path to the CSV file.
 
     Returns:
-        list
+        list:
             A list of rows, where each row is a list of strings.
     """
     with open(filename, 'r') as file:
@@ -46,8 +50,7 @@ def exp(x: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
             A small epsilon value to avoid division by zero, by default 1e-12.
 
     Returns:
-    
-        torch.Tensor
+        torch.Tensor:
             Transformed tensor with the exponential applied.
     """
     return (x < 0) * (x.clamp(max=0)).exp() + (x >= 0) / ((-x.clamp(min=0)).exp() + eps)
@@ -60,14 +63,13 @@ def log(x: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
     Ensures numerical stability by adding a small epsilon.
 
     Parameters:
-    
         x : torch.Tensor
             Input tensor.
         eps : float, optional
             A small epsilon value to avoid log(0), by default 1e-12.
 
     Returns:
-        torch.Tensor
+        torch.Tensor:
             Transformed tensor with the logarithm applied.
     """
     return (x + eps).log()
@@ -87,8 +89,7 @@ def extract_params(config: dict, prefix: str) -> dict:
             Prefix to filter and remove from the keys.
 
     Returns:
-    
-        dict
+        dict:
             A new dictionary containing the filtered parameters with the prefix removed.
     """
     extracted_params = {}
@@ -114,8 +115,7 @@ def ref_sort(x: List[str], ref: List[str]) -> List[str]:
             Reference list defining the sort order.
 
     Returns:
-    
-        list of str
+        List[str]:
             A sorted list of elements from `x` that appear in `ref`, 
             maintaining the order of `ref`.
     """
@@ -132,8 +132,7 @@ def extract_values(x: Union[List[Any], Tuple[Any], Dict[Any, Any], Any]) -> List
             The input structure containing nested values.
 
     Returns:
-    
-        list
+        List[Any]:
             A flattened list of all values extracted from the input.
     """
     values = []
@@ -160,12 +159,11 @@ def reverse_dict(original_dict: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str
 
     Parameters:
         
-        original_dict : dict
+        original_dict : Dict[str, Dict[str, Any]]
             The original nested dictionary to be reversed.
 
     Returns:
-    
-        dict
+        Dict[str, Dict[str, Any]]:
             A reconstructed dictionary where the keys and sub-keys are swapped.
     """
     reconstructed_dict = defaultdict(dict)
@@ -181,12 +179,11 @@ def detach_tensors(x: Dict[str, Any]) -> Dict[str, Any]:
 
     Parameters:
     
-        x : dict
+        x : Dict[str, Any]
             Dictionary containing tensors or nested dictionaries.
 
     Returns:
-    
-        dict
+        Dict[str, Any]:
             A new dictionary with all tensors detached.
     """
     y = {}
@@ -204,12 +201,11 @@ def convert_tensor_to_list(data: Union[torch.Tensor, List[List[Any]]]) -> List[L
 
     Parameters:
     
-        data : torch.Tensor or list of lists
+        data : Union[torch.Tensor, List[List[Any]]]
             Input data to be converted.
 
     Returns:
-    
-        list of lists
+        List[List[Any]]:
             Converted 2D list.
     """
     if torch.is_tensor(data):
@@ -224,16 +220,43 @@ def save_list_to_csv(data: List[List[Any]], filename: str, delimiter: str = ',')
 
     Parameters:
     
-        data : list of lists
+        data : List[List[Any]]
             Input data to be saved.
         filename : str
             Path to the CSV file.
-        delimiter : str, optional
+        delimiter : str
             Delimiter to separate values in the CSV file, by default ','.
     """
     with open(filename, 'w') as file:
         writer = csv.writer(file, delimiter=delimiter)
         writer.writerows(data)
+
+
+def save_list_to_mtx(data: torch.Tensor, filename: str):
+    """
+    Save a 2D list or tensor to a Matrix Market (MTX) file.
+    Parameters:
+    
+        data : torch.Tensor
+            Input data to be saved.
+        filename : str
+            Path to the MTX file.
+    """
+    sparse_mtx = sp.csr_matrix(data.numpy(), shape=data.shape)
+    mmwrite(filename, sparse_mtx)
+
+
+def save_tensor_to_mtx(data: torch.Tensor, filename: str):
+    """
+    Save a 2D tensor to a Matrix Market (MTX) file.
+    Parameters:
+    
+        data : torch.Tensor
+            Input tensor to be saved.
+        filename : str
+            Path to the MTX file.
+    """
+    save_list_to_mtx(data, filename)
 
 
 def save_tensor_to_csv(data: torch.Tensor, filename: str, delimiter: str = ','):
@@ -263,8 +286,7 @@ def get_name_fmt(file_num: int) -> str:
             Total number of files to be named.
 
     Returns:
-    
-        str
+        str:
             Format string for filenames, e.g., '%03d' for three-digit naming.
     """
     digits = math.floor(math.log10(file_num)) + 1
@@ -277,14 +299,13 @@ def convert_tensors_to_cuda(x: Dict[str, Any], device: torch.device) -> Dict[str
 
     Parameters:
     
-        x : dict
+        x : Dict[str, Any]
             Dictionary containing tensors or nested dictionaries.
         device : torch.device
             Device to move the tensors to (e.g., CUDA or CPU).
 
     Returns:
-    
-        dict
+        Dict[str, Any]:
             A new dictionary with all tensors moved to the specified device.
     """
     y = {}
@@ -308,8 +329,7 @@ def filter_keys(d: Dict[str, Any], substring: str) -> Dict[str, Any]:
             The substring to look for in the keys.
 
     Returns:
-    
-        Dict[str, Any]
+        Dict[str, Any]:
             A new dictionary containing only the keys from the original 
             dictionary that include the specified substring.
     """
@@ -328,8 +348,7 @@ def get_filenames(directory: str, extension: str) -> List[str]:
             The file extension to filter by.
 
     Returns:
-    
-        list of str
+        List[str]:
             Sorted list of filenames with the specified extension.
     """
     filenames = glob(os.path.join(directory, f'*.{extension}'))
@@ -337,6 +356,15 @@ def get_filenames(directory: str, extension: str) -> List[str]:
     filenames.sort()
     return filenames
 
+def load_mtx(filename: str) -> list:
+    """
+        load mtx file and convert to csr_matrix
+
+        Parameters:
+            filename : str
+                Path to the mtx file.
+    """
+    return csr_matrix(mmread(filename)).toarray().tolist()
 
 def load_predicted(
     pred_dir: str,
@@ -347,7 +375,8 @@ def load_predicted(
     batch_correct: bool = False,
     translate: bool = False,
     input: bool = False,
-    group_by: str = 'modality'
+    group_by: str = 'modality',
+    mtx: bool = True
 ) -> Union[Dict[int, Dict[str, Any]], Dict[str, Dict[str, np.ndarray]]]:
     """
     Load predicted variables from a specified directory.
@@ -374,8 +403,7 @@ def load_predicted(
             Grouping method for the data, either 'modality' or 'batch', by default 'modality'.
 
     Returns:
-    
-        dict
+        Union[Dict[int, Dict[str, Any]], Dict[str, Dict[str, np.ndarray]]]:
             Loaded predicted data grouped by the specified method.
     """
     logging.info('Loading predicted variables ...')
@@ -398,9 +426,15 @@ def load_predicted(
                 data[batch_id][variable][mod] = []
                 if variable == 'z':
                     data[batch_id]['s'][mod] = []
-                filenames = get_filenames(dir_path, 'csv')
+                if mtx:
+                    filenames = get_filenames(dir_path, 'mtx')
+                else:
+                    filenames = get_filenames(dir_path, 'csv')
                 for filename in tqdm(filenames):
-                    v = load_csv(os.path.join(dir_path, filename))
+                    if mtx:
+                        v = load_mtx(os.path.join(dir_path, filename))
+                    else:
+                        v = load_csv(os.path.join(dir_path, filename))
                     data[batch_id][variable][mod] += v
                     if variable == 'z':
                         data[batch_id]['s'][mod] += [batch_id] * len(v)
@@ -438,20 +472,18 @@ def load_predicted(
 
         return data_m
 
-def get_s_joint_mods(combs: List[List[str]]):
+def get_s_joint_mods(combs: List[List[str]]) -> Tuple[List[Dict[str, int]], List[str]]:
     """
     Generate `s_joint` and `mods` from a list of modality combinations.
 
     Parameters:
 
-        combs : list
+        combs : List[List[str]]
             A list where each element is a list of strings representing combinations 
             of modalities for a specific batch.
 
     Returns:
-    
-        tuple
-            A tuple containing:
+        Tuple:
             - `s_joint`: A list of dictionaries, where each dictionary maps the modalities
             to their corresponding indices for each batch.
             - `mods`: A list of all unique modalities across the dataset.
@@ -479,7 +511,7 @@ def get_pred_dirs(
     impute: bool,
     batch_correct: bool,
     translate: bool,
-    input: bool
+    input: bool,
 ) -> Dict[int, Dict[str, Dict[str, str]]]:
     """
     Generate directory paths for predictions based on configurations.
@@ -504,8 +536,7 @@ def get_pred_dirs(
             Include input data.
 
     Returns:
-    
-        dict
+        Dict[int, Dict[str, Dict[str, str]]]:
             Dictionary of directories for each batch and variable.
     """
     dirs = {}
@@ -531,11 +562,17 @@ def get_pred_dirs(
         if translate:
             dirs[batch_id]['x_trans'] = {}
             all_combinations = generate_all_combinations(mods)
+            
             for input_mods, output_mods in all_combinations:
-                input_mods_sorted = sorted(input_mods)
-                for mod in output_mods:
-                    key = '_'.join(input_mods_sorted) + '_to_' + mod
-                    dirs[batch_id]['x_trans'][key] = os.path.join(batch_dir, 'x_trans', key)
+                f = True
+                for i in input_mods:
+                    if i not in combs[batch_id]:
+                        f = False
+                if f:
+                    input_mods_sorted = sorted(input_mods)
+                    for mod in output_mods:
+                        key = '_'.join(input_mods_sorted) + '_to_' + mod
+                        dirs[batch_id]['x_trans'][key] = os.path.join(batch_dir, 'x_trans', key)
 
         if input:
             dirs[batch_id]['x'] = {mod: os.path.join(batch_dir, 'x', mod) for mod in combs[batch_id]}
@@ -580,9 +617,9 @@ def mkdirs(directories: Union[str, List[str], Dict[str, Any]], remove_old: bool 
 
     Parameters:
     
-        directories : str, list, or dict
+        directories :  Union[str, List[str], Dict[str, Any]]
             Path(s) to directories to create.
-        remove_old : bool, optional
+        remove_old : bool
             Whether to remove old directories if they exist, by default False.
     """
     if isinstance(directories, (list, tuple)):
@@ -609,8 +646,7 @@ def reverse_trsf(name: str, data: np.ndarray, **kwargs) -> np.ndarray:
             Additional transformation parameters.
 
     Returns:
-    
-        np.ndarray
+        np.ndarray:
             Transformed data.
     """
     # Extract parameters from kwargs
@@ -632,15 +668,14 @@ def generate_all_combinations(mods: List[str]) -> List[Tuple[Tuple[str, ...], Li
 
     Parameters:
     
-        mods : list of str
+        mods : List[str]
             List of modality names.
 
     Returns:
-    
-        list of tuple
+        List[Tuple[Tuple[str, ...], List[str]]]:
             A list of tuples, where each tuple contains:
-            - A tuple of input modalities.
-            - A list of output modalities.
+                - A tuple of input modalities.
+                - A list of output modalities.
     """
     combinations = []
     for r in range(1, len(mods)):  # Generate combinations of size r
@@ -648,3 +683,25 @@ def generate_all_combinations(mods: List[str]) -> List[Tuple[Tuple[str, ...], Li
             output_mods = list(set(mods) - set(input_mods))
             combinations.append((input_mods, output_mods))
     return combinations
+
+
+def safe_append(pred:dict , batch_id:int, key_path:list, value:Any):
+    """
+    Append a value to a nested dictionary structure.
+
+    Parameters:
+    
+        pred : dict
+            The nested dictionary structure to append to.
+        batch_id : int
+            The batch ID to use as the key for the nested dictionary.
+        key_path : list of str
+            The path of keys to follow in the nested dictionary.
+        value : Any
+            The value to append to the nested dictionary.
+
+    """
+    current = pred.setdefault(batch_id, {})
+    for key in key_path[:-1]:
+        current = current.setdefault(key, {})
+    current.setdefault(key_path[-1], []).append(value)

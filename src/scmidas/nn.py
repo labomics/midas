@@ -69,7 +69,7 @@ class DistributionRegistry:
                 The name of the activation function.
 
         Returns:
-            Callable
+            Callable:
                 The corresponding activation function instance.
 
         Raises:
@@ -89,7 +89,7 @@ class DistributionRegistry:
                 The name of the sampling function.
 
         Returns:
-            Callable
+            Callable:
                 The corresponding sampling function instance.
 
         Raises:
@@ -109,7 +109,7 @@ class DistributionRegistry:
                 The name of the loss function.
 
         Returns:
-            nn.Module
+            nn.Module:
                 The corresponding loss function instance.
 
         Raises:
@@ -120,12 +120,12 @@ class DistributionRegistry:
             raise KeyError(f'Loss function "{name}" is not registered.')
         return self.loss_map[name]
 
-    def list_registered(self) -> list:
+    def list_registered(self) -> List[str]:
         """
         List all registered distributions.
 
         Returns:
-            list of str
+            List[str]:
                 Names of all registered distributions.
         """
         return list(self.loss_map.keys())
@@ -140,7 +140,7 @@ class DistributionRegistry:
                 Input probabilities for Bernoulli sampling.
 
         Returns:
-            torch.Tensor
+            torch.Tensor:
                 Sampled binary tensor.
         """
         return torch.bernoulli(data).int()
@@ -155,7 +155,7 @@ class DistributionRegistry:
                 Input rates for Poisson sampling.
 
         Returns:
-            torch.Tensor
+            torch.Tensor:
                 Sampled tensor with Poisson-distributed values.
         """
         return torch.poisson(data).int()
@@ -170,7 +170,7 @@ class DistributionRegistry:
                 Input tensor.
 
         Returns:
-            torch.Tensor
+            torch.Tensor:
                 The same tensor without any modification.
         """
         return data
@@ -225,7 +225,7 @@ class TransformRegistry:
                 The name of the transformation function.
 
         Returns:
-            Callable
+            Callable:
                 The corresponding transformation function.
 
         Raises:
@@ -245,7 +245,7 @@ class TransformRegistry:
                 The name of the transformation function.
 
         Returns:
-            Callable
+            Callable:
                 The corresponding inverse transformation function.
 
         Raises:
@@ -261,7 +261,7 @@ class TransformRegistry:
         List all registered transformation functions.
 
         Returns:
-            list of str
+            List[str]:
                 Names of all registered transformation functions.
         """
         return list(self.transform_map.keys())
@@ -278,7 +278,7 @@ class TransformRegistry:
                 Threshold for binarization, default is 0.5.
 
         Returns:
-            np.ndarray or torch.Tensor
+            Union[np.ndarray, torch.Tensor]:
                 Binarized data.
 
         Raises:
@@ -302,7 +302,7 @@ class TransformRegistry:
                 Input tensor.
 
         Returns:
-            torch.Tensor
+            torch.Tensor:
                 The same tensor without any modification.
         """
         return data
@@ -317,7 +317,7 @@ class TransformRegistry:
                 Input data to transform.
 
         Returns:
-            np.ndarray or torch.Tensor
+            Union[np.ndarray, torch.Tensor]:
                 Transformed data.
 
         Raises:
@@ -341,7 +341,7 @@ class TransformRegistry:
                 Input data to transform.
 
         Returns:
-            np.ndarray or torch.Tensor
+            Union[np.ndarray, torch.Tensor]:
                 Transformed data.
 
         Raises:
@@ -404,7 +404,7 @@ class ActivationRegistry:
                 Additional parameters for the activation function (e.g., `dim` for Softmax).
 
         Returns:
-            Callable
+            Callable:
                 The corresponding activation function instance.
 
         Raises:
@@ -427,7 +427,7 @@ class ActivationRegistry:
         List all registered activation functions.
 
         Returns:
-            list of str
+            List[str]:
                 Names of all registered activation functions.
         """
         return list(self.func_map.keys())
@@ -504,7 +504,7 @@ class MLP(nn.Module):
                 Input tensor.
 
         Returns:
-            torch.Tensor
+            torch.Tensor:
                 Output tensor after passing through the MLP layers.
         """
         return self.net(x)
@@ -564,7 +564,7 @@ class Layer1D(nn.Module):
                 Input tensor.
 
         Returns:
-            torch.Tensor
+            torch.Tensor:
                 Output tensor after applying normalization, activation, and dropout.
         """
         return self.net(x)

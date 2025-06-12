@@ -13,8 +13,8 @@ Key Components
 
 1. **Data Encoder**: Encodes each modality into Gaussian-distributed latent features, including the means and log-transformed variances.
 2. **Data Decoder**: Reconstructs counts for each modality using the joint latent features as input.
-3. **Batch Indices Encoder**: Encodes batch indices for each modality into Gaussian-distributed latent features.
-4. **Batch Indices Decoder**: Reconstructs batch indices for each modality using the joint latent features.
+3. **Batch ID Encoder**: Encodes batch ID for each modality into Gaussian-distributed latent features.
+4. **Batch ID Decoder**: Reconstructs batch ID for each modality using the joint latent features.
 5. **Discriminator**: A group of classifiers that categorizes modality-specific latents and joint latents. Only the biological part of the latents is used for this classification.
 
 .. Note:
@@ -202,7 +202,7 @@ ATAC
       - Bernoulli distribution assumption for decoder. Use BCE loss.
 
 
-Batch Indices
+Batch ID
 -------------
 
 .. list-table:: 
@@ -214,7 +214,7 @@ Batch Indices
       - Description
     * - s_drop_rate
       - 0.1 
-      - Rate to drop batch indices during training.
+      - Rate to drop batch Ids during training.
     * - dims_enc_s
       - [16, 16]
       - Encoder structure.
@@ -293,7 +293,7 @@ Loss Weights
       - Weight for ATAC reconstruction loss.
     * - lam_recon_s
       - 1000
-      - Weight for batch indices reconstruction loss.
+      - Weight for batch IDs reconstruction loss.
 
 Discriminator Training
 -----------------------
