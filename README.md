@@ -19,15 +19,15 @@
 ```bash
 conda create -n scmidas python=3.12
 conda activate scmidas
-pip install scmidas==0.1.7
+pip install scmidas
 ```
-
 
 ## 🔥New
 
+> - Allow sparse matrix input (.mtx).
 > - MIDAS supports not only RNA, ADT, and ATAC data but also allows seamless integration of additional modalities with straightforward configuration.
 > - Leverages PyTorch Lightning for efficient training, including advanced strategies such as distributed data parallel (DDP).
-> - Integrates with TensorBoard for real-time visualization and tracking of training metrics, such as loss.
+> - Integrates with TensorBoard for real-time visualization and tracking of loss and umap.
 
 ## Reproducibility
 
