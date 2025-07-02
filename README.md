@@ -15,7 +15,6 @@
 </p>
 
 ## Installation
-
 ```bash
 conda create -n scmidas python=3.12
 conda activate scmidas

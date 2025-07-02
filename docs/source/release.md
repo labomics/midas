@@ -2,8 +2,13 @@
 
 ## V 0.1.X
 
-**v0.1.8 2025-6-12**
+**v0.1.10 2025-7-2**
+1. Change dims_before_enc_atac=[128, 32] and dims after dec atac=[32, 128]
+   
+**v0.1.9 2025-6-23**
+1. Set python to >= 3.10 version.
 
+**v0.1.8 2025-6-12**
 1. Fixed a bug preventing the optimizer from being initialized after MIDAS.load_checkpoint().
 2. Added support for .mtx input format.
 3. Updated documentation and tutorials.
