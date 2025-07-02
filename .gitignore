@@ -1,6 +1,5 @@
 bin
 dataset
-LICENSE
 pyproject.toml
 requirements.txt
 dist
