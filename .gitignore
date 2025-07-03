@@ -13,7 +13,6 @@ src/scmidas/__pycache__
 src/scmidas/lightning_logs
 src/scmidas/figs
 src/scmidas/connect
-scr/scmidas/pyWNN.py
 !docs/source/requirements.txt
 processed
 proccess
@@ -31,3 +30,9 @@ docs/source/tutorials/basics/inputs-1.rst
 src/run_all_data.sh
 lightning_logs
 figs
+saved_models_
+data
+lightning_logs
+wandb
+check_mudata.ipynb
+midas_runner.py
