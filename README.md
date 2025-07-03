@@ -72,7 +72,7 @@ trainer.fit(model=model)
 # 4. Obtain the integrated and imputed results
 # The model returns an AnnData object with a unified latent space 
 # and imputed values for the missing modalities.
-adata_imputed = model.predict()
+pred = model.predict()
 
 # 5. Visualize the results
 model.get_emb_umap()
