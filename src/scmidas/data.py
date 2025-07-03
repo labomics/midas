@@ -571,6 +571,8 @@ def download_models(name: str, des: str = './'):
         'wnn_mosaic_8batch_mtx' : [('https://drive.usercontent.google.com/download?id=12gqdg12Nb3tXOx82OtxwKHt6bPwRuGFl&export=download&authuser=0&confirm=t&uuid=675566a6-d782-4586-83ea-d994bd277dee&at=ALoNOgnU0Twolb8wYDEQ72MYJBt5:1749205390939', des_path / 'wnn_mosaic_8batch_mtx.pt')],
         'wnn_full_8batch_mtx' : [('https://drive.usercontent.google.com/download?id=1nI3TVPkvF8uu8PGnxRKqSVrZCGLnz7ZC&export=download&authuser=0&confirm=t&uuid=3d85e299-401f-4591-af6e-e9b4741f0aed&at=ALoNOgl9EvZwibld2GcYsK7LVf1C:1749205432077', des_path / 'wnn_full_8batch_mtx.pt')],
         'teadog_mosaic_mtx' : [('https://drive.usercontent.google.com/download?id=1zU9E9OtQaZMGJKSy_4r0kRlzoSf7ojMn&export=download&authuser=0&confirm=t&uuid=afc6a0c2-d155-4e46-be9f-a1f2b8b21228&at=ALoNOgkzwD8Q5MCX0MFIC7ggnUHU:1749215287513', des_path / 'teadog_mosaic_mtx.pt')],
+        'teadog_mosaic_mtx_small' : [('https://drive.usercontent.google.com/download?id=1oaLJ0zIYooRe67Ak6JlgHhEBW9KA4b72&export=download&authuser=0&confirm=t&uuid=3344e733-a746-48a5-9b72-19ff718fb8d6&at=AN8xHorrOxyfgJQYAOo_QMsQMhNJ:1751530177069', des_path / 'teadog_mosaic_mtx_small.pt')],
+    
     }
 
     if name in urls_dict:
