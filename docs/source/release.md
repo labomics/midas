@@ -2,8 +2,9 @@
 
 ## V 0.1.X
 
-**v0.1.11 2025-7-3**
+**v0.1.13 2025-7-3**
 1. Update model source.
+2. 
 
 **v0.1.10 2025-7-2**
 1. Change dims_before_enc_atac=[128, 32] and dims after dec atac=[32, 128]

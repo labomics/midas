@@ -890,9 +890,25 @@ class MIDAS(L.LightningModule):
 
         # Set class-level attributes
         cls.configs = configs
+        cls.dims_x = dims_x
+
+        # check config
+        atac_dims = dims_x.get('atac', None)
+        if atac_dims is not None and len(atac_dims) == 1:
+            logging.warning(
+                f"Detected ATAC with only one dimension [{atac_dims[0]}]. "
+                "This will cause the data to be encoded directly instead of by chromosome, as described in our paper. "
+                "We recommend splitting the ATAC data by chromosome."
+            )
+            if 'dims_before_enc_atac' in configs and 'dims_after_dec_atac' in configs:
+                logging.error(
+                    'Invalid ATAC configuration: both "dims_before_enc_atac" and "dims_after_dec_atac" exist in the configs, '
+                    'but len(dims_x["atac"]) == 1. To forcibly encode ATAC data directly, please remove these settings from configs.'
+                )
+                exit()
+
         cls.sampler_type = sampler_type
         cls.datalist = datalist
-        cls.dims_x = dims_x
         cls.dims_s = dims_s
         cls.s_joint = s_joint
         cls.combs = combs
