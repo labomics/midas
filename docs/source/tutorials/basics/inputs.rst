@@ -114,7 +114,7 @@ To structure your data in a directory as follows:
 
     ./dataset_path/batch_0/vec/
         mod1/
-            0000.csv  # Represents a vector of a cell (no header or column names)
+            0000.csv  # Represents a vector of a cell (no header or index)
             0001.csv
             ...
         mod2/

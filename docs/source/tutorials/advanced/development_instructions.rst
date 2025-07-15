@@ -192,10 +192,10 @@ ATAC
       - Value
       - Description
     * - dims_before_enc_atac
-      - [512, 128]
+      - [128, 32]
       - Independent MLP structure before shared encoder. It is used to compress the data chunks of the ATAC modality.
     * - dims_after_dec_atac
-      - [128, 512]
+      - [32, 128]
       - Independent MLP structure after shared decoder. It expands the embeddings to reconstruct the ATAC modality.
     * - distribution_dec_atac
       - 'BERNOULLI'
