@@ -40,11 +40,11 @@ class BasicModDataset(Dataset):
 
         Returns:
             int:
-                Number of samples (default is 0 for base class).
+                Number of samples.
         """
-        return 0
+        raise NotImplementedError("Subclasses should implement this method to return the dataset size.")
 
-    def __getitem__(self, idx: int):
+    def __getitem__(self, idx: int) -> Any:
         """
         Retrieve the data item at the specified index (not implemented in base class).
 
@@ -52,7 +52,7 @@ class BasicModDataset(Dataset):
             idx : int
                 The index of the data item.
         """
-        return None
+        raise NotImplementedError("Subclasses should implement this method to retrieve a data item.")
 
 
 class VECDataset(BasicModDataset):
