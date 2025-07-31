@@ -7,11 +7,11 @@ Welcome to MIDAS's documentation!
 =======================================
 
 .. figure:: ./_static/img/midas_logo_vertical.png
-   :width: 400
+   :width: 900
    :alt: midas figure
    :align: center
 
-   MIDAS turns mosaic data into imputed and batch-corrected data to support single-cell multimodal analysis.
+   MIDAS turns raw mosaic data into both imputed, batch-corrected data and disentangled latent representations, powering robust downstream analysis.
 
 .. toctree::
    :maxdepth: 2
