@@ -1,7 +1,7 @@
 # MIDAS: A Deep Generative Model for Mosaic Integration and Knowledge Transfer of Single-Cell Multimodal Data
 
 <div align="center">
-  <img src="docs/source/_static/img/midas_logo_vertical.png" alt="MIDAS Logo" width="900px">
+  <img src="docs/source/_static/img/midas_logo_vertical.png" alt="MIDAS Logo" width="1200px">
 </div>
 
 <p align="center">
