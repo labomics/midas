@@ -85,9 +85,9 @@ class Encoder(nn.Module):
 
         # Initialize modality-specific encoders
         # mod1 -> (opt) transform[mod1] -> (opt) pre_encoder[mod1] ->
-        #      (opt) after_concat[mod1] -> indiv_enc[mod1] -> share_encoder -> z_mod1
+        #      (opt) transform_concat[mod1] -> indiv_enc[mod1] -> share_encoder -> z_mod1
         self.pre_encoders = nn.ModuleDict()  # Modality-specific pre-encoding layers
-        self.after_concat = nn.ModuleDict()  # Post-concatenation layers
+        self.transform_concat = nn.ModuleDict()  # Post-concatenation layers
         encoders = {}  # Final encoders for each modality
 
         for modality, input_dims in dims_x.items():
@@ -98,7 +98,7 @@ class Encoder(nn.Module):
                     for dim in input_dims
                 ])
                 self.pre_encoders[modality] = pre_encoders
-                self.after_concat[modality] = Layer1D(self.dims_h[modality], 
+                self.transform_concat[modality] = Layer1D(self.dims_h[modality], 
                                                       self.norm, 
                                                       self.out_trans, 
                                                       self.drop)
@@ -155,8 +155,8 @@ class Encoder(nn.Module):
                 processed_batches = [
                     self.pre_encoders[modality][i](batch) for i, batch in enumerate(batches)
                 ]
-                # Concatenate processed batches
-                data[modality] = self.after_concat[modality](torch.cat(processed_batches, dim=1))
+                # Concatenate processed batches and transform
+                data[modality] = self.transform_concat[modality](torch.cat(processed_batches, dim=1))
 
         # Encode data and split into mean and log-variance
         z_x_mu, z_x_logvar = {}, {}
@@ -210,7 +210,7 @@ class Decoder(nn.Module):
         for key, value in kwargs.items():
             setattr(self, key, value)
         
-        # z -> shared_decoder -> (opt) post_decoders[mod1] -> (opt) before_concat[mod1] -> mod1
+        # z -> shared_decoder -> (opt) post_decoders[mod1] -> (opt) transform_concat[mod1] -> mod1
 
         # Shared decoder layer
         total_hidden_dims = sum(dim[0] for dim in dims_h.values())
@@ -222,7 +222,7 @@ class Decoder(nn.Module):
 
         # Modality-specific decoders
         self.post_decoders = nn.ModuleDict()
-        self.before_concat = nn.ModuleDict()
+        self.transform_concat = nn.ModuleDict()
 
         for modality, output_dims in dims_x.items():
             # Modality-specific post-decoding layers
@@ -235,7 +235,7 @@ class Decoder(nn.Module):
                 self.post_decoders[modality] = post_decoders
 
             # Layer to process concatenated outputs
-            self.before_concat[modality] = Layer1D(self.dims_h[modality], 
+            self.transform_concat[modality] = Layer1D(self.dims_h[modality], 
                                                    self.norm, self.out_trans, 
                                                    self.drop)
 
@@ -266,8 +266,8 @@ class Decoder(nn.Module):
 
         # Process each modality-specific output
         for modality, post_decoders in self.post_decoders.items():
-            # Apply pre-concatenation layer
-            processed_output = self.before_concat[modality](data_dict[modality])
+            # Apply transformation layer
+            processed_output = self.transform_concat[modality](data_dict[modality])
             batches = processed_output.split(self.__dict__[f'dims_after_dec_{modality}'][0], dim=1)
 
             # Apply modality-specific post-decoders
