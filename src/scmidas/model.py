@@ -93,11 +93,10 @@ class Encoder(nn.Module):
         for modality, input_dims in dims_x.items():
             # For truncated input, such as ATAC
             if len(input_dims) > 1:
-                pre_encoders = nn.ModuleList([
+                self.pre_encoders[modality] = nn.ModuleList([
                     MLP([dim] + kwargs[f'dims_before_enc_{modality}'], hid_norm=self.norm, hid_drop=self.drop)
                     for dim in input_dims
                 ])
-                self.pre_encoders[modality] = pre_encoders
                 self.transform_concat[modality] = Layer1D(self.dims_h[modality], 
                                                       self.norm, 
                                                       self.out_trans, 
@@ -227,12 +226,11 @@ class Decoder(nn.Module):
         for modality, output_dims in dims_x.items():
             # Modality-specific post-decoding layers
             if len(output_dims) > 1:
-                post_decoders = nn.ModuleList([
+                self.post_decoders[modality] = nn.ModuleList([
                     MLP(kwargs[f'dims_after_dec_{modality}'] + [dim], 
                         hid_norm=self.norm, hid_drop=self.drop)
                     for dim in output_dims
                 ])
-                self.post_decoders[modality] = post_decoders
 
             # Layer to process concatenated outputs
             self.transform_concat[modality] = Layer1D(self.dims_h[modality], 
@@ -576,22 +574,22 @@ class VAE(nn.Module):
 
         Parameters:
             z_x_mu : Dict[str, torch.Tensor]
-                Mean of modality-specific latent variables.
+                Means of modality-specific latent variables.
             z_x_logvar : Dict[str, torch.Tensor]
-                Log-variance of modality-specific latent variables.
+                Log-variances of modality-specific latent variables.
             z_s_mu : List[torch.Tensor]
-                Mean of modality-specific batch indices latent variables.
+                Mean of the batch-ID latent variables.
             z_s_logvar : List[torch.Tensor]
-                Log-variance of modality-specific batch indices latent variables.
+                Log-variance of the batch-ID latent variables.
             c : torch.Tensor
                 Biological information.
 
         Returns:
             Tuple:
                 - z_uni : Dict[str, torch.Tensor]:
-                    Unified latent variables for each modality.
+                    Collection of latent variables for the unimodal inputs.
                 - c_all : Dict[str, torch.Tensor]:
-                    Modality-specific shared representations.
+                    Collection of biological information for the unimodal and joint inputs.
         """
         z_uni = {}
         c_all = {}
