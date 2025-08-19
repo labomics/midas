@@ -565,7 +565,7 @@ def download_models(name: str, des: str = './'):
             Destination path to save the model (default is the current directory).
     """
     # Set up the destination path
-    des_path = Path(des) / 'models'
+    des_path = Path(des) / 'saved_models'
     des_path.mkdir(parents=True, exist_ok=True)  # Ensure the directory exists
     urls_dict = {
         'wnn_mosaic_8batch_mtx' : [('https://drive.usercontent.google.com/download?id=12gqdg12Nb3tXOx82OtxwKHt6bPwRuGFl&export=download&authuser=0&confirm=t&uuid=675566a6-d782-4586-83ea-d994bd277dee&at=ALoNOgnU0Twolb8wYDEQ72MYJBt5:1749205390939', des_path / 'wnn_mosaic_8batch_mtx.pt')],
