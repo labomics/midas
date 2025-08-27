@@ -851,7 +851,7 @@ class MIDAS(L.LightningModule):
         combs: List[List[str]], 
         batch_size: int = 256, 
         n_save:int = 500, 
-        save_model_path: str = './saved_models/', 
+        save_model_path: str = './saved_models', 
         sampler_type:str = 'auto', 
         viz_umap_tb=False,
     ) -> 'MIDAS':
@@ -1176,36 +1176,34 @@ class MIDAS(L.LightningModule):
                     if translate: # from a to b
                         all_combinations = generate_all_combinations(self.mods)
                         for input_mods, output_mods in all_combinations:
-                            
-                            for input_mods, output_mods in all_combinations:
-                                flag = True
+                        
+                            flag = True
+                            input_mods_sorted = sorted(input_mods)
+                            for m in input_mods_sorted:
+                                if m not in data['x'].keys():
+                                    flag = False
+                            if flag:
                                 input_mods_sorted = sorted(input_mods)
+                                input_data = {
+                                    'x': {m: data['x'][m] for m in input_mods_sorted if m in data['x']},
+                                    's': data['s'], 
+                                    'e': {}
+                                }
                                 for m in input_mods_sorted:
-                                    if m not in data['x'].keys():
-                                        flag = False
-                                if flag:
-                                    input_mods_sorted = sorted(input_mods)
-                                    input_data = {
-                                        'x': {m: data['x'][m] for m in input_mods_sorted if m in data['x']},
-                                        's': data['s'], 
-                                        'e': {}
-                                    }
-                                    for m in input_mods_sorted:
-                                        if m in data['e'].keys():
-                                            input_data['e'][m] = data['e'][m]
-                                    x_r_pre, *_ = model(input_data)  # N * K
-                                    x_r = model.gen_real_data(x_r_pre, sampling=False)
-                                    for mod in output_mods:
-                                        if return_pred:
-                                            safe_append(pred, batch_id, ['x_trans', '_'.join(input_mods_sorted) + '_to_' + mod], x_r[mod])
-                                        if save_dir:
-                                            if mtx:
-                                                save_tensor_to_mtx(x_r[mod], 
-                                                                os.path.join(dirs[batch_id]['x_trans']['_'.join(input_mods_sorted) + '_to_' + mod], fname_fmt) % i)
-                                            else:
-                                                save_tensor_to_csv(x_r[mod], 
-                                                                os.path.join(dirs[batch_id]['x_trans']['_'.join(input_mods_sorted) + '_to_' + mod], fname_fmt) % i)
-
+                                    if m in data['e'].keys():
+                                        input_data['e'][m] = data['e'][m]
+                                x_r_pre, *_ = model(input_data)  # N * K
+                                x_r = model.gen_real_data(x_r_pre, sampling=False)
+                                for mod in output_mods:
+                                    if return_pred:
+                                        safe_append(pred, batch_id, ['x_trans', '_'.join(input_mods_sorted) + '_to_' + mod], x_r[mod])
+                                    if save_dir:
+                                        if mtx:
+                                            save_tensor_to_mtx(x_r[mod], 
+                                                            os.path.join(dirs[batch_id]['x_trans']['_'.join(input_mods_sorted) + '_to_' + mod], fname_fmt) % i)
+                                        else:
+                                            save_tensor_to_csv(x_r[mod], 
+                                                            os.path.join(dirs[batch_id]['x_trans']['_'.join(input_mods_sorted) + '_to_' + mod], fname_fmt) % i)
             if return_pred:
                 for batch_id, batch_data in pred.items():
                     for variable, variable_data in batch_data.items():

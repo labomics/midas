@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scmidas"
+version = "0.1.12"
+authors = [
+  { name="labomics", email="omicshub@outlook.com" },
+]
+description = "A torch-based integration method for single-cell multi-omic data."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "lightning>=2.4.0",
+  "lightning-utilities>=0.11.8",
+  "torch>=2.5.1",
+  "torchaudio>=2.5.1",
+  "torchmetrics>=1.5.1",
+  "torchvision>=0.20.1",
+  "tornado",
+  "tqdm",
+  "toml",
+  "requests",
+  "ipykernel",
+  "anndata",
+  "tensorboard",
+  "matplotlib",
+  "numpy",
+  "pandas",
+  "scanpy",
+  "scikit-learn",
+  "scipy"
+]
+[project.urls]
+Homepage = "https://github.com/labomics/midas"
+Issues = "https://github.com/labomics/midas/issues"
