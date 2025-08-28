@@ -591,7 +591,6 @@ def download_models(name: str, des: str = './'):
     else:
         logging.error(f'Dataset "{name}" is not recognized.')
         raise ValueError(f'Dataset "{name}" not supported.')
-    
 
 def download_data(name: str, des: str = './'):
     """
@@ -633,4 +632,40 @@ def download_data(name: str, des: str = './'):
     else:
         logging.error(f'Dataset "{name}" is not recognized.')
         raise ValueError(f'Dataset "{name}" not supported.')
+
+def download_script(name: str, des: str = './'):
+    """
+    Downloads the specified script.
+
+    Parameters:
+        name : str
+            Name of the script to download (e.g., 'wnn_bimodal.R').
+        des : str
+            Destination path to save the script (default is the current directory).
+    """
     
+    des_path = Path(des)
+    des_path.mkdir(parents=True, exist_ok=True)
+    url_dict = {
+        'wnn_bimodal.R': 'https://raw.githubusercontent.com/labomics/midas/main/docs/source/tutorials/basics/wnn_bimodal.R',
+        'wnn_trimodal.R': 'https://raw.githubusercontent.com/labomics/midas/main/docs/source/tutorials/basics/wnn_trimodal.R',
+    }
+    
+    if name in url_dict:
+        url = url_dict[name]
+        file_path = des_path / name
+        if not file_path.exists():
+            print(f"'{file_path}' not found. Downloading...")
+            try:
+                response = requests.get(url, timeout=30)
+                response.raise_for_status()
+                file_path.write_text(response.text, encoding='utf-8')
+                print(f"Successfully downloaded '{file_path}'.")
+            except requests.exceptions.RequestException as e:
+                print(f"Error downloading the file: {e}")
+                raise
+        else:
+            print(f"'{file_path}' already exists. Skipping download.")           
+    else:
+        logging.error(f'Script "{name}" is not recognized.')
+        raise ValueError(f'Script "{name}" not supported.')

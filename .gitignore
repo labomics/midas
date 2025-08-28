@@ -6,5 +6,6 @@
 **/saved_models/
 **/demo*_temp/
 
+dist/
 src/scmidas.egg-info/
 to_script.sh
