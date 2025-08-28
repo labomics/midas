@@ -1,86 +1,107 @@
-# Release notes
+# **Release Notes**
 
-## V 0.1.X
+All notable changes to this project will be documented in this file.
 
-**v0.1.13 2025-7-3**
-1. Update model source.
-2. 
+---
 
-**v0.1.10 2025-7-2**
-1. Change dims_before_enc_atac=[128, 32] and dims after dec atac=[32, 128]
-   
-**v0.1.9 2025-6-23**
-1. Set python to >= 3.10 version.
+## **Version 0.1.x**
 
-**v0.1.8 2025-6-12**
-1. Fixed a bug preventing the optimizer from being initialized after MIDAS.load_checkpoint().
-2. Added support for .mtx input format.
-3. Updated documentation and tutorials.
-4. Add returns for MIDAS.predict(). Improve effeciency.
-5. Add UMAP visualization during training. See MIDAS.configure_data_from_dir(viz_umap_tb=True).
-6. Add data.download_models().
-7. Update demo data.
+### **v0.1.13** (2025-08-28)
+*   **📚 Documentation**
+    *   Enhanced and clarified tutorials for a better user learning experience.
 
+### **v0.1.12** (2025-07-03)
+*   **✨ Enhancements**
+    *   Updated the source for fetching pre-trained models to ensure reliability.
 
-**v0.1.7 2025-1-22**
+### **v0.1.10** (2025-07-02)
+*   **✨ Enhancements**
+    *   Adjusted default layer dimensions for the ATAC encoder/decoder (`dims_before_enc_atac=[128, 32]` and `dims_after_dec_atac=[32, 128]`) to improve model performance.
 
-1. fix bug: #22
+### **v0.1.9** (2025-06-23)
+*   **⚙️ Miscellaneous**
+    *   Updated the minimum required Python version to `>=3.10`.
 
-**v0.1.6 2025-1-20**
+### **v0.1.8** (2025-06-12)
+*   **🚀 New Features**
+    *   Added support for the `.mtx` (Matrix Market) input format for broader data compatibility.
+    *   Introduced live UMAP visualization during training via TensorBoard. This can be enabled with `MIDAS.configure_data_from_dir(viz_umap_tb=True)`.
+    *   Added a new utility function `data.download_models()` to easily fetch pre-trained models.
+*   **✨ Enhancements**
+    *   The `MIDAS.predict()` method now returns prediction results directly, improving efficiency and making it easier to chain operations.
+    *   Updated the demonstration dataset with more relevant examples.
+*   **🐛 Bug Fixes**
+    *   Fixed a critical bug that prevented the optimizer from being re-initialized after loading a checkpoint with `MIDAS.load_checkpoint()`.
+*   **📚 Documentation**
+    *   Updated and expanded documentation and tutorials to reflect recent changes.
 
-1. fix bug: add condition for dims_h. Only when len(dims_x['atac'])>1, we use the 'dims_brefore_enc_atac' configuration.
+### **v0.1.7** (2025-01-22)
+*   **🐛 Bug Fixes**
+    *   Resolved a bug reported in Issue #22.
 
-**v0.1.5 2025-1-17**
+### **v0.1.6** (2025-01-20)
+*   **🐛 Bug Fixes**
+    *   Fixed a bug where the `dims_brefore_enc_atac` configuration was applied incorrectly. It is now conditionally used only when multiple ATAC input dimensions are provided.
 
-1. fix bug: remove gaussian sampling during inferring for modality-specific embeddings.
+### **v0.1.5** (2025-01-17)
+*   **🐛 Bug Fixes**
+    *   Fixed an issue where Gaussian sampling was incorrectly performed during inference for modality-specific embeddings, leading to more deterministic outputs.
 
-**v0.1.4 2024-12-31**
+### **v0.1.4** (2024-12-31)
+*   **🐛 Bug Fixes**
+    *   Corrected the data loading logic in `MIDAS.get_emb_umap()` by fixing the `load_predicted()` utility.
 
-1. debug: MIDAS.get_emb_umap(), correct load_predicted()
+### **v0.1.3** (2024-12-21)
+*   **🚀 New Features**
+    *   Integrated with **PyTorch Lightning** to enable streamlined multi-GPU training.
+    *   Integrated with **TensorBoard** to facilitate real-time visualization of training and validation losses.
+    *   Refactored the `MIDAS` architecture to support easier integration of new custom modalities.
 
-**v0.1.3 2024-12-21**
+---
 
-1. Integrate with Lightning to enable multi-GPU training.
-2. Integrate with TensorBoard to facilitate loss visualization.
-3. Enhance MIDAS to support easier integration of new modalities.
+## **Version 0.0.x**
 
-## V 0.0.X
+### **v0.0.18** (2024-07-29)
+*   **🐛 Bug Fixes**
+    *   In `utils.viz_mod_latent()`, rotated the visualization for better interpretation and fixed a bug that caused an error when processing a batch of inputs.
 
-**v0.0.18 2024-07-29**
+### **v0.0.17** (2024-07-16)
+*   **🚀 New Features**
+    *   Added the `eval_mod()` function for modality evaluation.
+    *   Added `skip_s` parameter to `init_model()` for more flexible model initialization.
+*   **✨ Enhancements**
+    *   Removed the deprecated `eval_scmib()` function.
+*   **📚 Documentation**
+    *   Added Tutorial 3, covering new evaluation methods.
 
-1. utils.viz_mod_latent(). Rotated the image and fixed the bug that caused an error when inputting a batch.
+### **v0.0.16** (2024-07-11)
+*   **🐛 Bug Fixes**
+    *   Fixed an issue in `utils.load_predicted()` as reported in Issue #5.
 
-**v0.0.17  2024-07-16**
+### **v0.0.15** (2024-07-11)
+*   **🐛 Bug Fixes**
+    *   Fixed an issue in the `reduce_data()` function.
+    *   Corrected the sorting logic in `utils.ref_sort()` as reported in Issue #9.
 
-1. add eval_mod(), remove eval_scmib()
-2. add tutorial-3
-3. add skip_s in init_model()
+### **v0.0.14** (2024-07-04)
+*   **✨ Enhancements**
+    *   Improved compatibility and performance on **Windows** operating systems.
+    *   Enhanced functionality for environments **without GPU support**.
 
-**v0.0.16  2024-07-11**
+### **v0.0.13** (2024-07-04)
+*   **🚀 New Features**
+    *   Introduced `scmidas.datasets.GenDataFromPath()` for more flexible data input from custom paths.
+    *   Added `viz_diff()` and `viz_mod_latent()` for advanced visualizations.
+    *   Added new evaluation functions.
+*   **✨ Enhancements**
+    *   Renamed `pack()` to `reduce_data()` for better clarity.
+*   **🐛 Bug Fixes**
+    *   Addressed several minor bugs to improve stability.
+*   **⚙️ Miscellaneous**
+    *   Upgraded the minimum required Python version from `3.8` to `>=3.9` to accommodate `scib` dependencies.
+*   **📚 Documentation**
+    *   Updated all tutorials to align with the latest API changes.
 
-1. Fix utils.load_predicted(). See #5.
-
-**v0.0.15  2024-07-11**
-
-1. Fix reduce_data()
-2. Fix utils.ref_sort(). See #9.
-
-**v0.0.14  2024-07-04**
-
-1. Adaptation for Windows: Improved compatibility and performance on Windows operating systems.
-2. Non-GPU Compatibility: Enhanced functionality for environments without GPU support.
-
-**v0.0.13  2024-07-04**
-
-1. Python=3.8 -> Python>=3.9 to accomodate scib.
-2. Add scmidas.datasets.GenDataFromPath() for flexible inputs.
-3. Update tutorials.
-4. Change pack() -> reduce_data().
-5. Fix bugs.
-6. Add viz_diff().
-7. Add viz_mod_latent().
-8. Add evaluation funcs.
-
-**v0.0.8  2024-06-20**
-
-First release.
+### **v0.0.8** (2024-06-20)
+*   **🎉 Initial Release**
+    *   First public version of the project.
