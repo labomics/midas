@@ -47,36 +47,9 @@ conda activate scmidas
 pip install scmidas
 ```
 
-## ⚡ Getting Started: A Quick Example
+## ⚡ Getting Started
 
-Here is a minimal example to get you started with a mosaic integration task. For more detailed tutorials, please refer to our [documentation](https://scmidas.readthedocs.io/en/latest/).
-
-```python
-from scmidas.config import load_config
-from scmidas.model import MIDAS
-import lightning as L
-
-# 1. Configure and initialize the MIDAS model
-# The configuration file allows you to specify modalities, layers, and other parameters.
-configs = load_config()
-
-# 2. Load your mosaic dataset
-# The input should be an AnnData object where modalities are stored.
-# Different batches can have different combinations of modalities.
-model = MIDAS.configure_data_from_dir(configs, 'path/to/your/data', transform={'atac':'binarize'})
-
-# 3. Train the model on your data
-trainer = L.Trainer(max_epochs=2000)
-trainer.fit(model=model)
-
-# 4. Obtain the integrated and imputed results
-# The model returns an AnnData object with a unified latent space 
-# and imputed values for the missing modalities.
-pred = model.predict()
-
-# 5. Visualize the results
-model.get_emb_umap()
-```
+To get started, please refer to our [documentation](https://scmidas.readthedocs.io/en/latest/).
 
 ## 📈 Reproducibility
 
