@@ -9,6 +9,7 @@ import pandas as pd
 import scanpy as sc
 from tqdm import tqdm
 from matplotlib import pyplot as plt
+from scipy.sparse import csr_matrix
 
 import torch
 from torch import nn
@@ -232,10 +233,10 @@ class Decoder(nn.Module):
                     for dim in output_dims
                 ])
 
-            # Layer to process concatenated outputs
-            self.transform_concat[modality] = Layer1D(self.dims_h[modality], 
-                                                   self.norm, self.out_trans, 
-                                                   self.drop)
+                # Layer to process concatenated outputs
+                self.transform_concat[modality] = Layer1D(self.dims_h[modality], 
+                                                    self.norm, self.out_trans, 
+                                                    self.drop)
 
     def forward(self, latent_data: torch.Tensor) -> Dict[str, torch.Tensor]:
         """
@@ -412,6 +413,10 @@ class VAE(nn.Module):
         self.dims_x = dims_x
         self.dims_s = dims_s
         self.mods = set(dims_x.keys())
+        logging.debug(f'Initializing VAE with modalities: {self.mods}')
+        logging.debug(f'Initializing VAE with dims_s: {self.dims_s}')
+        logging.debug(f'Initializing VAE with dims_x: {self.dims_x}')
+
 
         # Dynamically set additional arguments
         for key, value in kwargs.items():
@@ -489,6 +494,9 @@ class VAE(nn.Module):
                 s = data['s']
 
         # Encode data
+        # check device:
+        logging.debug(f"x device: {next(iter(x.values())).device}")
+        logging.debug(f"model device: {next(self.parameters()).device}")
         z_x_mu, z_x_logvar = self.encoder(x, e)
         z_s_mu, z_s_logvar = self.encode_batch(s)
 
@@ -496,7 +504,7 @@ class VAE(nn.Module):
         try:
             z_mu, z_logvar = self.poe(list(z_x_mu.values()) + z_s_mu, list(z_x_logvar.values()) + z_s_logvar)
         except:
-            print(z_x_mu, z_s_mu, x, e, s)
+            logging.debug(z_x_mu, z_s_mu, x, e, s)
 
         # Sample latent variables
         z = self.sample_latent(z_mu, z_logvar)
@@ -715,7 +723,7 @@ class VAE(nn.Module):
         try:
             mus = [torch.zeros_like(mus[0])] + mus
         except:
-            print(mus)
+            logging.debug(mus)
         logvars = [torch.zeros_like(logvars[0])] + logvars
 
         # Calculate precision and combined precision
@@ -854,6 +862,7 @@ class MIDAS(L.LightningModule):
         save_model_path: str = './saved_models/', 
         sampler_type:str = 'auto', 
         viz_umap_tb=False,
+        batch_names=None,
     ) -> 'MIDAS':
         """
         Configure the data and model parameters for training.
@@ -881,6 +890,8 @@ class MIDAS(L.LightningModule):
                 Type of sampler to use, by default 'auto'. For 'ddp', use distributed sampler.
             viz_umap_tb: bool, optional
                 Whether to visualize UMAP embeddings in TensorBoard, by default False.
+            batch_names: list, optional
+                List of batch names, by default None.
         Returns:
             class 'MIDAS': 
                 Returns MIDAS instance.
@@ -904,7 +915,9 @@ class MIDAS(L.LightningModule):
                     'but len(dims_x["atac"]) == 1. To forcibly encode ATAC data directly, please remove these settings from configs.'
                 )
                 exit()
-
+        if batch_names is None:
+            batch_names = ['batch_%d' for i in range(len(datalist))]
+        cls.batch_names = batch_names
         cls.sampler_type = sampler_type
         cls.datalist = datalist
         cls.dims_s = dims_s
@@ -953,7 +966,7 @@ class MIDAS(L.LightningModule):
             logging.info(f'DataLoader created with batch size {self.batch_size} and {self.num_workers} workers.')
         except Exception as e:
             raise RuntimeError('Failed to create DataLoader. Check DataLoader configuration.') from e
-
+        logging.debug(f'DataLoader: {len(train_loader)}')
         return train_loader
     
     def configure_optimizers(self) -> List[torch.optim.Optimizer]:
@@ -964,6 +977,8 @@ class MIDAS(L.LightningModule):
             List[torch.optim.Optimizer] : 
                 List of optimizers for the network and discriminator.
         """
+        logging.debug(f'net:{self.net}')
+        logging.debug(f'dsc:{self.dsc}')
         self.net_optim = getattr(torch.optim, self.optim_net)(self.net.parameters(), lr=self.lr_net)
         self.dsc_optim = getattr(torch.optim, self.optim_dsc)(self.dsc.parameters(), lr=self.lr_dsc)
 
@@ -991,7 +1006,10 @@ class MIDAS(L.LightningModule):
                 Total VAE loss for the current batch.
         """
         # Forward pass through the VAE
+        logging.debug(f"Training step - batch index: {batch_idx}")
+        logging.debug(f"Input: {batch}")
         x_r_pre, s_r_pre, z_mu, z_logvar, z, c, u, z_uni, c_all = self.net(batch)
+        logging.debug(f'Current batch: {batch['s']['joint'][0]}')
         c_all['joint'] = c
 
         # Compute reconstruction loss
@@ -1049,53 +1067,75 @@ class MIDAS(L.LightningModule):
 
     @rank_zero_only
     def predict(self, 
-                return_pred:bool =True,
-                save_dir: str = None, 
+                return_format = 'array',
+                save_dir: str = None,
+                save_format = 'h5ad',
                 joint_latent: bool = True, 
                 mod_latent: bool = False, 
                 impute: bool = False, 
                 batch_correct: bool = False, 
                 translate: bool = False, 
                 input: bool = False,
-                mtx:bool = True,
-                group_by: str = 'modality'
                 )->Optional[Dict[str, Dict[str, torch.Tensor]]]:
         """
-        Predict and save results for multiple modes, including joint latent, 
-        imputation, batch correction, and translation.
+        Run model inference to generate latent embeddings, reconstructed data, or translated modalities.
 
-        Parameters:
-            return_pred : bool, optional
-                Whether to return the prediction.
-            save_dir : str, optional
-                If provided, save prediction results to this directory.
-            joint_latent : bool, optional
-                Whether to calculate and save joint latent representations.
-            mod_latent : bool, optional
-                Whether to calculate and save modality-specific latent representations.
-            impute : bool, optional
-                Whether to perform data imputation.
-            batch_correct : bool, optional
-                Whether to apply batch correction.
-            translate : bool, optional
-                Whether to perform modality translation.
-            input : bool, optional
-                Whether to save input data.
-            mtx: bool, optional
-                Whether to save results in mtx format.
-            group_by : str, optional
-                Group predictions by modality or batch, by default 'modality'.
-        
-        Returns:
-            Optional[Dict[str, Dict[str, torch.Tensor]]]:
-                If return_pred is True, returns a dictionary containing predictions.
-                
-        Notes:
-            See https://github.com/labomics/midas/issues/7.
+        The method iterates through the dataset, computes representations using the trained network, 
+        and optionally saves the results to disk or returns them in memory.
+
+        Parameters
+        ----------
+        return_format : str, default='array'
+            The format of the returned data.
+            - 'array': Returns a nested dictionary of Numpy arrays.
+            - 'anndata': Returns a dictionary of AnnData objects (requires `scanpy`).
+        save_dir : str, optional, default=None
+            Directory path to save the prediction results. If None, results are not saved to disk.
+        save_format : str, default='h5ad'
+            File format for saving results if `save_dir` is provided.
+            - 'h5ad': Saves as H5AD files (one per batch).
+            - 'mtx': Saves as Matrix Market files inside batch-specific folders.
+        joint_latent : bool, default=True
+            If True, computes the joint latent representation (z) conditioned on all observed modalities.
+        mod_latent : bool, default=False
+            If True, computes latent representations conditioned on each individual modality.
+            (Automatically set to True if `translate` is True).
+        impute : bool, default=False
+            If True, generates imputed data (x_impt) from the joint latent space.
+        batch_correct : bool, default=False
+            If True, calculates batch centroids and performs batch-effect correction on the reconstructed data (x_bc).
+            Note: This involves a second pass through the data.
+        translate : bool, default=False
+            If True, performs cross-modality translation (e.g., generating Modality B from Modality A).
+        input : bool, default=False
+            If True, includes the original input raw data and masks in the output.
+
+        Returns
+        -------
+        output : Dict
+            A dictionary where keys are batch names.
+            
+            1. If return_format='array':
+               {
+                   'batch_name': {
+                       'z_c': {'joint': np.ndarray, 'modality_name': ...},  # Content latent
+                       'z_u': {'joint': np.ndarray, ...},                   # Batch latent
+                       'x_impt': {'modality_name': np.ndarray},             # Imputed data
+                       'x_bc': {'modality_name': np.ndarray},               # Batch corrected data
+                       ...
+                   },
+                   ...
+               }
+            
+            2. If return_format='anndata':
+               {
+                   'batch_name': ann_data_object
+               }
+               (Latent variables are stored in `adata.obsm`, masks in `adata.uns`).
         """
-        device = next(self.net.parameters()).device
-        model = deepcopy(self.net)
-        model.eval()
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        logging.info(f'Predicting using device: {device}')
+        model = self.net.to(device)
 
         if translate:
             mod_latent = True
@@ -1104,57 +1144,27 @@ class MIDAS(L.LightningModule):
 
         pred = {}
 
-        if save_dir:
-            dirs = get_pred_dirs(save_dir, 
-                                self.combs, 
-                                joint_latent, 
-                                mod_latent, 
-                                impute, 
-                                batch_correct, 
-                                translate, 
-                                input)
-            parent_dirs = list(set(map(os.path.dirname, extract_values(dirs))))
-            mkdirs(parent_dirs, remove_old=False)
-            mkdirs(dirs, remove_old=False)
         with torch.no_grad():
             for batch_id, data in enumerate(self.datalist):
                 data_loader = DataLoader(data, shuffle=False, batch_size=self.batch_size, num_workers=self.num_workers)
-                logging.info('Processing batch %d: %s' % (batch_id, str(self.combs[batch_id])))
-                fname_fmt = get_name_fmt(len(data_loader))+'.mtx' if mtx else get_name_fmt(len(data_loader))+'.csv'
+                logging.info('Processing batch %s: %s' % (self.batch_names[batch_id], str(self.combs[batch_id])))
                 for i, data in enumerate(tqdm(data_loader)):
                     data = convert_tensors_to_cuda(data, device)
                     for k in data['s'].keys():
-                        safe_append(pred, batch_id, ['s', k], data['s'][k])
+                        safe_append(pred, self.batch_names[batch_id], ['s', k], data['s'][k])
                     # conditioned on all observed modalities
-                    if joint_latent or batch_correct or impute:
-                        x_r_pre, _, _, _, z, _, _, *_ = model(data)  # N * K
-                        if return_pred:
-                            safe_append(pred, batch_id, ['z', 'joint'], z)
-                        if save_dir:
-                            if mtx:
-                                save_tensor_to_mtx(z, os.path.join(dirs[batch_id]['z']['joint'], fname_fmt) % i)
-                            else:
-                                save_tensor_to_csv(z, os.path.join(dirs[batch_id]['z']['joint'], fname_fmt) % i)
+                    # if joint_latent or batch_correct or impute:
+                    x_r_pre, _, _, _, z, _, _, *_ = model(data)  # N * K
+                    safe_append(pred, self.batch_names[batch_id], ['z', 'joint'], z)
                     if impute:
                         x_r = model.gen_real_data(x_r_pre, sampling=False)
-                        for m in self.mods:
-                            if return_pred:
-                                safe_append(pred, batch_id, ['x_impt', m], x_r[m])
-                            if save_dir:
-                                if mtx:
-                                    save_tensor_to_mtx(x_r[m], os.path.join(dirs[batch_id]['x_impt'][m], fname_fmt) % i)
-                                else:
-                                    save_tensor_to_csv(x_r[m], os.path.join(dirs[batch_id]['x_impt'][m], fname_fmt) % i)
+                        for m in x_r.keys():
+                            safe_append(pred, self.batch_names[batch_id], ['x_impt', m], x_r[m])
                     if input:  # save the input
                         for m in self.combs[batch_id]:
-                            if return_pred:
-                                safe_append(pred, batch_id, ['x', m],(data['x'][m]))
-                            if save_dir:                
-                                if mtx:
-                                    save_tensor_to_mtx(data['x'][m], os.path.join(dirs[batch_id]['x'][m], fname_fmt) % i)
-                                else:
-                                    save_tensor_to_csv(data['x'][m], os.path.join(dirs[batch_id]['x'][m], fname_fmt) % i)
-
+                            safe_append(pred, self.batch_names[batch_id], ['x', m],(data['x'][m]))
+                            if m in data['e']:
+                                safe_append(pred, self.batch_names[batch_id], ['mask', m],(data['e'][m]))
                     # conditioned on each individual modalities
                     if mod_latent:
                         for m in data['x'].keys():
@@ -1166,61 +1176,35 @@ class MIDAS(L.LightningModule):
                             if m in data['e'].keys():
                                 input_data['e'][m] = data['e'][m]
                             x_r_pre, _, _, _, z, c, u, *_ = model(input_data)  # N * K
-                            if return_pred:
-                                safe_append(pred, batch_id, ['z', m], z)
-                            if save_dir:
-                                if mtx:
-                                    save_tensor_to_mtx(z, os.path.join(dirs[batch_id]['z'][m], fname_fmt) % i)
-                                else:
-                                    save_tensor_to_csv(z, os.path.join(dirs[batch_id]['z'][m], fname_fmt) % i)
+                            safe_append(pred, self.batch_names[batch_id], ['z', m], z)
+
                     if translate: # from a to b
                         all_combinations = generate_all_combinations(self.mods)
                         for input_mods, output_mods in all_combinations:
-                            
-                            for input_mods, output_mods in all_combinations:
-                                flag = True
+                            flag = True
+                            input_mods_sorted = sorted(input_mods)
+                            for m in input_mods_sorted:
+                                if m not in data['x'].keys():
+                                    flag = False
+                            if flag:
                                 input_mods_sorted = sorted(input_mods)
+                                input_data = {
+                                    'x': {m: data['x'][m] for m in input_mods_sorted if m in data['x']},
+                                    's': data['s'], 
+                                    'e': {}
+                                }
                                 for m in input_mods_sorted:
-                                    if m not in data['x'].keys():
-                                        flag = False
-                                if flag:
-                                    input_mods_sorted = sorted(input_mods)
-                                    input_data = {
-                                        'x': {m: data['x'][m] for m in input_mods_sorted if m in data['x']},
-                                        's': data['s'], 
-                                        'e': {}
-                                    }
-                                    for m in input_mods_sorted:
-                                        if m in data['e'].keys():
-                                            input_data['e'][m] = data['e'][m]
-                                    x_r_pre, *_ = model(input_data)  # N * K
-                                    x_r = model.gen_real_data(x_r_pre, sampling=False)
-                                    for mod in output_mods:
-                                        if return_pred:
-                                            safe_append(pred, batch_id, ['x_trans', '_'.join(input_mods_sorted) + '_to_' + mod], x_r[mod])
-                                        if save_dir:
-                                            if mtx:
-                                                save_tensor_to_mtx(x_r[mod], 
-                                                                os.path.join(dirs[batch_id]['x_trans']['_'.join(input_mods_sorted) + '_to_' + mod], fname_fmt) % i)
-                                            else:
-                                                save_tensor_to_csv(x_r[mod], 
-                                                                os.path.join(dirs[batch_id]['x_trans']['_'.join(input_mods_sorted) + '_to_' + mod], fname_fmt) % i)
-
-            if return_pred:
-                for batch_id, batch_data in pred.items():
-                    for variable, variable_data in batch_data.items():
-                        for mod, values in variable_data.items():
-                            pred[batch_id][variable][mod] = torch.cat(pred[batch_id][variable][mod], dim=0).cpu().numpy().astype(np.float32)
+                                    if m in data['e'].keys():
+                                        input_data['e'][m] = data['e'][m]
+                                x_r_pre, *_ = model(input_data)  # N * K
+                                x_r = model.gen_real_data(x_r_pre, sampling=False)
+                                for mod in output_mods:
+                                    safe_append(pred, self.batch_names[batch_id], ['x_trans', '_'.join(input_mods_sorted) + '_to_' + mod], x_r[mod])
 
             if batch_correct:
                 logging.info('Calculating u_centroid ...')
-                if not return_pred:
-                    pred = load_predicted(save_dir, self.combs, mtx=mtx)
-                    u = torch.from_numpy(pred['z']['joint'][:, self.dim_c:])
-                    s = torch.from_numpy(pred['s']['joint'])
-                else:
-                    u = torch.from_numpy(np.concatenate([pred[i]['z']['joint'][:, self.dim_c:] for i in pred.keys()]))
-                    s = torch.from_numpy(np.concatenate([pred[i]['s']['joint'] for i in pred.keys()]).flatten())
+                u = torch.concat([torch.concat(pred[i]['z']['joint']) for i in self.batch_names])[:, self.dim_c:]
+                s = torch.concat([torch.concat(pred[i]['s']['joint']) for i in self.batch_names]).flatten()
                 u_mean = u.mean(dim=0, keepdim=True)
                 u_batch_mean_list = []
                 for batch_id in s.unique():
@@ -1234,50 +1218,73 @@ class MIDAS(L.LightningModule):
                 logging.info('Batch correction ...')
                 for batch_id, data in enumerate(self.datalist):
                     data_loader = DataLoader(data, shuffle=False, batch_size=self.batch_size, num_workers=self.num_workers)
-                    logging.info('Processing batch %d: %s' % (batch_id, str(self.combs[batch_id])))
-                    fname_fmt = get_name_fmt(len(data_loader))+'.mtx' if mtx else get_name_fmt(len(data_loader))+'.csv'
-                    
+                    logging.info('Processing batch %s: %s' % (self.batch_names[batch_id], str(self.combs[batch_id])))
                     for i, data in enumerate(tqdm(data_loader)):
                         data = convert_tensors_to_cuda(data, device)
                         x_r_pre, *_ = model(data)
                         x_r = model.gen_real_data(x_r_pre, sampling=True)
                         for m in self.mods:
-                            if return_pred:
-                                safe_append(pred, batch_id, ['x_bc', m], x_r[m])
-                            if save_dir:
-                                if mtx:
-                                    save_tensor_to_mtx(x_r[m], os.path.join(dirs[batch_id]['x_bc'][m], fname_fmt) % i)
-                                else:
-                                    save_tensor_to_csv(x_r[m], os.path.join(dirs[batch_id]['x_bc'][m], fname_fmt) % i)
-                if return_pred:
-                    logging.info('Converting batch-corrected data to np.array ...')
-                    for batch_id in range(len(self.datalist)):
-                        for mod in self.mods:
-                            pred[batch_id]['x_bc'][mod] = torch.cat(pred[batch_id]['x_bc'][mod], dim=0).cpu().numpy()
+                            safe_append(pred, self.batch_names[batch_id], ['x_bc', m], x_r[m])
 
-            if return_pred:
-                if group_by == 'batch':
-                #     for batch_id, batch_data in data.items():
-                #         for variable, variable_data in batch_data.items():
-                #             for mod, values in variable_data.items():
-                #                 data[batch_id][variable][mod] = np.array(data[batch_id][variable][mod]).astype(np.float32)
-                    return pred
-                elif group_by == 'modality':
-                    data_m = {}
-                    for batch_id, batch_data in pred.items():
-                        for variable, variable_data in batch_data.items():
-                            if variable not in data_m:
-                                data_m[variable] = {}
-                            for mod, values in variable_data.items():
-                                if mod not in data_m[variable]:
-                                    data_m[variable][mod] = {}
-                                data_m[variable][mod][batch_id] = values
-                    # Concatenate data across batches
-                    for variable, variable_data in data_m.items():
-                        for mod, mod_data in variable_data.items():
-                            data_m[variable][mod] = np.concatenate(list(mod_data.values()), axis=0).astype(np.float32)
+        # concatenate
+        pred_b = {}
+        for batch, data in pred.items():
+            pred_b[batch] = {}
+            for var, data_v in data.items():
+                if var == 'z':
+                    pred_b[batch]['z_c'] = {}
+                    pred_b[batch]['z_u'] = {}
+                else:
+                    pred_b[batch][var] = {}
+                for m, data_m in data_v.items():
+                    if var == 'z':
+                        pred_b[batch]['z_c'][m] = torch.cat(data_m).cpu().numpy()[:, :self.dim_c]
+                        pred_b[batch]['z_u'][m] = torch.cat(data_m).cpu().numpy()[:, self.dim_c:]
+                    elif var == 'mask':
+                        pred_b[batch][var][m] = data_m[0][0].cpu().numpy()
+                    else:
+                        pred_b[batch][var][m] = torch.cat(data_m).cpu().numpy()
+        
+        if save_dir is not None and save_format=='mtx':
+            for batch, data in pred_b.items():
+                os.makedirs(os.path.join(save_dir, self.batch_names[batch]),exist_ok=True)
+                for var, data_v in data.items():
+                    for m, data_m in data_v.items():
+                        mmwrite(os.path.join(save_dir, self.batch_names[batch], '%s_%s.mtx'%(var, m)), csr_matrix(pred_b[batch][var][m]))
 
-                    return data_m
+        if (save_dir is not None and save_format=='h5ad') or return_format == 'anndata':
+            # if group_by == 'batch':
+            adata_all = {}
+            for batch, data in pred_b.items():
+                adata = sc.AnnData(np.zeros([len(data['z_c']['joint']), 0]))
+                adata.obs['batch'] = batch
+                for var, data_v in data.items():
+                    if var == 's':
+                        continue
+                    for m, data_m in data_v.items():
+                        if m=='joint' and (not joint_latent):
+                            pass
+                        elif var=='mask':
+                            adata.uns['mask_%s'%m] = data_m
+                        else:
+                            if data_m.shape[1] > 10000:
+                                data_m = csr_matrix(data_m)
+                            adata.obsm['%s_%s' % (var, m)] = data_m
+                adata_all[batch] = adata
+                        
+        if (save_dir is not None and save_format=='h5ad'):
+            for batch, adata in adata_all.items():
+                os.makedirs(save_dir, exist_ok=True)
+                sc.write(os.path.join(save_dir, '%s.h5ad'%batch), adata)
+
+        if return_format == 'anndata':
+            return adata_all
+        
+        if not joint_latent:
+            for batch, data in pred_b.items():
+                data.pop('z_c_joint', None)
+                data.pop('z_u_joint', None)
+        return pred_b
         
     def on_train_epoch_end(self):
         """
@@ -1360,7 +1367,7 @@ class MIDAS(L.LightningModule):
         assert os.path.exists(checkpoint_path), f'Checkpoint path "{checkpoint_path}" does not exist.'
 
         # Load the checkpoint file
-        checkpoint_data = torch.load(checkpoint_path, **kwargs)
+        checkpoint_data = torch.load(checkpoint_path, weights_only=True, **kwargs)
 
         # Load the model state dictionaries
         self.net.load_state_dict(checkpoint_data['net'])
@@ -1766,12 +1773,14 @@ class MIDAS(L.LightningModule):
         """
         data = []  # List to store data file paths
         mask = []  # List to store mask file paths
+        batch_names = []
 
         for batch_dir in natsort.natsorted(os.listdir(dir_path)):
             if batch_dir != 'feat':  # Ignore the 'feat' directory
                 data_batch = {}
                 mask_batch = {}
                 batch_path = os.path.join(dir_path, batch_dir)
+                batch_names.append(batch_dir)
 
                 # Collect file paths for data and masks
                 if format == 'vec':
@@ -1797,7 +1806,7 @@ class MIDAS(L.LightningModule):
 
         # Load feature dimensions from 'feat_dims.toml'
         dims_x = toml.load(os.path.join(dir_path, 'feat', 'feat_dims.toml'))
-        return data, mask, dims_x
+        return data, mask, dims_x, batch_names
 
     @classmethod
     def configure_data_from_dir(cls,
@@ -1839,10 +1848,10 @@ class MIDAS(L.LightningModule):
 
         """
         # Extract data, mask, and feature dimensions from the directory
-        data, mask, dims_x = cls.get_info_from_dir(dir_path, format)
+        data, mask, dims_x, batch_names = cls.get_info_from_dir(dir_path, format)
 
         # Configure datasets and associated parameters
-        datalist, dims_s, s_joint, combs = cls.get_datasets_from_dir(data, mask, transform, format)
+        datalist, dims_s, s_joint, combs = cls.get_datasets_from_dir(data, mask, batch_names, transform, format)
         
         cls.start_epoch = 0
         cls.load_optimizer_state = False
@@ -1856,12 +1865,14 @@ class MIDAS(L.LightningModule):
             combs, 
             sampler_type=sampler_type, 
             viz_umap_tb=viz_umap_tb,
+            batch_names=batch_names,
             **kwargs)
     
     @staticmethod
     def get_datasets_from_dir(
         data: List[Dict[str, str]], 
         mask: List[Dict[str, str]], 
+        batch_names: List[str],
         transform: Dict[str, str]=None, 
         format: str='mtx'):
         """
@@ -1872,6 +1883,8 @@ class MIDAS(L.LightningModule):
                 List of data dictionaries, where keys are modalities and values are file paths.
             mask : List[Dict[str, str]]
                 List of mask dictionaries, where keys are modalities and values are mask file paths.
+            batch_name : List[str]
+                List of batch names.
             transform : Optional[Dict[str, str]]
                 Transformations to apply to specific modalities.
             format : str
@@ -1926,12 +1939,12 @@ class MIDAS(L.LightningModule):
 
         # Define dimensions for batch correction
         dims_s = {modality: count + 1 for modality, count in n_s.items()}
-        MIDAS.print_info(mask, datasets)
+        MIDAS.print_info(mask, datasets, batch_names)
         return datasets, dims_s, s_joint, combs
 
     @staticmethod
     @rank_zero_only
-    def print_info(mask: List[Dict[str, str]], datalist: List[Dataset]):
+    def print_info(mask: List[Dict[str, str]], datalist: List[Dataset], batch_names: List[str]):
         """
         Print summary of mask density and dataset information.
 
@@ -1940,6 +1953,8 @@ class MIDAS(L.LightningModule):
                 List of mask.
             datalist : List[Dataset]
                 List of datasets.
+            batch_name : List[str]
+                List of batch names.
         """
         # Calculate mask density for each batch
 
@@ -1958,11 +1973,11 @@ class MIDAS(L.LightningModule):
             feature.append(s1)
             valid_feature.append(s2)
         valid_feature = pd.DataFrame(valid_feature)
-        valid_feature.index = [f'BATCH {i}' for i in range(len(valid_feature))]
+        valid_feature.index = batch_names
         cell_number = pd.DataFrame({'#CELL':[len(dataset) for dataset in datalist]})
-        cell_number.index = [f'BATCH {i}' for i in range(len(cell_number))]
+        cell_number.index = batch_names
         feature = pd.DataFrame(feature)
-        feature.index = [f'BATCH {i}' for i in range(len(feature))]
+        feature.index = batch_names
         data = pd.concat([cell_number, feature, valid_feature], axis=1)
         # Print summary
         logging.info('Input data: \n' + data.to_string())

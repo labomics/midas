@@ -704,4 +704,4 @@ def safe_append(pred:dict , batch_id:int, key_path:list, value:Any):
     current = pred.setdefault(batch_id, {})
     for key in key_path[:-1]:
         current = current.setdefault(key, {})
-    current.setdefault(key_path[-1], []).append(value)
+    current.setdefault(key_path[-1], []).append(value.cpu())

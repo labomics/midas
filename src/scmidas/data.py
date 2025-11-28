@@ -568,10 +568,9 @@ def download_models(name: str, des: str = './'):
     des_path = Path(des) / 'saved_models'
     des_path.mkdir(parents=True, exist_ok=True)  # Ensure the directory exists
     urls_dict = {
-        'wnn_mosaic_8batch_mtx' : [('https://drive.usercontent.google.com/download?id=12gqdg12Nb3tXOx82OtxwKHt6bPwRuGFl&export=download&authuser=0&confirm=t&uuid=675566a6-d782-4586-83ea-d994bd277dee&at=ALoNOgnU0Twolb8wYDEQ72MYJBt5:1749205390939', des_path / 'wnn_mosaic_8batch_mtx.pt')],
-        'wnn_full_8batch_mtx' : [('https://drive.usercontent.google.com/download?id=1nI3TVPkvF8uu8PGnxRKqSVrZCGLnz7ZC&export=download&authuser=0&confirm=t&uuid=3d85e299-401f-4591-af6e-e9b4741f0aed&at=ALoNOgl9EvZwibld2GcYsK7LVf1C:1749205432077', des_path / 'wnn_full_8batch_mtx.pt')],
-        'teadog_mosaic_mtx' : [('https://drive.usercontent.google.com/download?id=1zU9E9OtQaZMGJKSy_4r0kRlzoSf7ojMn&export=download&authuser=0&confirm=t&uuid=afc6a0c2-d155-4e46-be9f-a1f2b8b21228&at=ALoNOgkzwD8Q5MCX0MFIC7ggnUHU:1749215287513', des_path / 'teadog_mosaic_mtx.pt')],
-        'teadog_mosaic_mtx_small' : [('https://drive.usercontent.google.com/download?id=1oaLJ0zIYooRe67Ak6JlgHhEBW9KA4b72&export=download&authuser=0&confirm=t&uuid=3344e733-a746-48a5-9b72-19ff718fb8d6&at=AN8xHorrOxyfgJQYAOo_QMsQMhNJ:1751530177069', des_path / 'teadog_mosaic_mtx_small.pt')],
+        'wnn_full_8batch_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/wnn_full_8batch_mtx.pt', des_path / 'wnn_full_8batch_mtx.pt')],
+        'wnn_mosaic_8batch_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/wnn_mosaic_8batch_mtx.pt', des_path / 'wnn_mosaic_8batch_mtx.pt')],
+        'teadog_mosaic_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/teadog_mosaic_mtx.pt', des_path / 'teadog_mosaic_mtx.pt')],
     
     }
 
@@ -592,7 +591,6 @@ def download_models(name: str, des: str = './'):
     else:
         logging.error(f'Dataset "{name}" is not recognized.')
         raise ValueError(f'Dataset "{name}" not supported.')
-    
 
 def download_data(name: str, des: str = './'):
     """
@@ -612,9 +610,9 @@ def download_data(name: str, des: str = './'):
         'wnn_mosaic_3batch' : [('https://drive.usercontent.google.com/download?id=11a62mlJ4tbqPMM7y6iF9XfMxeWMFqc-7&export=download&authuser=0&confirm=t&uuid=f6efdc19-ba0b-448a-bfa1-ab65a9784bee&at=APvzH3rBWhgaiST18uqbTjSu6uo4:1734661218069', des_path / 'wnn_mosaic_3batch.zip')],
         'wnn_full_3batch' : [('https://drive.usercontent.google.com/download?id=1W3ZkU8TWzlPcCuqlGvptfH_PnHjvWI4u&export=download&authuser=0&confirm=t&uuid=015fddd9-a789-4bc7-8fda-3f4ef202811a&at=APvzH3rhfWzjXrlKJedDEBGzhsXm:1734661020282', des_path / 'wnn_full_3batch.zip')],
         'wnn_full_8batch' : [('https://drive.usercontent.google.com/download?id=1kzlSd6iAM2UHifvlzu0OYbpq_MLPomrx&export=download&authuser=0&confirm=t&uuid=79c4ce32-18ca-4ba3-bbbd-e1c955ab1064&at=APvzH3q3nmmKLDSI1SNtF1CGNbnn:1734661120552', des_path / 'wnn_full_8batch.zip')],
-        'wnn_mosaic_8batch_mtx' : [('https://drive.usercontent.google.com/download?id=1tQ-EpP8Mbw8qCChC_LbXfBLh8GsfBGSw&export=download&authuser=0&confirm=t&uuid=eed8c863-2b77-466e-a7f8-272408486f7a&at=ALoNOgla8Tuk8CBkZGWbtwWra7S6:1749205613084', des_path / 'wnn_mosaic_8batch_mtx.zip')],
-        'wnn_full_8batch_mtx' : [('https://drive.usercontent.google.com/download?id=1fztQVy9EU91KSsyXiBbZlvTSb6JEuoq4&export=download&authuser=0&confirm=t&uuid=25c02410-37ff-4598-9a6a-40a9a3d1c992&at=ALoNOglSyxEsCjo4C0WvJx5fNX6F:1749205646785', des_path / 'wnn_full_8batch_mtx.zip')],
-        'teadog_mosaic_mtx' : [('https://drive.usercontent.google.com/download?id=1vkejT5Zj_QyZPMkVfxSkE-ICivb8Q5du&export=download&authuser=0&confirm=t&uuid=cfd4bc42-9d4d-4f93-a92a-a2ecf5893f41&at=ALoNOgnZu2B-9fgOqH2XuUDyUOeY:1749205575410', des_path / 'teadog_mosaic_mtx.zip')],
+        'wnn_full_8batch_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/wnn_full_8batch_mtx.zip', des_path / 'wnn_full_8batch_mtx.zip')],
+        'wnn_mosaic_8batch_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/wnn_mosaic_8batch_mtx.zip', des_path / 'wnn_mosaic_8batch_mtx.zip')],
+        'teadog_mosaic_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/teadog_mosaic_mtx.zip', des_path / 'teadog_mosaic_mtx.zip')],
     }
 
     if name in urls_dict:
@@ -634,4 +632,40 @@ def download_data(name: str, des: str = './'):
     else:
         logging.error(f'Dataset "{name}" is not recognized.')
         raise ValueError(f'Dataset "{name}" not supported.')
+
+def download_script(name: str, des: str = './'):
+    """
+    Downloads the specified script.
+
+    Parameters:
+        name : str
+            Name of the script to download (e.g., 'wnn_bimodal.R').
+        des : str
+            Destination path to save the script (default is the current directory).
+    """
     
+    des_path = Path(des)
+    des_path.mkdir(parents=True, exist_ok=True)
+    url_dict = {
+        'wnn_bimodal.R': 'https://raw.githubusercontent.com/labomics/midas/main/docs/source/tutorials/basics/wnn_bimodal.R',
+        'wnn_trimodal.R': 'https://raw.githubusercontent.com/labomics/midas/main/docs/source/tutorials/basics/wnn_trimodal.R',
+    }
+    
+    if name in url_dict:
+        url = url_dict[name]
+        file_path = des_path / name
+        if not file_path.exists():
+            print(f"'{file_path}' not found. Downloading...")
+            try:
+                response = requests.get(url, timeout=30)
+                response.raise_for_status()
+                file_path.write_text(response.text, encoding='utf-8')
+                print(f"Successfully downloaded '{file_path}'.")
+            except requests.exceptions.RequestException as e:
+                print(f"Error downloading the file: {e}")
+                raise
+        else:
+            print(f"'{file_path}' already exists. Skipping download.")           
+    else:
+        logging.error(f'Script "{name}" is not recognized.')
+        raise ValueError(f'Script "{name}" not supported.')
