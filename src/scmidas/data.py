@@ -571,7 +571,7 @@ def download_models(name: str, des: str = './'):
         'wnn_full_8batch_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/wnn_full_8batch_mtx.pt', des_path / 'wnn_full_8batch_mtx.pt')],
         'wnn_mosaic_8batch_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/wnn_mosaic_8batch_mtx.pt', des_path / 'wnn_mosaic_8batch_mtx.pt')],
         'teadog_mosaic_mtx' : [('https://pub-cfde59ed245349228f47377c9ae32dd3.r2.dev/teadog_mosaic_mtx.pt', des_path / 'teadog_mosaic_mtx.pt')],
-    
+        
     }
 
     if name in urls_dict:
