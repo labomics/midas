@@ -12,7 +12,7 @@
   <a href="https://github.com/labomics/midas/stargazers"><img src="https://img.shields.io/github/stars/labomics/midas?style=social" alt="GitHub Stars"></a>
   <a href="https://pypi.org/project/scmidas/"><img src="https://img.shields.io/pypi/v/scmidas" alt="PyPI version"></a>
   <a href="https://scmidas.readthedocs.io/en/latest/"><img src="https://img.shields.io/readthedocs/scmidas" alt="Documentation Status"></a>
-  <a href="https://github.com/labomics/midas/LICENSE"><img src="https://img.shields.io/github/license/labomics/midas?v=1" alt="License"></a>
+  <a href="https://github.com/labomics/midas/LICENSE"><img src="https://img.shields.io/github/license/labomics/midas?v=1" alt="License"></a> 
 </p>
 
 ---
