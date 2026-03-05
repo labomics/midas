@@ -207,12 +207,6 @@ class MultiModalDataset(Dataset):
             A dictionary mapping modality names to their mask file paths, default is None.
         transform : Optional[Dict[str, str]]
             A dictionary specifying transformations to apply to each modality, default is None.
-
-    Methods:
-        __len__():
-            Returns the size of the dataset.
-        __getitem__(idx: int) -> Dict[str, Dict[str, Any]]:
-            Retrieves the data at the given index across all modalities.
     """
 
     def __init__(

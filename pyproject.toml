@@ -35,7 +35,8 @@ dependencies = [
   "pandas",
   "scanpy",
   "scikit-learn",
-  "scipy"
+  "scipy",
+  "mudata"
 ]
 [project.urls]
 Homepage = "https://github.com/labomics/midas"

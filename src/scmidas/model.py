@@ -1083,94 +1083,108 @@ class MIDAS(L.LightningModule):
         verbose: bool = True
     ):
         """
-        This method runs inference in a streaming manner. It can:
-        1) return results in memory (recommended only for small/medium datasets),
-        2) stream results to disk per mini-batch (recommended for large datasets),
-        3) or do both.  
+        Run model inference in a streaming manner.
+
+        This method supports three prediction modes:
+
+            1. Return predictions in memory (recommended for small or medium datasets).
+            2. Stream predictions to disk per mini-batch (recommended for large datasets).
+            3. Perform both simultaneously.
 
         Notes:
-            - If `return_in_memory=False`, the method will NOT accumulate large tensors in RAM, which is safe for very large datasets.
-            - If `save_dir` is provided, outputs are written incrementally per mini-batch (old-code style).
+            - If `return_in_memory=False`, prediction tensors will not accumulate in RAM,
+            making this method suitable for very large datasets.
+            - If `save_dir` is provided, predictions are written incrementally to disk
+            per mini-batch.
             - If `batch_correct=True`, a second pass over the dataset is performed:
-            - Pass 1: compute joint latent and estimate the technical centroid (online statistics).
-            - Pass 2: reconstruct data with batch correction and stream/save the corrected results.
-            - If `translate=True`, `mod_latent` will be forced to True. 
+
+                Pass 1:
+                    Compute joint latent representations and estimate the technical
+                    centroid using online statistics.
+
+                Pass 2:
+                    Reconstruct data with batch correction and stream the corrected
+                    outputs.
+
+            - If `translate=True`, `mod_latent` will be automatically set to True.
 
         Parameters:
             return_in_memory : bool, default=True
-                Whether to keep predictions in memory and return them as a nested dict.
-                Set to False for large datasets to avoid OOM.   
+                Whether to keep predictions in memory and return them as a nested
+                dictionary. Set to False for large datasets to avoid OOM.
+
             save_dir : str or None, default=None
-                Output directory for streaming saves. If None, nothing is saved to disk.    
+                Output directory for streaming prediction results. If None,
+                predictions are not saved to disk.
+
             save_format : {"npy", "csv"}, default="npy"
                 File format used when `save_dir` is provided.
-                - "npy": NumPy binary format (recommended; fast and compact).
-                - "csv": CSV text format (not recommended for large arrays due to size and speed).  
+
+                - `"npy"` : NumPy binary format (recommended; fast and compact).
+                - `"csv"` : CSV text format (not recommended for large arrays).
+
             joint_latent : bool, default=True
-                If True, compute the joint latent representation (z) conditioned on all observed modalities.
-                Saved/returned as:
-                - z["joint"]  (raw z), or after postprocess:
-                - z_c["joint"], z_u["joint"] (content/technical splits).    
+                Whether to compute the joint latent representation conditioned on all
+                observed modalities.
+
+                Stored as:
+                    - `z["joint"]` (raw latent)
+                    - or postprocessed into `z_c["joint"]` and `z_u["joint"]`.
+
             mod_latent : bool, default=False
-                If True, compute latent representations conditioned on each individual modality.
-                For each modality m in the mini-batch, run a single-modality forward pass and store:
-                - z[m]  
+                Whether to compute latent representations conditioned on each
+                individual modality.
+
+                For each modality `m`, a single-modality forward pass is performed
+                and stored as:
+
+                    `z[m]`
+
             impute : bool, default=False
-                If True, generate imputed data (x_impt) from the joint latent space.
-                Saved/returned as:
-                - x_impt[modality]  (reconstructed/imputed features for each modality)  
+                Whether to generate imputed data (`x_impt`) from the joint latent
+                representation.
+
+                Stored as:
+
+                    `x_impt[modality]`
+
             batch_correct : bool, default=False
-                If True, estimate a technical centroid and perform batch-effect correction on reconstructed data.
-                This requires a second pass over the dataset.
-                Saved/returned as:
-                - x_bc[modality]    
+                Whether to estimate a technical centroid and perform batch-effect
+                correction on reconstructed data.
+
+                Stored as:
+
+                    `x_bc[modality]`
+
             translate : bool, default=False
-                If True, perform cross-modality translation.
-                For each available input modality subset in the mini-batch, generate missing modalities.
-                Saved/returned as:
-                - x_trans["<input_mods>_to_<target_mod>"]   
+                Whether to perform cross-modality translation.
+
+                For each available input modality subset, missing modalities are
+                generated and stored as:
+
+                    `x_trans["<input_mods>_to_<target_mod>"]`
+
             input : bool, default=False
-                If True, include the original input data and masks in the output.
-                Saved/returned as:
-                - x[modality]
-                - mask[modality]   (if present in the mini-batch)   
+                Whether to include the original input data and masks in the output.
+
+                Stored as:
+
+                    `x[modality]`
+                    `mask[modality]` (if available)
+
             verbose : bool, default=True
-                If True, show progress bars (tqdm) and print info-level logs.
-                If False, suppress tqdm progress bars (tqdm(..., disable=True)) and optionally reduce logs. 
+                Whether to display progress bars (`tqdm`) and logging messages.
 
         Returns:
             output : dict or None
-                If `return_in_memory=True`, returns a nested dictionary (post-processed):   
-                {
-                "<batch_name>": {
-                    "z_c": {"joint": np.ndarray, "<mod>": np.ndarray, ...},
-                    "z_u": {"joint": np.ndarray, "<mod>": np.ndarray, ...},
-                    "x_impt": {"<mod>": np.ndarray, ...},          # if impute=True
-                    "x_bc": {"<mod>": np.ndarray, ...},            # if batch_correct=True
-                    "x_trans": {"<a>_to_<b>": np.ndarray, ...},    # if translate=True
-                    "x": {"<mod>": np.ndarray, ...},               # if input=True
-                    "mask": {"<mod>": np.ndarray, ...},            # if input=True and mask exists
-                    "s": {...}                                     # if available in data
-                },
-                ...
-                }   
-                If `return_in_memory=False` and `save_dir` is provided, returns a lightweight manifest: 
-                {
-                "saved_to": "<save_dir>",
-                "format": "<save_format>",
-                "manifest": {
-                    "<batch_name>": { "<var>": { "<key>": ["file0", "file1", ...] } }
-                }
-                }   
-                If both `return_in_memory=True` and `save_dir` is provided, returns:
-                {"memory": <nested_dict>, "disk": <manifest>}
-                
+
         Raises:
             ValueError
-                If both `return_in_memory=False` and `save_dir is None` (no outputs requested),
-                or if `save_format` is not supported.   
+                If both `return_in_memory=False` and `save_dir=None`, or if an
+                unsupported `save_format` is specified.
+
             KeyError
-                If required fields are missing in the predicted outputs (e.g., missing z when requested).
+                If required prediction fields are missing.
         """
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if verbose:
@@ -1520,13 +1534,13 @@ class MIDAS(L.LightningModule):
         Generate UMAP visualizations for biological and technical latent embeddings.
 
         This function loads predicted latent representations and computes UMAP
-        embeddings for visualization. Two embeddings are supported:
+        embeddings for visualization. Two types of embeddings are supported:
 
-        1. Biological embedding (`z_c`)
-        2. Technical embedding (`z_u`)
+            1. Biological embedding (`z_c`)
+            2. Technical embedding (`z_u`)
 
-        The function can optionally subsample observations to accelerate visualization
-        for large datasets.
+        For large datasets, the function can optionally subsample observations to
+        accelerate UMAP computation.
 
         Parameters:
             pred_dir : str, optional
@@ -1543,49 +1557,42 @@ class MIDAS(L.LightningModule):
                 be written to disk.
 
             drop_c_umap : bool, default=False
-                If True, skip UMAP visualization for biological embedding (`z_c`).
+                Whether to skip UMAP visualization for the biological embedding (`z_c`).
 
             drop_u_umap : bool, default=False
-                If True, skip UMAP visualization for technical embedding (`z_u`).
+                Whether to skip UMAP visualization for the technical embedding (`z_u`).
 
             color_by : str, default="batch"
                 Column name in `adata.obs` used to color cells in UMAP plots.
                 Common options include:
 
-                - `"batch"` : batch label (default)
+                - `"batch"` : batch label
                 - `"s_joint"` : subset or dataset identifier
-                - any other metadata column added to `adata.obs`
+                - any other metadata column stored in `adata.obs`
 
             n_obs : int, optional
-                Randomly subsample this number of observations before computing UMAP.
-                Useful for very large datasets to speed up visualization. If None,
-                all observations will be used.
+                Number of observations to randomly subsample before computing UMAP.
+                Useful for large datasets to speed up visualization. If None, all
+                observations will be used.
 
             verbose : bool, default=True
-                If True, show progress bars (tqdm) and logging information.
-                If False, suppress tqdm output.
+                Whether to display progress bars and logging information.
 
-            **kwargs
-                Additional keyword arguments passed to `scanpy.pl.umap()`, such as:
-
-                - `size`
-                - `palette`
-                - `legend_loc`
-                - etc.
+            **kwargs : Dict[str, Any]
+                Additional keyword arguments passed to `scanpy.pl.umap()`.
 
         Returns:
             all_adata : List[AnnData]
-                A list of AnnData objects containing the computed UMAP embeddings.
-                Each object corresponds to one latent representation (`z_c` or `z_u`).
+                List of AnnData objects containing the computed UMAP embeddings.
 
             all_figures : List[matplotlib.figure.Figure]
-                A list of generated UMAP figure objects.
+                List of generated UMAP figure objects.
 
         Notes:
             - UMAP is computed using `scanpy.pp.neighbors()` followed by
             `scanpy.tl.umap()`.
             - The biological embedding (`z_c`) captures biological variation,
-            while the technical embedding (`z_u`) reflects batch/technical effects.
+            while the technical embedding (`z_u`) reflects batch or technical effects.
             - For very large datasets (e.g., >1M cells), it is recommended to set
             `n_obs` (e.g., 20,000) to reduce computation time.
 
@@ -2284,7 +2291,7 @@ class MIDAS(L.LightningModule):
         transform: Dict[str, str]=None, 
         format: str='mtx'):
         """
-        Configure data from a CSV input.
+        Configure data from directory.
 
         Parameters:
             data : List[Dict[str, str]]

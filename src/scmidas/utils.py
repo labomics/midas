@@ -238,6 +238,7 @@ def save_list_to_csv(data: List[List[Any]], filename: str, delimiter: str = ',')
 def save_list_to_mtx(data: torch.Tensor, filename: str):
     """
     Save a 2D list or tensor to a Matrix Market (MTX) file.
+
     Parameters:
     
         data : torch.Tensor
@@ -252,6 +253,7 @@ def save_list_to_mtx(data: torch.Tensor, filename: str):
 def save_tensor_to_mtx(data: torch.Tensor, filename: str):
     """
     Save a 2D tensor to a Matrix Market (MTX) file.
+
     Parameters:
     
         data : torch.Tensor
@@ -385,6 +387,7 @@ def get_s_joint_mods(combs: List[List[str]]) -> Tuple[List[Dict[str, int]], List
             - `s_joint`: A list of dictionaries, where each dictionary maps the modalities
             to their corresponding indices for each batch.
             - `mods`: A list of all unique modalities across the dataset.
+
     """
     s_joint = []
     mods = {}
@@ -847,41 +850,56 @@ def load_predicted(
     """
     Load predictions saved by the streaming DiskSink.
 
-    Directory layout assumed (DiskSink default):
-      save_dir/
-        <batch>/
-          <var>/
-            <key>/
-              000000.npy
-              000001.npy
-              ...
-              meta.npy   (optional, for mask/other metadata)
+    The function reads prediction results saved to disk during
+    `predict(..., save_dir=...)` and reconstructs them into a
+    prediction dictionary similar to the in-memory output format.
+    
+    Parameters:
+        save_dir : str
+            Root directory where predictions were saved by
+            `predict(..., save_dir=...)`.
 
-    Parameters
-    ----------
-    save_dir : str
-        Root output directory used in predict_streaming(..., save_dir=...).
-    save_format : str
-        'npy' or 'csv'.
-    dim_c : int, optional
-        Content latent dimension for splitting z into z_c / z_u.
-        Required if split_z=True and z exists.
-    batch_names : list[str], optional
-        If provided, only load these batches (and in that order).
-    joint_latent : bool
-        If False, drop z_*['joint'] from the returned dict.
-    split_z : bool
-        If True, convert {'z': {...}} into {'z_c': {...}, 'z_u': {...}} using dim_c.
-        If False, keep raw 'z' arrays.
-    return_manifest : bool
-        If True, include a manifest of loaded file paths.
+        save_format : {"npy", "csv"}
+            File format used for saved prediction arrays.
 
-    Returns
-    -------
-    pred_b : dict
-        By default returns the same "pred_b-like" structure as your in-memory postprocess:
-          pred_b[batch]['z_c'][key], pred_b[batch]['z_u'][key], pred_b[batch]['x_impt'][m], ...
-        plus pred_b[batch]['mask'][m] if meta was saved.
+        dim_c : int, optional
+            Dimension of the content latent space (`z_c`).
+            Required if `split_z=True` and latent variable `z` exists.
+
+        batch_names : List[str], optional
+            If provided, only the specified batches will be loaded
+            (in the given order).
+
+        joint_latent : bool, default=True
+            Whether to include joint latent representations.
+            If False, `z_*["joint"]` will be removed from the output.
+
+        split_z : bool, default=True
+            If True, split latent variable `z` into:
+
+                - `z_c` : content latent representation
+                - `z_u` : technical latent representation
+
+            using `dim_c`. If False, keep the raw `z` arrays.
+
+        return_manifest : bool, default=False
+            Whether to include a manifest containing the file paths
+            used to reconstruct the predictions.
+
+    Returns:
+        pred_b : Dict[str, Any]
+            Prediction dictionary organized by batch. The structure
+            matches the in-memory prediction output, for example:
+
+                pred_b[batch]["z_c"][key]
+                pred_b[batch]["z_u"][key]
+                pred_b[batch]["x_impt"][modality]
+                pred_b[batch]["x_bc"][modality]
+                pred_b[batch]["x_trans"][translation_key]
+
+            If metadata was saved, modality masks will be stored as:
+
+                pred_b[batch]["mask"][modality]
     """
     if not os.path.isdir(save_dir):
         raise FileNotFoundError(f"save_dir not found: {save_dir}")
@@ -971,20 +989,37 @@ def load_predicted(
 
 def z_to_adata_or_mdata(pred, sparse_threshold=10000):
     """
-    Convert prediction dict to AnnData (single modality) or MuData (multi-modality)
+    Convert prediction dictionary to AnnData (single modality) or MuData (multi-modality).
 
-    - Single modality  -> AnnData
-    - Multi modality   -> MuData
+    If only one modality is present, an `AnnData` object will be returned.
+    If multiple modalities are present, a `MuData` object will be constructed
+    with one `AnnData` object per modality.
+
+    Parameters:
+        pred : Dict[str, Any]
+            Prediction results generated by `predict()` or `load_predicted()`.
+
+        sparse_threshold : int, default=10000
+            If the number of features exceeds this threshold, the data matrix
+            will be converted to a sparse CSR matrix to reduce memory usage.
+
+    Returns:
+        adata_or_mdata : Union[AnnData, MuData]
+            - `AnnData` if a single modality is present.
+            - `MuData` if multiple modalities are present.
 
     Notes:
-        - `batch` will be added to BOTH:
-            * per-modality adata.obs["batch"]
-            * top-level mdata.obs["batch"]   (so sc.pl.umap(mdata, color="batch") works)
-        - Latents go to:
-            * adata.obsm["z_c"], adata.obsm["z_u"]  (single modality)
-            * mdata.obsm["z_c"], mdata.obsm["z_u"]  (multi modality)
-        - Masks go to:
-            * adata.uns["mask_%s"%m] / adata.uns["mask"] depending on single/multi
+        - The batch label is added to both:
+            * `adata.obs["batch"]` for each modality
+            * `mdata.obs["batch"]` at the top level (so `sc.pl.umap(mdata, color="batch")` works)
+
+        - Latent embeddings are stored as:
+            * `adata.obsm["z_c"]`, `adata.obsm["z_u"]` for single-modality data
+            * `mdata.obsm["z_c"]`, `mdata.obsm["z_u"]` for multi-modality data
+
+        - Modality masks are stored in:
+            * `adata.uns["mask"]` for single-modality data
+            * `adata.uns["mask_<modality>"]` or `adata.uns["mask"]` depending on the context
     """
 
     # ----------------------------------------------------

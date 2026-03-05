@@ -7,9 +7,11 @@
 **/demo*_temp/
 
 dist/
+docs/build
 src_bak
 predictions
 src/scmidas.egg-info/
 to_script.sh
 temp
 auto_ver.sh
+pyproject.toml
