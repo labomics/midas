@@ -976,16 +976,15 @@ def z_to_adata_or_mdata(pred, sparse_threshold=10000):
     - Single modality  -> AnnData
     - Multi modality   -> MuData
 
-    Notes
-    -----
-    - `batch` will be added to BOTH:
-        * per-modality adata.obs["batch"]
-        * top-level mdata.obs["batch"]   (so sc.pl.umap(mdata, color="batch") works)
-    - Latents go to:
-        * adata.obsm["z_c"], adata.obsm["z_u"]  (single modality)
-        * mdata.obsm["z_c"], mdata.obsm["z_u"]  (multi modality)
-    - Masks go to:
-        * adata.uns["mask_%s"%m] / adata.uns["mask"] depending on single/multi
+    Notes:
+        - `batch` will be added to BOTH:
+            * per-modality adata.obs["batch"]
+            * top-level mdata.obs["batch"]   (so sc.pl.umap(mdata, color="batch") works)
+        - Latents go to:
+            * adata.obsm["z_c"], adata.obsm["z_u"]  (single modality)
+            * mdata.obsm["z_c"], mdata.obsm["z_u"]  (multi modality)
+        - Masks go to:
+            * adata.uns["mask_%s"%m] / adata.uns["mask"] depending on single/multi
     """
 
     # ----------------------------------------------------
