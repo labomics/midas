@@ -9,7 +9,7 @@
 project = 'midas'
 copyright = '2024, labomics'
 author = 'labomics'
-release = '0.1.15'
+release = '0.1.16'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

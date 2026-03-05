@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+src/scmidas/__init__.py
+src/scmidas/config.py
+src/scmidas/data.py
+src/scmidas/model.py
+src/scmidas/nn.py
+src/scmidas/plot.py
+src/scmidas/utils.py
+src/scmiracle.egg-info/PKG-INFO
+src/scmiracle.egg-info/SOURCES.txt
+src/scmiracle.egg-info/dependency_links.txt
+src/scmiracle.egg-info/requires.txt
+src/scmiracle.egg-info/top_level.txt

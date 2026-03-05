@@ -1,3 +1,36 @@
+Metadata-Version: 2.1
+Name: scmiracle
+Version: 0.0.2
+Summary: A torch-based integration method for single-cell multi-omic data.
+Author-email: labomics <omicshub@outlook.com>
+Project-URL: Homepage, https://github.com/sc-miracle/miracle
+Project-URL: Issues, https://github.com/sc-miracle/miracle/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: lightning>=2.4.0
+Requires-Dist: lightning-utilities>=0.11.8
+Requires-Dist: torch>=2.5.1
+Requires-Dist: torchaudio>=2.5.1
+Requires-Dist: torchmetrics>=1.5.1
+Requires-Dist: torchvision>=0.20.1
+Requires-Dist: tornado
+Requires-Dist: tqdm
+Requires-Dist: toml
+Requires-Dist: requests
+Requires-Dist: ipykernel
+Requires-Dist: anndata
+Requires-Dist: tensorboard
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scanpy
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+
 # MIDAS: A Deep Generative Model for Mosaic Integration and Knowledge Transfer of Single-Cell Multimodal Data
 
 <div align="center">

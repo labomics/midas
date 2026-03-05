@@ -313,7 +313,6 @@ class MultiBatchSampler(Sampler):
         batch_size: int = 1,
         n_max: int = 10000,
     ):
-        super().__init__(data_source)
         if not hasattr(data_source, 'datasets') or not hasattr(data_source, 'cumulative_sizes'):
             raise ValueError('Data source must be a ConcatDataset or equivalent.')
 

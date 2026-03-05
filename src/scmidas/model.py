@@ -2,6 +2,9 @@ import os
 import datetime
 
 from typing import Dict, List, Optional, Tuple
+from anndata import AnnData
+from mudata import MuData
+
 import natsort
 
 import toml
@@ -19,13 +22,12 @@ from pytorch_lightning.utilities import rank_zero_only
 
 import logging
 logging.basicConfig(level=logging.INFO)
+import threading
 
 # Project-Specific Imports
 from .data import MyDistributedSampler, MultiBatchSampler, MultiModalDataset
 from .utils import *
 from .nn import MLP, Layer1D, distribution_registry, transform_registry
-from copy import deepcopy
-
 
 class Encoder(nn.Module):
     """
@@ -848,6 +850,8 @@ class MIDAS(L.LightningModule):
         # Disable automatic optimization to manually control training steps. Always True.
         self.automatic_optimization = False
 
+        self.thread_lock = threading.Lock()
+
     @classmethod
     def configure_data(
         cls, 
@@ -982,7 +986,6 @@ class MIDAS(L.LightningModule):
         self.net_optim = getattr(torch.optim, self.optim_net)(self.net.parameters(), lr=self.lr_net)
         self.dsc_optim = getattr(torch.optim, self.optim_dsc)(self.dsc.parameters(), lr=self.lr_dsc)
 
-        # 如果你已经加载过 optimizer state dict，在这里 load
         if self.load_optimizer_state:
             self.net_optim.load_state_dict(self.loaded_net_optim_state)
             self.dsc_optim.load_state_dict(self.loaded_dsc_optim_state)
@@ -1009,7 +1012,7 @@ class MIDAS(L.LightningModule):
         logging.debug(f"Training step - batch index: {batch_idx}")
         logging.debug(f"Input: {batch}")
         x_r_pre, s_r_pre, z_mu, z_logvar, z, c, u, z_uni, c_all = self.net(batch)
-        logging.debug(f'Current batch: {batch['s']['joint'][0]}')
+        logging.debug(f"Current batch: {batch['s']['joint'][0]}")
         c_all['joint'] = c
 
         # Compute reconstruction loss
@@ -1066,224 +1069,339 @@ class MIDAS(L.LightningModule):
         self.update_model(loss_dsc, self.dsc, self.dsc_optim, self.grad_clip)
 
     @rank_zero_only
-    def predict(self, 
-                return_format = 'array',
-                save_dir: str = None,
-                save_format = 'h5ad',
-                joint_latent: bool = True, 
-                mod_latent: bool = False, 
-                impute: bool = False, 
-                batch_correct: bool = False, 
-                translate: bool = False, 
-                input: bool = False,
-                )->Optional[Dict[str, Dict[str, torch.Tensor]]]:
+    def predict(
+        self,
+        return_in_memory: bool = True,
+        save_dir: Optional[str] = None,
+        save_format: str = "npy",  # "npy" or "csv"
+        joint_latent: bool = True,
+        mod_latent: bool = False,
+        impute: bool = False,
+        batch_correct: bool = False,
+        translate: bool = False,
+        input: bool = False,
+        verbose: bool = True
+    ):
         """
-        Run model inference to generate latent embeddings, reconstructed data, or translated modalities.
+        This method runs inference in a streaming manner. It can:
+        1) return results in memory (recommended only for small/medium datasets),
+        2) stream results to disk per mini-batch (recommended for large datasets),
+        3) or do both.  
 
-        The method iterates through the dataset, computes representations using the trained network, 
-        and optionally saves the results to disk or returns them in memory.
+        Notes
+        -----
+        - If `return_in_memory=False`, the method will NOT accumulate large tensors in RAM, which is safe for very large datasets.
+        - If `save_dir` is provided, outputs are written incrementally per mini-batch (old-code style).
+        - If `batch_correct=True`, a second pass over the dataset is performed:
+        - Pass 1: compute joint latent and estimate the technical centroid (online statistics).
+        - Pass 2: reconstruct data with batch correction and stream/save the corrected results.
+        - If `translate=True`, `mod_latent` will be forced to True. 
 
         Parameters
         ----------
-        return_format : str, default='array'
-            The format of the returned data.
-            - 'array': Returns a nested dictionary of Numpy arrays.
-            - 'anndata': Returns a dictionary of AnnData objects (requires `scanpy`).
-        save_dir : str, optional, default=None
-            Directory path to save the prediction results. If None, results are not saved to disk.
-        save_format : str, default='h5ad'
-            File format for saving results if `save_dir` is provided.
-            - 'h5ad': Saves as H5AD files (one per batch).
-            - 'mtx': Saves as Matrix Market files inside batch-specific folders.
+        return_in_memory : bool, default=True
+            Whether to keep predictions in memory and return them as a nested dict.
+            Set to False for large datasets to avoid OOM.   
+        save_dir : str or None, default=None
+            Output directory for streaming saves. If None, nothing is saved to disk.    
+        save_format : {"npy", "csv"}, default="npy"
+            File format used when `save_dir` is provided.
+            - "npy": NumPy binary format (recommended; fast and compact).
+            - "csv": CSV text format (not recommended for large arrays due to size and speed).  
         joint_latent : bool, default=True
-            If True, computes the joint latent representation (z) conditioned on all observed modalities.
+            If True, compute the joint latent representation (z) conditioned on all observed modalities.
+            Saved/returned as:
+            - z["joint"]  (raw z), or after postprocess:
+            - z_c["joint"], z_u["joint"] (content/technical splits).    
         mod_latent : bool, default=False
-            If True, computes latent representations conditioned on each individual modality.
-            (Automatically set to True if `translate` is True).
+            If True, compute latent representations conditioned on each individual modality.
+            For each modality m in the mini-batch, run a single-modality forward pass and store:
+            - z[m]  
         impute : bool, default=False
-            If True, generates imputed data (x_impt) from the joint latent space.
+            If True, generate imputed data (x_impt) from the joint latent space.
+            Saved/returned as:
+            - x_impt[modality]  (reconstructed/imputed features for each modality)  
         batch_correct : bool, default=False
-            If True, calculates batch centroids and performs batch-effect correction on the reconstructed data (x_bc).
-            Note: This involves a second pass through the data.
+            If True, estimate a technical centroid and perform batch-effect correction on reconstructed data.
+            This requires a second pass over the dataset.
+            Saved/returned as:
+            - x_bc[modality]    
         translate : bool, default=False
-            If True, performs cross-modality translation (e.g., generating Modality B from Modality A).
+            If True, perform cross-modality translation.
+            For each available input modality subset in the mini-batch, generate missing modalities.
+            Saved/returned as:
+            - x_trans["<input_mods>_to_<target_mod>"]   
         input : bool, default=False
-            If True, includes the original input raw data and masks in the output.
+            If True, include the original input data and masks in the output.
+            Saved/returned as:
+            - x[modality]
+            - mask[modality]   (if present in the mini-batch)   
+        verbose : bool, default=True
+            If True, show progress bars (tqdm) and print info-level logs.
+            If False, suppress tqdm progress bars (tqdm(..., disable=True)) and optionally reduce logs. 
 
         Returns
         -------
-        output : Dict
-            A dictionary where keys are batch names.
+        output : dict or None
+            If `return_in_memory=True`, returns a nested dictionary (post-processed):   
+            {
+            "<batch_name>": {
+                "z_c": {"joint": np.ndarray, "<mod>": np.ndarray, ...},
+                "z_u": {"joint": np.ndarray, "<mod>": np.ndarray, ...},
+                "x_impt": {"<mod>": np.ndarray, ...},          # if impute=True
+                "x_bc": {"<mod>": np.ndarray, ...},            # if batch_correct=True
+                "x_trans": {"<a>_to_<b>": np.ndarray, ...},    # if translate=True
+                "x": {"<mod>": np.ndarray, ...},               # if input=True
+                "mask": {"<mod>": np.ndarray, ...},            # if input=True and mask exists
+                "s": {...}                                     # if available in data
+            },
+            ...
+            }   
+            If `return_in_memory=False` and `save_dir` is provided, returns a lightweight manifest: 
+            {
+            "saved_to": "<save_dir>",
+            "format": "<save_format>",
+            "manifest": {
+                "<batch_name>": { "<var>": { "<key>": ["file0", "file1", ...] } }
+            }
+            }   
+            If both `return_in_memory=True` and `save_dir` is provided, returns:
+            {"memory": <nested_dict>, "disk": <manifest>}
             
-            1. If return_format='array':
-               {
-                   'batch_name': {
-                       'z_c': {'joint': np.ndarray, 'modality_name': ...},  # Content latent
-                       'z_u': {'joint': np.ndarray, ...},                   # Batch latent
-                       'x_impt': {'modality_name': np.ndarray},             # Imputed data
-                       'x_bc': {'modality_name': np.ndarray},               # Batch corrected data
-                       ...
-                   },
-                   ...
-               }
-            
-            2. If return_format='anndata':
-               {
-                   'batch_name': ann_data_object
-               }
-               (Latent variables are stored in `adata.obsm`, masks in `adata.uns`).
+        Raises
+        ------
+        ValueError
+            If both `return_in_memory=False` and `save_dir is None` (no outputs requested),
+            or if `save_format` is not supported.   
+        KeyError
+            If required fields are missing in the predicted outputs (e.g., missing z when requested).
         """
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        logging.info(f'Predicting using device: {device}')
-        model = self.net.to(device)
+        if verbose:
+            logging.info(f"Predicting using device: {device}")
+        model = self.net.to(device).eval()
+
+        _old_bc = getattr(model, "batch_correction", None)
+        _old_uc = getattr(model, "u_centroid", None)
+        if hasattr(model, "batch_correction"):
+            model.batch_correction = False
 
         if translate:
             mod_latent = True
 
-        logging.info('Predicting ...')
+        # Choose sink(s)
+        sinks: List[BaseSink] = []
+        mem_sink = MemorySink() if return_in_memory else None
+        if mem_sink is not None:
+            sinks.append(mem_sink)
 
-        pred = {}
+        disk_sink = None
+        if save_dir is not None:
+            disk_sink = DiskSink(DiskSinkConfig(save_dir=save_dir, save_format=save_format))
+            sinks.append(disk_sink)
+
+        if not sinks:
+            raise ValueError("You must enable at least one of return_in_memory=True or save_dir!=None.")
+
+        # For batch_correct centroid computation (online; no full z storage)
+        online_stats: Optional[OnlineMeanByGroup] = None
+        if batch_correct:
+            online_stats = None
+
+        all_combinations = generate_all_combinations(self.mods) if translate else None
 
         with torch.no_grad():
-            for batch_id, data in enumerate(self.datalist):
-                data_loader = DataLoader(data, shuffle=False, batch_size=self.batch_size, num_workers=self.num_workers)
-                logging.info('Processing batch %s: %s' % (self.batch_names[batch_id], str(self.combs[batch_id])))
-                for i, data in enumerate(tqdm(data_loader)):
-                    data = convert_tensors_to_cuda(data, device)
-                    for k in data['s'].keys():
-                        safe_append(pred, self.batch_names[batch_id], ['s', k], data['s'][k])
-                    # conditioned on all observed modalities
-                    # if joint_latent or batch_correct or impute:
-                    x_r_pre, _, _, _, z, _, _, *_ = model(data)  # N * K
-                    safe_append(pred, self.batch_names[batch_id], ['z', 'joint'], z)
+            # -----------------------
+            # Pass 1: standard outputs (+ collect stats for batch_correct)
+            # -----------------------
+            for batch_id, dataset in enumerate(self.datalist):
+                batch_name = self.batch_names[batch_id]
+                loader = DataLoader(dataset, shuffle=False, batch_size=self.batch_size, num_workers=self.num_workers)
+                if verbose:
+                    logging.info("Processing batch %s: %s", batch_name, str(self.combs[batch_id]))
+
+                for i, batch in enumerate(tqdm(loader, desc=f"predict:{batch_name}", disable=not verbose)):
+                    batch = convert_tensors_to_cuda(batch, device)
+
+                    # Save s (labels / subset ids) if present
+                    if "s" in batch and isinstance(batch["s"], dict):
+                        for k, v in batch["s"].items():
+                            for s in sinks:
+                                s.write(batch_name, ["s", k], v)
+
+                    # Always compute forward once (cheap vs branching), then selectively write
+                    # Expected forward signature: x_r_pre, ..., z, c, u, ...
+                    out = model(batch)
+                    x_r_pre = out[0]
+                    z = out[4]
+
+                    # init online_stats after z known
+                    if batch_correct and online_stats is None:
+                        z_dim = z.shape[1]
+                        u_dim = z_dim - self.dim_c
+                        if u_dim <= 0:
+                            raise ValueError(f"dim_c={self.dim_c} is invalid for z_dim={z_dim}")
+                        online_stats = OnlineMeanByGroup(dim=u_dim)
+
+                    # joint latent (z)
+                    if joint_latent:
+                        for s in sinks:
+                            s.write(batch_name, ["z", "joint"], z)
+
+                    # online stats for batch correction: use u=z[:, dim_c:], group id from s['joint'] if exists
+                    if batch_correct:
+                        # try common field names
+                        if "s" in batch and isinstance(batch["s"], dict):
+                            if "joint" in batch["s"]:
+                                g = batch["s"]["joint"]
+                            else:
+                                # fallback: first key
+                                g = next(iter(batch["s"].values()))
+                        else:
+                            raise ValueError("batch_correct=True requires batch['s'][...] for grouping.")
+                        u = z[:, self.dim_c:]
+                        online_stats.update(u, g)
+
+                    # impute
                     if impute:
                         x_r = model.gen_real_data(x_r_pre, sampling=False)
-                        for m in x_r.keys():
-                            safe_append(pred, self.batch_names[batch_id], ['x_impt', m], x_r[m])
-                    if input:  # save the input
+                        for m, xm in x_r.items():
+                            for s in sinks:
+                                s.write(batch_name, ["x_impt", m], xm)
+
+                    # save input + masks
+                    if input:
                         for m in self.combs[batch_id]:
-                            safe_append(pred, self.batch_names[batch_id], ['x', m],(data['x'][m]))
-                            if m in data['e']:
-                                safe_append(pred, self.batch_names[batch_id], ['mask', m],(data['e'][m]))
-                    # conditioned on each individual modalities
+                            if "x" in batch and m in batch["x"]:
+                                for s in sinks:
+                                    s.write(batch_name, ["x", m], batch["x"][m])
+                            if "e" in batch and isinstance(batch["e"], dict) and m in batch["e"]:
+                                # mask typically small; store as meta or normal tensor
+                                # if you prefer single-file meta, use write_meta
+                                mask_np = to_numpy(batch["e"][m])[0] if batch["e"][m].ndim >= 2 else to_numpy(batch["e"][m])
+                                for s in sinks:
+                                    s.write_meta(batch_name, ["mask", m], mask_np)
+
+                    # per-modality latent
                     if mod_latent:
-                        for m in data['x'].keys():
-                            input_data = {
-                                'x': {m: data['x'][m]},
-                                's': data['s'], 
-                                'e': {}
-                            }
-                            if m in data['e'].keys():
-                                input_data['e'][m] = data['e'][m]
-                            x_r_pre, _, _, _, z, c, u, *_ = model(input_data)  # N * K
-                            safe_append(pred, self.batch_names[batch_id], ['z', m], z)
+                        for m in batch.get("x", {}).keys():
+                            input_data = {"x": {m: batch["x"][m]}, "s": batch.get("s", {}), "e": {}}
+                            if "e" in batch and m in batch["e"]:
+                                input_data["e"][m] = batch["e"][m]
+                            out_m = model(input_data)
+                            z_m = out_m[4]
+                            for s in sinks:
+                                s.write(batch_name, ["z", m], z_m)
 
-                    if translate: # from a to b
-                        all_combinations = generate_all_combinations(self.mods)
+                    # translate (general: any input subset -> remaining outputs)
+                    if translate and all_combinations is not None:
                         for input_mods, output_mods in all_combinations:
-                            flag = True
                             input_mods_sorted = sorted(input_mods)
-                            for m in input_mods_sorted:
-                                if m not in data['x'].keys():
-                                    flag = False
-                            if flag:
-                                input_mods_sorted = sorted(input_mods)
-                                input_data = {
-                                    'x': {m: data['x'][m] for m in input_mods_sorted if m in data['x']},
-                                    's': data['s'], 
-                                    'e': {}
-                                }
+                            # check availability in this minibatch
+                            if not all(m in batch.get("x", {}) for m in input_mods_sorted):
+                                continue
+                            input_data = {
+                                "x": {m: batch["x"][m] for m in input_mods_sorted},
+                                "s": batch.get("s", {}),
+                                "e": {}
+                            }
+                            if "e" in batch:
                                 for m in input_mods_sorted:
-                                    if m in data['e'].keys():
-                                        input_data['e'][m] = data['e'][m]
-                                x_r_pre, *_ = model(input_data)  # N * K
-                                x_r = model.gen_real_data(x_r_pre, sampling=False)
-                                for mod in output_mods:
-                                    safe_append(pred, self.batch_names[batch_id], ['x_trans', '_'.join(input_mods_sorted) + '_to_' + mod], x_r[mod])
+                                    if m in batch["e"]:
+                                        input_data["e"][m] = batch["e"][m]
 
+                            out_t = model(input_data)
+                            x_r_pre_t = out_t[0]
+                            x_r_t = model.gen_real_data(x_r_pre_t, sampling=False)
+                            for mod in output_mods:
+                                key = "_".join(input_mods_sorted) + "_to_" + mod
+                                for s in sinks:
+                                    s.write(batch_name, ["x_trans", key], x_r_t[mod])
+
+            # -----------------------
+            # Pass 2: batch correction reconstruction (streaming)
+            # -----------------------
             if batch_correct:
-                logging.info('Calculating u_centroid ...')
-                u = torch.concat([torch.concat(pred[i]['z']['joint']) for i in self.batch_names])[:, self.dim_c:]
-                s = torch.concat([torch.concat(pred[i]['s']['joint']) for i in self.batch_names]).flatten()
-                u_mean = u.mean(dim=0, keepdim=True)
-                u_batch_mean_list = []
-                for batch_id in s.unique():
-                    u_batch = u[s == batch_id, :]
-                    u_batch_mean_list.append(u_batch.mean(dim=0))
-                u_batch_mean_stack = torch.stack(u_batch_mean_list, dim=0)
-                dist = ((u_batch_mean_stack - u_mean) ** 2).sum(dim=1)
-                model.u_centroid = u_batch_mean_list[dist.argmin()]
-                model.batch_correction = True
-                
-                logging.info('Batch correction ...')
-                for batch_id, data in enumerate(self.datalist):
-                    data_loader = DataLoader(data, shuffle=False, batch_size=self.batch_size, num_workers=self.num_workers)
-                    logging.info('Processing batch %s: %s' % (self.batch_names[batch_id], str(self.combs[batch_id])))
-                    for i, data in enumerate(tqdm(data_loader)):
-                        data = convert_tensors_to_cuda(data, device)
-                        x_r_pre, *_ = model(data)
-                        x_r = model.gen_real_data(x_r_pre, sampling=True)
-                        for m in self.mods:
-                            safe_append(pred, self.batch_names[batch_id], ['x_bc', m], x_r[m])
+                if online_stats is None:
+                    raise RuntimeError("Internal error: online_stats not initialized.")
+                    
+                u_centroid = online_stats.finalize_centroid().to(device)
 
-        # concatenate
-        pred_b = {}
-        for batch, data in pred.items():
-            pred_b[batch] = {}
-            for var, data_v in data.items():
-                if var == 'z':
-                    pred_b[batch]['z_c'] = {}
-                    pred_b[batch]['z_u'] = {}
-                else:
-                    pred_b[batch][var] = {}
-                for m, data_m in data_v.items():
-                    if var == 'z':
-                        pred_b[batch]['z_c'][m] = torch.cat(data_m).cpu().numpy()[:, :self.dim_c]
-                        pred_b[batch]['z_u'][m] = torch.cat(data_m).cpu().numpy()[:, self.dim_c:]
-                    elif var == 'mask':
-                        pred_b[batch][var][m] = data_m[0][0].cpu().numpy()
-                    else:
-                        pred_b[batch][var][m] = torch.cat(data_m).cpu().numpy()
-        
-        if save_dir is not None and save_format=='mtx':
-            for batch, data in pred_b.items():
-                os.makedirs(os.path.join(save_dir, self.batch_names[batch]),exist_ok=True)
-                for var, data_v in data.items():
-                    for m, data_m in data_v.items():
-                        mmwrite(os.path.join(save_dir, self.batch_names[batch], '%s_%s.mtx'%(var, m)), csr_matrix(pred_b[batch][var][m]))
+                # expected: model has fields for correction; adapt to your implementation
+                # (match your new code: model.u_centroid / model.batch_correction)
+                _bc_prev = getattr(model, "batch_correction", None)
+                _uc_prev = getattr(model, "u_centroid", None)
 
-        if (save_dir is not None and save_format=='h5ad') or return_format == 'anndata':
-            # if group_by == 'batch':
-            adata_all = {}
-            for batch, data in pred_b.items():
-                adata = sc.AnnData(np.zeros([len(data['z_c']['joint']), 0]))
-                adata.obs['batch'] = batch
-                for var, data_v in data.items():
-                    if var == 's':
-                        continue
-                    for m, data_m in data_v.items():
-                        if m=='joint' and (not joint_latent):
-                            pass
-                        elif var=='mask':
-                            adata.uns['mask_%s'%m] = data_m
-                        else:
-                            if data_m.shape[1] > 10000:
-                                data_m = csr_matrix(data_m)
-                            adata.obsm['%s_%s' % (var, m)] = data_m
-                adata_all[batch] = adata
-                        
-        if (save_dir is not None and save_format=='h5ad'):
-            for batch, adata in adata_all.items():
-                os.makedirs(save_dir, exist_ok=True)
-                sc.write(os.path.join(save_dir, '%s.h5ad'%batch), adata)
+                try:
+                    if hasattr(model, "u_centroid"):
+                        model.u_centroid = u_centroid
+                    if hasattr(model, "batch_correction"):
+                        model.batch_correction = True
+                    if verbose:
+                        logging.info("Batch correction (second pass) ...")
+                    for batch_id, dataset in enumerate(self.datalist):
+                        batch_name = self.batch_names[batch_id]
+                        loader = DataLoader(dataset, shuffle=False, batch_size=self.batch_size, num_workers=self.num_workers)
+                        if verbose:
+                            logging.info("Processing batch %s: %s", batch_name, str(self.combs[batch_id]))
 
-        if return_format == 'anndata':
-            return adata_all
-        
-        if not joint_latent:
-            for batch, data in pred_b.items():
-                data.pop('z_c_joint', None)
-                data.pop('z_u_joint', None)
+                        for i, batch in enumerate(tqdm(loader, desc=f"batch_correct:{batch_name}", disable=not verbose)):
+                            batch = convert_tensors_to_cuda(batch, device)
+                            out = model(batch)
+                            x_r_pre = out[0]
+                            x_r = model.gen_real_data(x_r_pre, sampling=True)
+                            for m in self.mods:
+                                if m in x_r:
+                                    for s in sinks:
+                                        s.write(batch_name, ["x_bc", m], x_r[m])
+                finally:
+                    if hasattr(model, "batch_correction"):
+                        model.batch_correction = (_bc_prev if _bc_prev is not None else False)
+                    if hasattr(model, "u_centroid"):
+                        model.u_centroid = _uc_prev
+
+        # finalize sinks
+        disk_out = disk_sink.finalize() if disk_sink is not None else None
+        if mem_sink is None:
+            # pure disk mode
+            return disk_out
+
+        # Post-process memory output into pred_b like you had (z -> z_c / z_u)
+        raw = mem_sink.finalize()
+        pred_b: Dict[str, Any] = {}
+        for batch_name, d in raw.items():
+            pred_b[batch_name] = {}
+            # z split
+            if "z" in d:
+                pred_b[batch_name]["z_c"] = {}
+                pred_b[batch_name]["z_u"] = {}
+                for k, zt in d["z"].items():
+                    znp = to_numpy(zt)
+                    pred_b[batch_name]["z_c"][k] = znp[:, :self.dim_c]
+                    pred_b[batch_name]["z_u"][k] = znp[:, self.dim_c:]
+            # others
+            for var in ["x_impt", "x_trans", "x_bc", "x", "s"]:
+                if var in d:
+                    pred_b[batch_name][var] = {}
+                    for k, vt in d[var].items():
+                        pred_b[batch_name][var][k] = to_numpy(vt)
+            # masks (meta)
+            if "mask" in d:
+                pred_b[batch_name]["mask"] = d["mask"]
+
+            if not joint_latent:
+                pred_b[batch_name]["z_c"].pop("joint", None)
+                pred_b[batch_name]["z_u"].pop("joint", None)
+
+        if disk_out is not None:
+            # if both: return both memory + disk manifest
+            return {"memory": pred_b, "disk": disk_out}
+
+        if hasattr(model, "batch_correction"):
+            model.batch_correction = (_old_bc if _old_bc is not None else False)
+        if hasattr(model, "u_centroid"):
+            model.u_centroid = _old_uc
+
         return pred_b
         
     def on_train_epoch_end(self):
@@ -1291,20 +1409,29 @@ class MIDAS(L.LightningModule):
         Save a model checkpoint at the end of each training epoch with a meaningful filename.
         """
         # Save the checkpoint periodically based on n_save
-        if (self.current_epoch+self.start_epoch)!=0 and (self.current_epoch+1+self.start_epoch) % self.n_save == 0:
+        total_epoch = self.current_epoch + self.start_epoch
+        if (total_epoch + 1) % self.n_save == 0:
             os.makedirs(self.save_model_path, exist_ok=True)
             
             # Get the current timestamp
             timestamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
 
             # Generate a descriptive checkpoint filename
-            checkpoint_filename = f'model_epoch{self.current_epoch+1+self.start_epoch}_{timestamp}.pt'
+            checkpoint_filename = f'model_epoch{total_epoch+1}_{timestamp}.pt'
             checkpoint_path = os.path.join(self.save_model_path, checkpoint_filename)
             
             # Save the checkpoint
             self.save_checkpoint(checkpoint_path)
             if self.viz_umap_tb:
-                self.get_emb_umap()
+                logging.info('Plotting UMAP...')
+                umap_thread = threading.Thread(
+                target=self.get_emb_umap,
+                kwargs={"save_dir":self.save_model_path, "n_obs": 20000, "verbose": False},  # 关键字参数
+                daemon=True  # 守护线程：主线程退出时子线程自动结束，避免内存泄漏
+                )
+                # 启动线程
+                umap_thread.start()
+                # self.get_emb_umap(save_dir=self.save_model_path, n_obs=20000, verbose=False)
                 # shutil.rmtree(self.save_model_path+'/predict'+timestamp)
 
     def on_train_end(self):
@@ -1382,86 +1509,265 @@ class MIDAS(L.LightningModule):
                                        
     @rank_zero_only
     def get_emb_umap(
-        self, 
-        pred_dir: str=None, 
-        save_dir: str=None, 
-        use_mtx: bool=True,
-        drop_c_umap: bool=False,
-        drop_u_umap: bool=False,
-        **kwargs) -> Tuple[List[sc.AnnData], List[plt.Figure]]:
+        self,
+        pred_dir: str = None,
+        pred_format: str = None, #'npy' or 'csv'
+        save_dir: str = None,
+        drop_c_umap: bool = False,
+        drop_u_umap: bool = False,
+        color_by: str = "batch",          # NEW: "batch" (default) or "s_joint" or any obs column you add
+        n_obs: int = None, 
+        verbose=True,
+        **kwargs
+    ) -> Tuple[List[sc.AnnData], List[plt.Figure]]:
         """
-        Generate UMAP embeddings for biological (c) and technical (u) latent variables.
+        Generate UMAP visualizations for biological and technical latent embeddings.
 
-        Parameters:
-            pred_dir : str
-                Directory containing predicted data.
-            save_dir : str, optional
-                Directory to save UMAP plots, by default './'.
-            use_mtx : bool, optional
-                Whether to load embeddings of mtx format, by default True.
-            drop_c_umap : bool, optional
-                Whether to drop the biological embedding (c) from UMAP, by default False.
-            drop_u_umap : bool, optional
-                Whether to drop the technical embedding (u) from UMAP, by default False.
-            kwargs : Dict[str, Any]
-                Additional configurations for sc.pl.umap().
+        This function loads predicted latent representations and computes UMAP
+        embeddings for visualization. Two embeddings are supported:
 
-        Returns:
-            Tuple : 
-                all_adata : List[AnnData]
-                    List of AnnData objects containing UMAP embeddings for each modality.
-                all_figures : List[plt.Figure]
-                    List of UMAP figures for biological and technical embeddings.
+        1. Biological embedding (`z_c`)
+        2. Technical embedding (`z_u`)
+
+        The function can optionally subsample observations to accelerate visualization
+        for large datasets.
+
+        Parameters
+        ----------
+        pred_dir : str, optional
+            Directory containing predicted results generated by `predict()` or
+            `predict_streaming()`. If None, predictions will be generated on-the-fly
+            using `self.predict()`.
+
+        pred_format : {"npy", "csv"}, optional
+            File format of saved prediction files when loading from disk.
+            Only used when `pred_dir` is provided.
+
+        save_dir : str, optional
+            Directory to save the generated UMAP figures. If None, figures will not
+            be written to disk.
+
+        drop_c_umap : bool, default=False
+            If True, skip UMAP visualization for biological embedding (`z_c`).
+
+        drop_u_umap : bool, default=False
+            If True, skip UMAP visualization for technical embedding (`z_u`).
+
+        color_by : str, default="batch"
+            Column name in `adata.obs` used to color cells in UMAP plots.
+            Common options include:
+
+            - `"batch"` : batch label (default)
+            - `"s_joint"` : subset or dataset identifier
+            - any other metadata column added to `adata.obs`
+
+        n_obs : int, optional
+            Randomly subsample this number of observations before computing UMAP.
+            Useful for very large datasets to speed up visualization. If None,
+            all observations will be used.
+
+        verbose : bool, default=True
+            If True, show progress bars (tqdm) and logging information.
+            If False, suppress tqdm output.
+
+        **kwargs
+            Additional keyword arguments passed to `scanpy.pl.umap()`, such as:
+
+            - `size`
+            - `palette`
+            - `legend_loc`
+            - etc.
+
+        Returns
+        -------
+        all_adata : List[AnnData]
+            A list of AnnData objects containing the computed UMAP embeddings.
+            Each object corresponds to one latent representation (`z_c` or `z_u`).
+
+        all_figures : List[matplotlib.figure.Figure]
+            A list of generated UMAP figure objects.
+
+        Notes
+        -----
+        - UMAP is computed using `scanpy.pp.neighbors()` followed by
+        `scanpy.tl.umap()`.
+        - The biological embedding (`z_c`) captures biological variation,
+        while the technical embedding (`z_u`) reflects batch/technical effects.
+        - For very large datasets (e.g., >1M cells), it is recommended to set
+        `n_obs` (e.g., 20,000) to reduce computation time.
+
+        Examples
+        --------
+        Generate UMAP from saved predictions:
+
+        >>> model.get_emb_umap(pred_dir="./predictions")
+
+        Generate UMAP with subsampling and custom coloring:
+
+        >>> model.get_emb_umap(
+        ...     pred_dir="./predictions",
+        ...     n_obs=20000,
+        ...     color_by="batch"
+        ... )
+
+        Generate UMAP and save figures:
+
+        >>> model.get_emb_umap(
+        ...     pred_dir="./predictions",
+        ...     save_dir="./figs"
+        ... )
         """
-        logging.info(f'Loading predicted data from: {pred_dir}')
+        def _unwrap_pred(p: Any) -> Dict[str, Any]:
+            # If predict returned {"memory": ..., "disk": ...}
+            if isinstance(p, dict) and "memory" in p and isinstance(p["memory"], dict):
+                return p["memory"]
+            return p
+        if verbose:
+            logging.info(f"Loading predicted data from: {pred_dir}")
         if pred_dir is not None:
-            pred = load_predicted(pred_dir, self.combs, mtx=use_mtx)
+            # IMPORTANT: adapt this call to your actual loader signature.
+            # If you're using the loader we discussed earlier, it would be something like:
+            pred = load_predicted(pred_dir, save_format=pred_format, dim_c=self.dim_c, split_z=True, var_names=['z'])
+            #
+            # If your project already has load_predicted(pred_dir, self.combs, mtx=use_mtx), keep it.
+            # pred = load_predicted(pred_dir, dim_c=self.dim_c, split_z=True)  # <- adjust if needed
         else:
-            pred = self.predict()
+            # Use the new streaming predict (in-memory) by default
+            pred = self.predict(
+                return_in_memory=True,
+                save_dir=None,
+                joint_latent=True,
+                mod_latent=False,
+                impute=False,
+                batch_correct=False,
+                translate=False,
+                input=False,
+                verbose=verbose
+            )
 
-        # Extract biological and technical embeddings and batch labels
-        bio_embedding = pred['z']['joint'][:, :self.dim_c]  # Biological embedding
-        tech_embedding = pred['z']['joint'][:, self.dim_c:]  # Technical embedding
-        batch_labels = pred['s']['joint'].astype('int').astype('str')  # Batch labels
+        pred = _unwrap_pred(pred)
 
-        all_adata = []  # List to store AnnData objects
-        all_figures = []  # List to store UMAP figures
-        file_names = []  # List to store file names for UMAP plots
-        file_names = ['biological_information.png', 'technical_information.png']  # File names for UMAP plotconds
+        # pred is expected to be: {batch_name: {...}, batch_name2: {...}}
+        if not isinstance(pred, dict) or len(pred) == 0:
+            raise ValueError("Empty prediction results.")
 
-        # Generate UMAP for both embeddings
-        for index, (embedding, file_name) in enumerate(zip([bio_embedding, tech_embedding], file_names)):
-            if file_name == 'biological_information.png' and drop_c_umap:
-                logging.info('Skipping biological embedding UMAP generation as drop_c_umap is True.')
+        # ----------------------------
+        # Concatenate z_c/z_u across batches
+        # ----------------------------
+        zc_list, zu_list = [], []
+        batch_labels = []
+        s_joint_labels = []  # optional
+
+        for batch_name, data in pred.items():
+            if "z_c" not in data or "joint" not in data["z_c"]:
+                raise KeyError(f"Missing z_c/joint in batch '{batch_name}'")
+            if "z_u" not in data or "joint" not in data["z_u"]:
+                raise KeyError(f"Missing z_u/joint in batch '{batch_name}'")
+
+            zc = data["z_c"]["joint"]
+            zu = data["z_u"]["joint"]
+
+            # allow torch or numpy
+            if hasattr(zc, "detach"):
+                zc = zc.detach().cpu().numpy()
+            if hasattr(zu, "detach"):
+                zu = zu.detach().cpu().numpy()
+
+            n = zc.shape[0]
+            zc_list.append(zc)
+            zu_list.append(zu)
+            batch_labels.append(np.array([batch_name] * n, dtype=object))
+
+            # optional: keep s['joint'] if present (useful for coloring)
+            sj = None
+            if "s" in data and isinstance(data["s"], dict):
+                # common key names: 'joint' or first key
+                if "joint" in data["s"]:
+                    sj = data["s"]["joint"]
+                else:
+                    sj = next(iter(data["s"].values()))
+            if sj is not None:
+                if hasattr(sj, "detach"):
+                    sj = sj.detach().cpu().numpy()
+                sj = np.asarray(sj).reshape(-1)
+                if sj.shape[0] == n:
+                    s_joint_labels.append(sj.astype(int).astype(str))
+
+        bio_embedding = np.concatenate(zc_list, axis=0)
+        tech_embedding = np.concatenate(zu_list, axis=0)
+        batch_labels = np.concatenate(batch_labels, axis=0)
+
+        s_joint_labels = np.concatenate(s_joint_labels, axis=0) if len(s_joint_labels) else None
+
+        # ----------------------------
+        # Build UMAPs
+        # ----------------------------
+        all_adata: List[sc.AnnData] = []
+        all_figures: List[plt.Figure] = []
+
+        file_names = ["biological_information.png", "technical_noise.png"]
+        embeddings = [bio_embedding, tech_embedding]
+
+        for index, (embedding, file_name) in enumerate(zip(embeddings, file_names)):
+            if file_name == "biological_information.png" and drop_c_umap:
+                logging.info("Skipping biological embedding UMAP generation (drop_c_umap=True).")
                 continue
-            if file_name == 'technical_information.png' and drop_u_umap:
-                logging.info('Skipping technical embedding UMAP generation as drop_u_umap is True.')
+            if file_name == "technical_noise.png" and drop_u_umap:
+                logging.info("Skipping technical embedding UMAP generation (drop_u_umap=True).")
                 continue
-            logging.info(f"Processing {'biological' if index == 0 else 'technical'} embedding...")
             
-            # Create AnnData object for the embedding
-            adata = sc.AnnData(embedding)
-            adata.obs['batch'] = batch_labels
+            if verbose:
+                logging.info(f"Processing {'biological' if index == 0 else 'technical'} embedding...")
 
-            # Compute nearest neighbors and UMAP
-            logging.info(' - Computing neighbors...')
-            sc.pp.neighbors(adata)
-            logging.info(' - Computing UMAP...')
+            adata = sc.AnnData(embedding)
+            adata.obs["batch"] = batch_labels
+            if s_joint_labels is not None:
+                adata.obs["s_joint"] = s_joint_labels
+
+            # neighbors + umap (use the embedding directly as X)
+            if verbose:
+                logging.info(" - Computing neighbors...")
+            if n_obs:
+                sc.pp.subsample(adata, n_obs=n_obs)
+            sc.pp.neighbors(adata, n_neighbors=30, use_rep="X")  # X is already embedding
+            if verbose:
+                logging.info(" - Computing UMAP...")
             sc.tl.umap(adata)
 
-            # Plot UMAP and optionally save the figure
-            logging.info(f' - Generating UMAP plot for {file_name}...')
-            fig = sc.pl.umap(adata, title=file_name[:-4], color='batch', show=False, return_fig=True, **kwargs)
+            # pick color
+            plot_color = color_by
+            if plot_color is not None and plot_color not in adata.obs.columns:
+                logging.warning(
+                    f"color_by='{plot_color}' not found in adata.obs. "
+                    f"Available: {list(adata.obs.columns)}. Falling back to 'batch'."
+                )
+                plot_color = "batch"
+
+            if verbose:
+                logging.info(f" - Generating UMAP plot for {file_name}...")
+            fig = sc.pl.umap(
+                adata,
+                title=file_name[:-4],
+                color=plot_color,
+                show=False,
+                return_fig=True,
+                **kwargs,
+            )
             all_figures.append(fig)
+
             if save_dir:
-                fig_save_path = os.path.join(save_dir, 'figs', file_name)
+                fig_save_path = os.path.join(save_dir, "figs", f"epoch_{self.current_epoch + self.start_epoch + 1}_"+file_name)
                 os.makedirs(os.path.dirname(fig_save_path), exist_ok=True)
-                fig.savefig(fig_save_path)
-                logging.info(f' - UMAP plot saved to: {fig_save_path}')
-            if self.logger and self.viz_umap_tb:
-                self.logger.experiment.add_figure(file_name, fig, self.current_epoch+1+self.start_epoch)
+                fig.savefig(fig_save_path, dpi=200, bbox_inches="tight")
+                if verbose:
+                    logging.info(f" - UMAP plot saved to: {fig_save_path}")
+
+            if getattr(self, "logger", None) is not None and getattr(self, "viz_umap_tb", False):
+                self.logger.experiment.add_figure(file_name, fig, self.current_epoch + self.start_epoch)
+
             all_adata.append(adata)
-        logging.info('UMAP generation completed.')
+        if verbose:
+            logging.info("UMAP generation completed.")
         return all_adata, all_figures
 
     def log_losses(self, 
@@ -1700,7 +2006,27 @@ class MIDAS(L.LightningModule):
         # Normalize total loss by the batch size
         total_loss = sum(losses.values()) / s.size(0)
         return total_loss, losses
-    
+
+    @staticmethod
+    def get_info_from_mdata(mdata, batch_key='batch'):
+        batch_names = []
+        for k in mdata.mod.keys():
+            batch_names.extend(np.unique(mdata[k].obs[batch_key]).tolist())
+        batch_names = np.unique(batch_names)
+        data = []
+        mask = []
+        for b in batch_names:
+            t = {}
+            mt = {}
+            for m in mdata.mod.keys():
+                if b in mdata[m].obs[batch_key].values:
+                    t[m] = mdata[m][mdata[m].obs[batch_key]==b]
+                if f'mask_{b}' in mdata[m].uns:
+                    mt[m] = mdata[m].uns[f'mask_{b}']
+            data.append(t)
+            mask.append(mt)
+        return data, mask, batch_names
+
     @staticmethod
     def get_info_from_dir(dir_path: str, format: str):
         """
@@ -1809,13 +2135,94 @@ class MIDAS(L.LightningModule):
         return data, mask, dims_x, batch_names
 
     @classmethod
+    def configure_data_from_mdata(
+        cls,
+        configs: Dict[str, Any], 
+        mdata: "MuData", # Assuming MuData is imported or available
+        dims_x: Dict[str, list],
+        batch_key: str = 'batch',
+        transform: Optional[Dict[str, str]] = None, 
+        sampler_type: str = 'auto', 
+        viz_umap_tb: bool = False, 
+        save_model_path: str = './saved_models/', 
+        n_save: int = 500,
+        **kwargs : Any
+    ) -> 'MIDAS':
+        """
+        Configure the MIDAS model directly from a MuData object.
+
+        This method processes the MuData input to extract data, masks, and batch information,
+        initializes the datasets, and sets up the model configuration.
+
+        Parameters:
+            configs : Dict[str, Any]
+                Configurations of the model.
+            mdata : MuData
+                The input MuData object containing multi-modal single-cell data.
+                It is expected to contain `AnnData` objects for different modalities (e.g., RNA, ATAC).
+            dims_x : Dict[str, list]
+                A dictionary specifying the input feature dimensions for each modality.
+                Keys are modality names, and values are lists of dimensions (e.g., `{'rna': [2000]}`).
+            transform : Optional[Dict[str, str]], default=None
+                A dictionary specifying specific transformations to apply to each modality.
+                Example: `{'atac': 'binarize'}`. If None, default transformations are used.
+            sampler_type : str, default='auto'
+                Strategy for data sampling. Use 'ddp' for Distributed Data Parallel training, 
+                or 'auto' for standard training.
+            viz_umap_tb: bool, default=False
+                If True, enables UMAP visualization logs in TensorBoard during the training process.
+            save_model_path : str, optional
+                Directory path for saving model checkpoints, by default './saved_models/'.
+            n_save : int, optional
+                Interval (in epochs) for saving model checkpoints, by default 500.
+            **kwargs : Any
+                Additional keyword arguments passed to the underlying `configure_data` method
+                (e.g., `batch_size`, `num_workers`).
+
+        Returns:
+            MIDAS:
+                An initialized instance of the MIDAS class, ready for training or inference.
+        """
+        # Note: get_info_from_mdata is expected to return:
+        # data: List[Dict[str, AnnData]], mask: List[Dict[str, np.ndarray]], batch_names: List[str]
+        data, mask, batch_names = cls.get_info_from_mdata(mdata, batch_key)
+
+        # Configure datasets and calculate dimensions for batch correction
+        # This calls the updated get_datasets_from_dir which handles in-memory masks (numpy arrays)
+        datalist, dims_s, s_joint, combs = cls.get_datasets_from_adata(
+            data, mask, batch_names, transform
+        )
+        
+        # Reset training state flags
+        cls.start_epoch = 0
+        cls.load_optimizer_state = False
+        
+        # Finalize configuration and return the class instance
+        return cls.configure_data(
+            configs, 
+            datalist, 
+            dims_x,
+            dims_s,
+            s_joint, 
+            combs, 
+            sampler_type=sampler_type, 
+            viz_umap_tb=viz_umap_tb,
+            batch_names=batch_names,
+            save_model_path = save_model_path,
+            n_save=n_save,
+            **kwargs
+        )
+
+    @classmethod
     def configure_data_from_dir(cls,
                                 configs: Dict[str, Any], 
                                 dir_path: str,
                                 format: str = 'mtx',
                                 transform: Dict[str, str] = None, 
                                 sampler_type: str = 'auto', 
-                                viz_umap_tb: bool = False, 
+                                viz_umap_tb: bool = False,
+                                save_model_path: str = './saved_models/', 
+                                n_save: int = 500,
                                 **kwargs : Dict[str, Any]) -> 'MIDAS':
         """
         Configure data from a directory and apply optional transformations.
@@ -1831,6 +2238,12 @@ class MIDAS(L.LightningModule):
                 Default is None, which uses the default transformation settings.
             sampler_type : str, optional
                 Type of sampler to use, by default 'auto'. For 'ddp', use distributed sampler.
+            viz_umap_tb: bool, optional
+                Whether to visualize UMAP embeddings in TensorBoard, by default False.
+            save_model_path : str, optional
+                Directory path for saving model checkpoints, by default './saved_models/'.
+            n_save : int, optional
+                Interval (in epochs) for saving model checkpoints, by default 500.
             kwargs : Dict[str, Any]
                 Additional parameters passed to configure_data().
 
@@ -1866,6 +2279,8 @@ class MIDAS(L.LightningModule):
             sampler_type=sampler_type, 
             viz_umap_tb=viz_umap_tb,
             batch_names=batch_names,
+            n_save=n_save,
+            save_model_path = save_model_path,
             **kwargs)
     
     @staticmethod
@@ -1943,6 +2358,79 @@ class MIDAS(L.LightningModule):
         return datasets, dims_s, s_joint, combs
 
     @staticmethod
+    def get_datasets_from_adata(
+        data: List[Dict[str, AnnData]], 
+        mask: List[Dict[str, str]], 
+        batch_names: List[str],
+        transform: Dict[str, str]=None):
+        """
+        Configure data from a CSV input.
+
+        Parameters:
+            data : List[Dict[str, str]]
+                List of data dictionaries, where keys are modalities and values are adata object.
+            mask : List[Dict[str, str]]
+                List of mask dictionaries, where keys are modalities and values are mask values.
+            batch_name : List[str]
+                List of batch names.
+            transform : Optional[Dict[str, str]]
+                Transformations to apply to specific modalities.
+            format : str
+                File type of the input data, default is 'vec'. ['vec', 'mtx', 'csv']
+
+        Returns:
+            Tuple:
+                - datasets : List[MultiModalDataset]
+                    List of initialized `MultiModalDataset` objects.
+                - dims_s : Dict[str, int]
+                    Dimensions for batch correction for each modality.
+                - s_joint : List[Dict[str, int]]
+                    Modality indices for each batch.
+                - combs : List[List[str]]
+                    List of modality combinations for each batch.
+        """
+        s_joint = []  # Modality indices for each batch
+        n_s = {}  # Counter for each modality
+        combs = []  # Modality combinations for each batch
+        datasets = []  # List of datasets
+        dims_s = {}  # Dimensions for batch correction
+
+        for i, batch_data in enumerate(data):
+            batch_s = {}  # Store batch-specific indices
+            batch_combs = []  # Modality combination for the current batch
+
+            # Assign batch index for each modality
+            for modality in batch_data.keys():
+                if modality in n_s:
+                    batch_s[modality] = n_s[modality] + 1
+                    n_s[modality] += 1
+                else:
+                    batch_s[modality] = 0
+                    n_s[modality] = 0
+                batch_combs.append(modality)
+
+            # Add joint batch information
+            batch_s['joint'] = i
+            n_s['joint'] = i
+            s_joint.append(batch_s)
+            combs.append(batch_combs)
+
+            # Determine file types for each modality
+            file_types = {
+                modality: 'anndata'
+                for modality in batch_data.keys()
+            }
+
+            # Initialize MultiModalDataset
+            dataset = MultiModalDataset(batch_data, batch_s, file_types, mask[i], transform)
+            datasets.append(dataset)
+
+        # Define dimensions for batch correction
+        dims_s = {modality: count + 1 for modality, count in n_s.items()}
+        MIDAS.print_info(mask, datasets, batch_names)
+        return datasets, dims_s, s_joint, combs
+
+    @staticmethod
     @rank_zero_only
     def print_info(mask: List[Dict[str, str]], datalist: List[Dataset], batch_names: List[str]):
         """
@@ -1957,7 +2445,6 @@ class MIDAS(L.LightningModule):
                 List of batch names.
         """
         # Calculate mask density for each batch
-
         feature = []
         valid_feature = []
         for i, dataset in enumerate(datalist):
@@ -1968,7 +2455,10 @@ class MIDAS(L.LightningModule):
             for m in dataset['x']:
                 s1['#%s'%m.upper()] = len(dataset['x'][m])
                 if m in mask_:
-                    t = pd.read_csv(mask_[m], index_col=0).values
+                    if isinstance(mask_[m], str):
+                        t = pd.read_csv(mask_[m], index_col=0).values
+                    else:
+                        t = mask_[m]
                     s2['#VALID_'+m.upper()] = t.sum()
             feature.append(s1)
             valid_feature.append(s2)

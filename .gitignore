@@ -7,6 +7,9 @@
 **/demo*_temp/
 
 dist/
+src_bak
+predictions
 src/scmidas.egg-info/
 to_script.sh
 temp
+auto_ver.sh

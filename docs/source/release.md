@@ -6,6 +6,21 @@ All notable changes to this project will be documented in this file.
 
 ## Version 0.1.x
 
+### v0.1.16 (2026-03-05)
+*   **✨ Enhancements**
+    *   Asynchronous UMAP visualization during training
+        *   UMAP plots can now be generated asynchronously to avoid blocking the training loop.
+    *   Improved prediction API
+        *   Flexible prediction outputs: choose between returning results in memory or saving directly to disk.
+        *   Support streaming prediction to disk, enabling inference on large datasets with minimal memory usage.
+        *   Added support for .npy format for faster saving and loading of prediction outputs.
+    *   More flexible load_predicted function
+        *   Allow loading specific batch names and variable groups (e.g. z_c, z_u, x_impt).
+        *   Improves efficiency when working with large prediction outputs.
+*   **🐛 Bug Fixes**
+    *   Allow loading specific batch names and variable groups (e.g. z_c, z_u, x_impt).
+    *   Delete init in the sampler class. Issue #28. 
+
 ### v0.1.15 (2025-11-28)
 *   **✨ Enhancements**
     *   Update `MIDAS.predict()` functionality: 
