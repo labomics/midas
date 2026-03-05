@@ -30,3 +30,4 @@ recommonmark==0.7.1
 nbsphinx==0.9.5
 ipython==8.29.0
 toml==0.10.2
+mudata=0.3.3
