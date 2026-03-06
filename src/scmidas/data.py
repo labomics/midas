@@ -7,8 +7,8 @@ import os
 from typing import Iterator, Optional, TypeVar, Any, Dict
 
 from scipy.io import mmread
-from scipy.sparse import csr_matrix
-
+from scipy.sparse import csr_matrix, issparse
+from anndata import AnnData
 import zipfile
 import requests
 from tqdm import tqdm
@@ -53,6 +53,34 @@ class BasicModDataset(Dataset):
                 The index of the data item.
         """
         raise NotImplementedError("Subclasses should implement this method to retrieve a data item.")
+
+class adataDataset(BasicModDataset):
+    """
+    Dataset for vector-based data.
+
+    :param adata: An adata object.
+    :type adata: AnnData
+    :param use_layer: Layer of data to use.
+    """
+
+    def __init__(self, adata: AnnData, use_layer='X'):
+        super().__init__()
+        if use_layer == 'X':
+            self.data = adata.X
+        else:
+            self.data = adata.layers[use_layer]
+        if issparse(self.data):
+            self.data = self.data.toarray()
+        self.data = np.array(self.data, dtype=np.float32)
+
+    def __len__(self) -> int:
+        return len(self.data)
+
+    def __getitem__(self, idx: int) -> np.ndarray:
+        """
+        Retrieve the vector data at the specified index.
+        """
+        return self.data[idx]
 
 
 class VECDataset(BasicModDataset):
@@ -189,7 +217,7 @@ class CSVDataset(BasicModDataset):
         return self.data_frame[idx]
 
 
-modDataset_map = {'vec': VECDataset, 'csv': CSVDataset, 'mtx': MTXDataset}
+modDataset_map = {'vec': VECDataset, 'csv': CSVDataset, 'mtx': MTXDataset, 'anndata': adataDataset}
 
 
 class MultiModalDataset(Dataset):
@@ -203,8 +231,8 @@ class MultiModalDataset(Dataset):
             A dictionary mapping modality names to their unique identifiers.
         file_type : Dict[str, str]
             A dictionary mapping modality names to their file types (e.g., 'vec', 'csv', 'mtx').
-        mask_path : Optional[Dict[str, str]]
-            A dictionary mapping modality names to their mask file paths, default is None.
+        masks : Optional[Dict[str, str]]
+            A dictionary mapping modality names to their mask file paths or mask values, default is None.
         transform : Optional[Dict[str, str]]
             A dictionary specifying transformations to apply to each modality, default is None.
     """
@@ -214,7 +242,7 @@ class MultiModalDataset(Dataset):
         mod_dict: Dict[str, str],
         mod_id_dict: Dict[str, int],
         file_type: Dict[str, str],
-        mask_path: Optional[Dict[str, str]] = None,
+        masks: Optional[Dict[str, str]] = None,
         transform: Optional[Dict[str, str]] = None,
     ):
         self.mod_dict = mod_dict
@@ -223,14 +251,17 @@ class MultiModalDataset(Dataset):
             modality: modDataset_map[file_type[modality]](path)
             for modality, path in self.mod_dict.items()
         }
-        self.mask = (
-            {
-                modality: np.array(load_csv(mask_path[modality])[1][1:]).astype(np.float32)
-                for modality in mask_path
-            }
-            if mask_path
-            else None
-        )
+
+        if masks:
+            self.mask = {}
+            for modality in masks:
+                if isinstance(masks[modality], str):
+                    self.mask[modality] = np.array(load_csv(masks[modality])[1][1:]).astype(np.float32)
+                else:
+                    self.mask[modality] = masks[modality]
+        else:
+            self.mask = None
+        
         self.transform = transform or {}
         self.size = len(next(iter(self.data.values())))  # Determine dataset size from the first modality
 

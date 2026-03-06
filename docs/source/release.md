@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
     *   More flexible load_predicted function
         *   Allow loading specific batch names and variable groups (e.g. z_c, z_u, x_impt).
         *   Improves efficiency when working with large prediction outputs.
+    *   Add model.train()
 *   **🐛 Bug Fixes**
     *   Allow loading specific batch names and variable groups (e.g. z_c, z_u, x_impt).
     *   Delete init in the sampler class. Issue #28. 

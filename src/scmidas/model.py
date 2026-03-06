@@ -18,7 +18,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, ConcatDataset, Dataset
 import lightning as L
-from pytorch_lightning.utilities import rank_zero_only
+from lightning.pytorch.utilities import rank_zero_only
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -1067,6 +1067,10 @@ class MIDAS(L.LightningModule):
         s_pred = self.dsc(detach_tensors(c_all))
         loss_dsc = self.calc_dsc_loss(s_pred, targets) * self.lam_dsc
         self.update_model(loss_dsc, self.dsc, self.dsc_optim, self.grad_clip)
+
+    def train(self, **kwargs):
+        trainer = L.Trainer(**kwargs)
+        trainer.fit(model=self)
 
     @rank_zero_only
     def predict(

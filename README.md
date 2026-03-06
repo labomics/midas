@@ -66,8 +66,7 @@ configs = load_config()
 model = MIDAS.configure_data_from_dir(configs, 'path/to/your/data', transform={'atac':'binarize'})
 
 # 3. Train the model on your data
-trainer = L.Trainer(max_epochs=2000)
-trainer.fit(model=model)
+model.train(max_epochs=2000)
 
 # 4. Obtain the integrated and imputed results
 # The model returns an AnnData object with a unified latent space 
@@ -76,6 +75,57 @@ pred = model.predict()
 
 # 5. Visualize the results
 model.get_emb_umap()
+```
+
+## ⚡ Update: Load data from MuData
+
+In addition to loading data from a directory, MIDAS also supports direct initialization from a MuData object. This is useful when your multimodal dataset is already organized in memory with modality-specific AnnData objects.
+
+A typical MuData object may look like this:
+
+```
+# Example MuData:
+# MuData object with n_obs × n_vars = 10000 × 1200
+#   2 modalities
+#     rna: 10000 x 1000
+#       obs: 'batch'
+#       uns: 'mask_batch1', 'mask_batch2'
+#     adt: 8000 x 200
+#       obs: 'batch'
+#       uns: 'mask_batch1', 'mask_batch2'
+```
+You can configure the model from MuData as follows:
+```
+from scmidas.config import load_config
+from scmidas.model import MIDAS
+import lightning as L
+
+# 1. Load model configuration
+configs = load_config()
+
+# 2. Prepare your MuData object
+# Assume `mdata` is already loaded in memory.
+# Each modality should be stored in mdata.mod, for example:
+#   mdata.mod['rna']
+#   mdata.mod['adt']
+#
+# The `batch_key` specifies the column in .obs that indicates batch membership.
+# The `dims_x` argument defines the input feature dimension for each modality.
+model = MIDAS.configure_data_from_mdata(
+    mdata=mdata,
+    batch_key='batch',
+    dims_x={
+        'rna': [1000],
+        'adt': [200],
+    },
+    configs=configs
+)
+
+# 3. Train the model
+model.train(max_epochs=2000)
+
+# 4. Run prediction
+pred = model.predict()
 ```
 
 ## 📈 Reproducibility
