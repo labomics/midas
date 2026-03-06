@@ -46,7 +46,7 @@ MuData
 Assume `mdata` is already loaded in memory.
 Each modality should be stored in mdata.mod, for example:
 
-.. code-block:: ini  
+.. code-block:: python  
     MuData object with n_obs × n_vars = 10000 × 1200
     2 modalities
         rna: 10000 x 1000
