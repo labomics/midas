@@ -46,7 +46,7 @@ MuData
 Assume `mdata` is already loaded in memory.
 Each modality should be stored in mdata.mod, for example:
 
-.. code-block:: python  
+.. code-block:: bash  
     MuData object with n_obs × n_vars = 10000 × 1200
     2 modalities
         rna: 10000 x 1000
@@ -60,7 +60,6 @@ The ``batch_key`` specifies the column in .obs that indicates batch membership.
 The ``dims_x`` argument defines the input feature dimension for each modality.
 
 .. code-block:: python
-
     model = MIDAS.configure_data_from_mdata(
         mdata=mdata,
         batch_key='batch',
