@@ -106,7 +106,7 @@ The ``feat_dims.toml`` file contains the feature dimensions for each modality, a
 
 
 ``.mtx`` matrix (default)
-^^^^^^^^^^^^^^^^^^^^^^^^^
+_________________________
 
 To input a sparse matrix stored in the ``.mtx`` format:
 
@@ -123,7 +123,7 @@ Use the following code to load the data:
     model = MIDAS.configure_data_from_dir(configs, dataset_path, format='mtx')
 
 ``.csv`` matrix
-^^^^^^^^^^^^^^^
+_________________________
 
 To input data stored in the ``.csv`` format (with headers and column names):
 
@@ -140,7 +140,7 @@ Use the following code to load the data:
     model = MIDAS.configure_data_from_dir(configs, dataset_path, format='csv')
 
 ``.csv`` vector
-^^^^^^^^^^^^^^^
+_________________________
 
 To structure your data in a directory as follows:
 
@@ -164,7 +164,7 @@ Use the following code to load the data:
 
 
 On Choosing Input Formats
-~~~~~~~~~~~~~~~~~~~~~~~~~
+_________________________
 
 - ``.csv`` Matrix:  
   High memory usage with low I/O demands. Use this format to accelerate training when memory is abundant.
