@@ -39,8 +39,42 @@ Masks indicate the presence ``1`` or absence ``0`` of features for each modality
 
 Loading Inputs 
 ~~~~~~~~~~~~~~
-To format your processed data, ensuring that the features are consistently aligned across batches, 
-organize it by batch and modality in the following directory structure:
+
+MuData
+^^^^^^
+
+Assume `mdata` is already loaded in memory.
+Each modality should be stored in mdata.mod, for example:
+
+.. code-block:: ini  
+    MuData object with n_obs × n_vars = 10000 × 1200
+    2 modalities
+        rna: 10000 x 1000
+        obs: 'batch'
+        uns: 'mask_batch1', 'mask_batch2'
+        adt: 8000 x 200
+        obs: 'batch'
+        uns: 'mask_batch1', 'mask_batch2'
+
+The ``batch_key`` specifies the column in .obs that indicates batch membership.
+The ``dims_x`` argument defines the input feature dimension for each modality.
+
+.. code-block:: python
+
+    model = MIDAS.configure_data_from_mdata(
+        mdata=mdata,
+        batch_key='batch',
+        dims_x={
+            'rna': [1000],
+            'adt': [200],
+        },
+        configs=configs
+    )
+
+Directory Structure
+^^^^^^^^^^^^^^^^^^^
+
+To format your processed data, ensuring that the features are consistently aligned across batches, organize it by batch and modality in the following directory structure:
 
 .. code-block:: bash
     
@@ -106,7 +140,7 @@ Use the following code to load the data:
     model = MIDAS.configure_data_from_dir(configs, dataset_path, format='csv')
 
 ``.csv`` vector
-^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 To structure your data in a directory as follows:
 

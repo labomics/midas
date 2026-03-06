@@ -83,7 +83,7 @@ In addition to loading data from a directory, MIDAS also supports direct initial
 
 A typical MuData object may look like this:
 
-```
+```python
 # Example MuData:
 # MuData object with n_obs × n_vars = 10000 × 1200
 #   2 modalities
@@ -95,7 +95,7 @@ A typical MuData object may look like this:
 #       uns: 'mask_batch1', 'mask_batch2'
 ```
 You can configure the model from MuData as follows:
-```
+```python
 from scmidas.config import load_config
 from scmidas.model import MIDAS
 import lightning as L

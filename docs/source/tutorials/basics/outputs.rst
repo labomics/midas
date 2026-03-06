@@ -62,40 +62,30 @@ After training, you can use the ``predict`` method to generate and save predicti
 .. code-block:: python
 
     pred = model.predict(
-                return_pred=True,
-                save_dir=None,
-                joint_latent=True,
-                mod_latent=True,
-                impute=True,
-                batch_correct=True,
-                translate=True,
-                input=True)
+        return_in_memory: bool = True,
+        save_dir: Optional[str] = None,
+        save_format: str = "npy",  # "npy" or "csv"
+        joint_latent: bool = True,
+        mod_latent: bool = False,
+        impute: bool = False,
+        batch_correct: bool = False,
+        translate: bool = False,
+        input: bool = False,
+        verbose: bool = True
+    ):
 
 Where the parameters are:
 
 - ``return_pred``: Whether to return the predicted outputs.
 - ``save_dir``: Directory to save the predicted outputs. If set to `None`, outputs will not be saved.
+- ``save_format``: File format used when `save_dir` is provided.
 - ``joint_latent``: Whether to calculate and save joint latent representations.
 - ``mod_latent``: Whether to calculate and save modality latent representations.
 - ``impute``: Whether to perform data imputation, filling in missing or incomplete data.
 - ``batch_correct``: Whether to apply batch correction to the data to reduce batch effects.
 - ``translate``: Whether to perform modality translation.
 - ``input`` : Whether to save the original input data.
-
-.. To save the predicted outputs, you can specify the ``save_dir`` parameter in the ``predict`` method. This will save the outputs in the specified directory.
-
-.. .. code-block:: python
-
-..   pred_dir = 'pred_dir_example'
-..   model.predict(
-..               return_pred = False,
-..               save_dir=pred_dir,
-..               joint_latent=True,
-..               mod_latent=True,
-..               impute=True,
-..               batch_correct=True,
-..               translate=True,
-..               input=True)
+- ``verbose`` : Whether to display progress bars (`tqdm`) and logging messages.
 
 To retrieve and load the predicted outputs, you can use the ``scmidas.utils.load_predicted()`` function. Here's how to do it:
 
@@ -103,12 +93,10 @@ To retrieve and load the predicted outputs, you can use the ``scmidas.utils.load
 
     from scmidas.utils import load_predicted
     pred = load_predicted( 
-                  pred_dir, 
-                  model.combs, # a list of modality combinations per batch
-                  joint_latent=True, 
-                  mod_latend=True, 
-                  impute=True, 
-                  batch_correct=True, 
-                  translate=True, 
-                  input=True)
-
+                      save_dir = 'path',
+                      save_format = "npy",
+                      dim_c = 32,
+                      batch_names = None
+                      var_names = None
+                      split_z = True,
+                      return_manifest = False)
