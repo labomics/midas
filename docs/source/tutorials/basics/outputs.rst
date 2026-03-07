@@ -76,7 +76,7 @@ After training, you can use the ``predict`` method to generate and save predicti
 
 Where the parameters are:
 
-- ``return_pred``: Whether to return the predicted outputs.
+- ``return_in_memory``: Whether to return the predicted outputs.
 - ``save_dir``: Directory to save the predicted outputs. If set to `None`, outputs will not be saved.
 - ``save_format``: File format used when `save_dir` is provided.
 - ``joint_latent``: Whether to calculate and save joint latent representations.
