@@ -8,7 +8,7 @@
 
 dist/
 docs/build
-src_bak
+src_*
 predictions
 src/scmidas.egg-info/
 to_script.sh

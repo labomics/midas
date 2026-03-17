@@ -4,4 +4,4 @@ from .nn import *
 from .utils import *
 from .config import *
 
-__version__ = '0.1.16'
+__version__ = '0.1.17'

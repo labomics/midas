@@ -44,7 +44,7 @@ conda create -n scmidas python=3.12
 conda activate scmidas
 
 # 2. Install MIDAS from PyPI
-pip install scmidas==0.1.16
+pip install scmidas==--version
 ```
 
 ## ⚡ Getting Started: A Quick Example

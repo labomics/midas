@@ -1438,15 +1438,8 @@ class MIDAS(L.LightningModule):
             self.save_checkpoint(checkpoint_path)
             if self.viz_umap_tb:
                 logging.info('Plotting UMAP...')
-                umap_thread = threading.Thread(
-                target=self.get_emb_umap,
-                kwargs={"save_dir":self.save_model_path, "n_obs": 20000, "verbose": False},  # 关键字参数
-                daemon=True  # 守护线程：主线程退出时子线程自动结束，避免内存泄漏
-                )
-                # 启动线程
-                umap_thread.start()
-                # self.get_emb_umap(save_dir=self.save_model_path, n_obs=20000, verbose=False)
-                # shutil.rmtree(self.save_model_path+'/predict'+timestamp)
+                self.get_emb_umap(save_dir=self.save_model_path, n_obs=20000, verbose=False)
+                self.net.train()
 
     def on_train_end(self):
         """
@@ -1732,7 +1725,7 @@ class MIDAS(L.LightningModule):
             if verbose:
                 logging.info(" - Computing neighbors...")
             if n_obs:
-                sc.pp.subsample(adata, n_obs=n_obs)
+                sc.pp.subsample(adata, n_obs=min(len(adata), n_obs))
             sc.pp.neighbors(adata, n_neighbors=30, use_rep="X")  # X is already embedding
             if verbose:
                 logging.info(" - Computing UMAP...")

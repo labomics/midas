@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ## Version 0.1.x
 
+### v0.1.17 (2026-03-17)
+*   **🐛 Bug Fixes**
+    *   Remove multi-threading for UMAP visualization during training.
+
 ### v0.1.16 (2026-03-05)
 *   **✨ Enhancements**
     *   Asynchronous UMAP visualization during training
