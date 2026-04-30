@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scmidas"
+version = '0.1.17'
+description = "A torch-based integration method for single-cell multi-omic data."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "labomics", email = "omicshub@outlook.com" }
+]
+keywords = ["single-cell", "multi-omics", "integration", "pytorch", "scanpy", "anndata", "mudata"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+# --- Runtime dependencies (minimal but complete for your current imports) ---
+dependencies = [
+  # PyTorch
+  # NOTE: torch >=2.6 installs cleanly but produces runtime errors with
+  # MIDAS (e.g. inside Lightning's DDP path). Keep the upper bound at <2.6
+  # until the incompatibility is investigated and fixed, then widen here.
+  "torch>=2.5,<2.6",
+  "torchvision>=0.20,<0.21",
+  "torchaudio>=2.5,<2.6",
+
+  # Lightning (uses lightning.pytorch.utilities.rank_zero_only)
+  "lightning>=2.4,<2.7",
+
+  # Scientific stack
+  "numpy>=1.23,<3",
+  "scipy>=1.9,<2",
+  "pandas>=1.5,<3",
+  "scikit-learn>=1.2,<2",
+  "matplotlib>=3.7,<4",
+
+  # Single-cell ecosystem
+  "anndata>=0.10,<0.13",
+  "mudata>=0.3,<0.4",
+  "scanpy>=1.10,<2",
+
+  # Utilities you actually import/use
+  "tqdm>=4.64,<5",
+  "requests>=2.28,<3",
+  "toml>=0.10,<1",
+  "natsort>=8,<9",
+]
+
+[project.urls]
+Homepage = "https://github.com/labomics/midas"
+Issues = "https://github.com/labomics/midas/issues"
+
+# --- Optional dependencies (extras) ---
+[project.optional-dependencies]
+# Notebook / interactive
+notebook = [
+  "ipykernel>=6,<7",
+]
+
+# Dev / test / release tooling
+dev = [
+  "pytest>=7,<9",
+  "pytest-cov>=4,<6",
+  "ruff>=0.5,<1",
+  "mypy>=1.7,<2",
+  "build>=1,<2",
+  "twine>=5,<6",
+  "pip-tools>=7,<8",
+]
+
+# Docs (project uses Sphinx; pinned list lives in docs/source/requirements.txt)
+docs = [
+  "sphinx>=7,<9",
+  "sphinx-book-theme>=1.1,<2",
+  "sphinx-copybutton>=0.5,<1",
+  "sphinx-markdown-tables>=0.0.17,<1",
+  "recommonmark>=0.7,<1",
+  "nbsphinx>=0.9,<1",
+]
+
+# --- Package discovery (src layout) ---
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["scmidas*"]
+
+# --- Ruff (optional) ---
+[tool.ruff]
+line-length = 100
+target-version = "py310"

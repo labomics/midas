@@ -14,6 +14,5 @@ src/scmidas.egg-info/
 to_script.sh
 temp
 auto_ver.sh
-pyproject.toml
 *.yaml
 .venv*
