@@ -6,6 +6,32 @@ All notable changes to this project will be documented in this file.
 
 ## Version 0.1.x
 
+### Unreleased
+*   **🐛 Bug Fixes (DDP + mosaic data)**
+    *   Default `sampler_type='auto'` now picks the DDP sampler when a
+        process group is initialized. Previously `'auto'` silently fell
+        back to `MultiBatchSampler` (a rank-agnostic sampler), so DDP
+        runs computed each batch on every rank in parallel — correct
+        but with no throughput gain over single-GPU. Users who already
+        passed `sampler_type='ddp'` explicitly are unaffected.
+    *   `MyDistributedSampler` now derives its shuffle order from a
+        seeded `random.Random` instance (cross-rank-consistent for the
+        dataset visit order, rank-specific for the within-dataset
+        shuffle), and properly initialises the base
+        `DistributedSampler`. Previously it used the global Python
+        `random` module, so each DDP rank sampled a different sub-batch
+        at the same step. With non-uniform per-sub-batch modality
+        combinations (mosaic data), this produced different encoder
+        graphs per rank and caused NCCL all-reduce to hang under
+        `find_unused_parameters=False` (Lightning default), eventually
+        triggering a watchdog timeout.
+    *   **Heads-up — DDP reproducibility**: the DDP sampling order has
+        changed as a side-effect of the fix. Existing seeded DDP runs
+        will produce different numerics; checkpoints from prior
+        versions still load and continue training, but the post-fix
+        sampling sequence is not bit-equivalent to the pre-fix one.
+        Single-GPU users (using `MultiBatchSampler`) are unaffected.
+
 ### v0.1.17 (2026-03-17)
 *   **🐛 Bug Fixes**
     *   Remove multi-threading for UMAP visualization during training.

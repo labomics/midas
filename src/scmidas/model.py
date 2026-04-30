@@ -15,6 +15,7 @@ from matplotlib import pyplot as plt
 from scipy.sparse import csr_matrix
 
 import torch
+import torch.distributed as dist
 from torch import nn
 from torch.utils.data import DataLoader, ConcatDataset, Dataset
 import lightning as L
@@ -949,8 +950,16 @@ class MIDAS(L.LightningModule):
         except Exception as e:
             raise ValueError('Failed to concatenate datasets. Please check the input datalist.') from e
 
-        # Select the appropriate sampler
-        if self.sampler_type == 'ddp':
+        # Select the appropriate sampler.
+        # 'auto' picks the DDP sampler when a process group is initialized;
+        # this matches the user-visible 'auto' name and prevents silent
+        # rank-agnostic sampling under DDP.
+        use_ddp_sampler = self.sampler_type == 'ddp' or (
+            self.sampler_type == 'auto'
+            and dist.is_available()
+            and dist.is_initialized()
+        )
+        if use_ddp_sampler:
             logging.info('Using Distributed Data Parallel (DDP) sampler.')
             sampler = MyDistributedSampler(dataset, batch_size=self.batch_size, n_max=self.n_max)
         else:

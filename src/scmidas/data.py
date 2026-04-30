@@ -447,11 +447,18 @@ class MyDistributedSampler(DistributedSampler):
                 f'Invalid rank {rank}, rank should be in the interval [0, {num_replicas - 1}]'
             )
 
-        self.dataset = dataset
-        self.num_replicas = num_replicas
-        self.rank = rank
-        self.shuffle = shuffle
-        self.seed = seed
+        # Initialize the base DistributedSampler so that:
+        #   - self.epoch is set to 0
+        #   - Lightning's automatic sampler.set_epoch(epoch) (inherited
+        #     from DistributedSampler) takes effect each epoch.
+        super().__init__(
+            dataset,
+            num_replicas=num_replicas,
+            rank=rank,
+            shuffle=shuffle,
+            seed=seed,
+        )
+
         self.n_dataset = len(self.dataset.datasets)
         self.n_sample = [len(d) // num_replicas for d in self.dataset.datasets]
         self.batch_size = batch_size
@@ -478,19 +485,36 @@ class MyDistributedSampler(DistributedSampler):
         """
         Iterate over the distributed dataset, ensuring balanced sampling across replicas.
 
+        Two RNG streams are used to keep DDP correct under mosaic data:
+            - g_shared (same seed on every rank) drives the dataset-visit
+              order, so all ranks process the same sub-batch at the same
+              training step. With non-uniform per-sub-batch modality
+              combinations, this is what keeps the encoder graph identical
+              across ranks and avoids NCCL all-reduce hangs under
+              ``find_unused_parameters=False``.
+            - g_local (rank-specific seed) shuffles each rank's own
+              indices within a dataset; these are disjoint across ranks
+              by construction, so divergence here is fine.
+
         Returns:
             Iterator:
                 Iterator over indices for the current replica.
         """
+        epoch = getattr(self, 'epoch', 0)
+        g_shared = random.Random(self.seed + epoch)
+        g_local = random.Random(self.seed + epoch * self.num_replicas + self.rank)
+
         sampler_indv = []
         sampler_iter_indv = []
         n_sample_by_dataset = []
 
-        # Prepare samplers for each dataset
+        # Prepare samplers for each dataset.
+        # Copy self.all_indices[idx] before shuffling so successive epochs
+        # do not operate on a previously-shuffled list.
         for idx in range(self.n_dataset):
-            indices = self.all_indices[idx]
+            indices = list(self.all_indices[idx])
             if self.shuffle:
-                random.shuffle(indices)
+                g_local.shuffle(indices)
             indices = indices[: self.n_max]
             sampler_indv.append(indices)
             sampler_iter_indv.append(iter(indices))
@@ -503,7 +527,7 @@ class MyDistributedSampler(DistributedSampler):
 
         # Main sampling loop
         for _ in range(n_iter):
-            random.shuffle(idx_dataset)  # Shuffle dataset order
+            g_shared.shuffle(idx_dataset)  # cross-rank consistent dataset order
             for i in idx_dataset:
                 s = sampler_iter_indv[i]
                 order_indv = []
