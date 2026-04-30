@@ -96,3 +96,8 @@ include = ["scmidas*"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+
+# --- pytest ---
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"
