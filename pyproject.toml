@@ -25,13 +25,15 @@ classifiers = [
 
 # --- Runtime dependencies (minimal but complete for your current imports) ---
 dependencies = [
-  # PyTorch
-  # NOTE: torch >=2.6 installs cleanly but produces runtime errors with
-  # MIDAS (e.g. inside Lightning's DDP path). Keep the upper bound at <2.6
-  # until the incompatibility is investigated and fixed, then widen here.
-  "torch>=2.5,<2.6",
-  "torchvision>=0.20,<0.21",
-  "torchaudio>=2.5,<2.6",
+  # PyTorch.
+  # The previous <2.6 cap was a workaround for a suspected Lightning
+  # DDP incompatibility, but torch 2.8 has since been verified end-to-end
+  # in the mosaic DDP path (UMAP / numerics consistent with single-GPU).
+  # Keeping a major-version cap (<3) so a hypothetical breaking 3.x
+  # release does not silently land for users.
+  "torch>=2.5,<3",
+  "torchvision>=0.20,<1",
+  "torchaudio>=2.5,<3",
 
   # Lightning (uses lightning.pytorch.utilities.rank_zero_only)
   "lightning>=2.4,<2.7",

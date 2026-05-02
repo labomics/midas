@@ -77,6 +77,13 @@ All notable changes to this project will be documented in this file.
         `scmidas.__version__` and the Sphinx `release` both read it via
         `importlib.metadata.version("scmidas")` instead of duplicating
         the literal in three files.
+    *   Relax the `torch` pin from `>=2.5,<2.6` to `>=2.5,<3` (and the
+        matching `torchvision` / `torchaudio` companions). The previous
+        `<2.6` cap was a workaround for a suspected Lightning-DDP
+        incompatibility; torch 2.8 has now been verified end-to-end in
+        the mosaic DDP path (1000-epoch run with UMAP and numerics
+        consistent with the single-GPU baseline), so users on torch 2.6
+        / 2.7 / 2.8 no longer have to manually override the pin.
 
 ### v0.1.17 (2026-03-17)
 *   **🐛 Bug Fixes**
