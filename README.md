@@ -12,7 +12,7 @@
   <a href="https://github.com/labomics/midas/stargazers"><img src="https://img.shields.io/github/stars/labomics/midas?style=social" alt="GitHub Stars"></a>
   <a href="https://pypi.org/project/scmidas/"><img src="https://img.shields.io/pypi/v/scmidas" alt="PyPI version"></a>
   <a href="https://scmidas.readthedocs.io/en/latest/"><img src="https://img.shields.io/readthedocs/scmidas" alt="Documentation Status"></a>
-  <a href="https://github.com/labomics/midas/LICENSE"><img src="https://img.shields.io/github/license/labomics/midas?v=1" alt="License"></a> 
+  <a href="https://github.com/labomics/midas/blob/main/LICENSE"><img src="https://img.shields.io/github/license/labomics/midas?v=1" alt="License"></a>
 </p>
 
 ---
@@ -60,9 +60,11 @@ import lightning as L
 # The configuration file allows you to specify modalities, layers, and other parameters.
 configs = load_config()
 
-# 2. Load your mosaic dataset
-# The input should be an AnnData object where modalities are stored.
-# Different batches can have different combinations of modalities.
+# 2. Load your mosaic dataset from a directory of per-batch matrices
+# (one sub-folder per batch, each holding RNA / ADT / ATAC matrices in
+# 10x MTX layout). Different batches may carry different modality
+# combinations — that is what makes the dataset "mosaic".
+# See the tutorials for the exact directory structure.
 model = MIDAS.configure_data_from_dir(configs, 'path/to/your/data', transform={'atac':'binarize'})
 
 # 3. Train the model on your data
@@ -77,56 +79,7 @@ pred = model.predict()
 model.get_emb_umap()
 ```
 
-## ⚡ Update: Load data from MuData
-
-In addition to loading data from a directory, MIDAS also supports direct initialization from a MuData object. This is useful when your multimodal dataset is already organized in memory with modality-specific AnnData objects.
-
-A typical MuData object may look like this:
-
-```python
-# Example MuData:
-# MuData object with n_obs × n_vars = 10000 × 1200
-#   2 modalities
-#     rna: 10000 x 1000
-#       obs: 'batch'
-#       uns: 'mask_batch1', 'mask_batch2'
-#     adt: 8000 x 200
-#       obs: 'batch'
-#       uns: 'mask_batch1', 'mask_batch2'
-```
-You can configure the model from MuData as follows:
-```python
-from scmidas.config import load_config
-from scmidas.model import MIDAS
-import lightning as L
-
-# 1. Load model configuration
-configs = load_config()
-
-# 2. Prepare your MuData object
-# Assume `mdata` is already loaded in memory.
-# Each modality should be stored in mdata.mod, for example:
-#   mdata.mod['rna']
-#   mdata.mod['adt']
-#
-# The `batch_key` specifies the column in .obs that indicates batch membership.
-# The `dims_x` argument defines the input feature dimension for each modality.
-model = MIDAS.configure_data_from_mdata(
-    mdata=mdata,
-    batch_key='batch',
-    dims_x={
-        'rna': [1000],
-        'adt': [200],
-    },
-    configs=configs
-)
-
-# 3. Train the model
-model.train(max_epochs=2000)
-
-# 4. Run prediction
-pred = model.predict()
-```
+> **Alternative input formats.** If your data is already in memory as a [MuData](https://mudata.readthedocs.io/) object with modality-specific AnnData entries, use [`MIDAS.configure_data_from_mdata`](https://scmidas.readthedocs.io/en/latest/) instead of `configure_data_from_dir`. See the documentation for parameter details and a worked example.
 
 ## 📈 Reproducibility
 

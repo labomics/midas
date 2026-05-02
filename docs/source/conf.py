@@ -9,7 +9,12 @@
 project = 'midas'
 copyright = '2024, labomics'
 author = 'labomics'
-release = '0.1.17'
+
+from importlib.metadata import PackageNotFoundError, version as _pkg_version
+try:
+    release = _pkg_version('scmidas')
+except PackageNotFoundError:
+    release = '0.0.0+unknown'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
