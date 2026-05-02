@@ -57,6 +57,9 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/labomics/midas"
+Documentation = "https://scmidas.readthedocs.io/"
+Source = "https://github.com/labomics/midas"
+Changelog = "https://scmidas.readthedocs.io/en/latest/release.html"
 Issues = "https://github.com/labomics/midas/issues"
 
 # --- Optional dependencies (extras) ---
@@ -91,6 +94,11 @@ docs = [
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["scmidas*"]
+
+# Ship the PEP 561 type-info marker so type checkers (mypy / pyright)
+# treat scmidas as a typed package.
+[tool.setuptools.package-data]
+scmidas = ["py.typed"]
 
 # --- Ruff (optional) ---
 [tool.ruff]
