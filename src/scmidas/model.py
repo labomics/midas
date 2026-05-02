@@ -15,6 +15,7 @@ from matplotlib import pyplot as plt
 from scipy.sparse import csr_matrix
 
 import torch
+import torch.distributed as dist
 from torch import nn
 from torch.utils.data import DataLoader, ConcatDataset, Dataset
 import lightning as L
@@ -22,7 +23,6 @@ from lightning.pytorch.utilities import rank_zero_only
 
 import logging
 logging.basicConfig(level=logging.INFO)
-import threading
 
 # Project-Specific Imports
 from .data import MyDistributedSampler, MultiBatchSampler, MultiModalDataset
@@ -145,9 +145,17 @@ class Encoder(nn.Module):
                 transformation = self.trsf_before_enc[f'trsf_before_enc_{modality}']
                 data[modality] = transform_registry.get(transformation)(data[modality])
 
-        # Apply masks to data
+        # Apply masks to data.
+        # Use out-of-place multiplication: an in-place ``*=`` here would
+        # mutate the upstream batch tensors for any modality that did not
+        # take the ``trsf_before_enc_*`` branch above (whose transform
+        # would otherwise have produced a fresh tensor). The mathematical
+        # result is identical because mask is a 0/1 modality-presence
+        # indicator, but mutating the caller's batch dict is fragile and
+        # makes the encoder unsafe to call multiple times on the same
+        # input (see ``predict``'s mod_latent / translate paths).
         for modality, mask_value in mask.items():
-            data[modality] *= mask_value
+            data[modality] = data[modality] * mask_value
 
         # Pre-encode and concatenate if necessary, for truncated inputs
         for modality in data.keys():
@@ -503,10 +511,10 @@ class VAE(nn.Module):
         z_s_mu, z_s_logvar = self.encode_batch(s)
 
         # Combine latent variables using Product of Experts
-        try:
-            z_mu, z_logvar = self.poe(list(z_x_mu.values()) + z_s_mu, list(z_x_logvar.values()) + z_s_logvar)
-        except:
-            logging.debug(z_x_mu, z_s_mu, x, e, s)
+        z_mu, z_logvar = self.poe(
+            list(z_x_mu.values()) + z_s_mu,
+            list(z_x_logvar.values()) + z_s_logvar,
+        )
 
         # Sample latent variables
         z = self.sample_latent(z_mu, z_logvar)
@@ -850,8 +858,6 @@ class MIDAS(L.LightningModule):
         # Disable automatic optimization to manually control training steps. Always True.
         self.automatic_optimization = False
 
-        self.thread_lock = threading.Lock()
-
     @classmethod
     def configure_data(
         cls, 
@@ -914,13 +920,14 @@ class MIDAS(L.LightningModule):
                 "We recommend splitting the ATAC data by chromosome."
             )
             if 'dims_before_enc_atac' in configs and 'dims_after_dec_atac' in configs:
-                logging.error(
-                    'Invalid ATAC configuration: both "dims_before_enc_atac" and "dims_after_dec_atac" exist in the configs, '
-                    'but len(dims_x["atac"]) == 1. To forcibly encode ATAC data directly, please remove these settings from configs.'
+                raise ValueError(
+                    'Invalid ATAC configuration: both "dims_before_enc_atac" and '
+                    '"dims_after_dec_atac" are present in configs, but '
+                    'len(dims_x["atac"]) == 1. To forcibly encode ATAC data '
+                    'directly, please remove these settings from configs.'
                 )
-                exit()
         if batch_names is None:
-            batch_names = ['batch_%d' for i in range(len(datalist))]
+            batch_names = [f'batch_{i}' for i in range(len(datalist))]
         cls.batch_names = batch_names
         cls.sampler_type = sampler_type
         cls.datalist = datalist
@@ -949,8 +956,16 @@ class MIDAS(L.LightningModule):
         except Exception as e:
             raise ValueError('Failed to concatenate datasets. Please check the input datalist.') from e
 
-        # Select the appropriate sampler
-        if self.sampler_type == 'ddp':
+        # Select the appropriate sampler.
+        # 'auto' picks the DDP sampler when a process group is initialized;
+        # this matches the user-visible 'auto' name and prevents silent
+        # rank-agnostic sampling under DDP.
+        use_ddp_sampler = self.sampler_type == 'ddp' or (
+            self.sampler_type == 'auto'
+            and dist.is_available()
+            and dist.is_initialized()
+        )
+        if use_ddp_sampler:
             logging.info('Using Distributed Data Parallel (DDP) sampler.')
             sampler = MyDistributedSampler(dataset, batch_size=self.batch_size, n_max=self.n_max)
         else:
@@ -986,7 +1001,12 @@ class MIDAS(L.LightningModule):
         self.net_optim = getattr(torch.optim, self.optim_net)(self.net.parameters(), lr=self.lr_net)
         self.dsc_optim = getattr(torch.optim, self.optim_dsc)(self.dsc.parameters(), lr=self.lr_dsc)
 
-        if self.load_optimizer_state:
+        # ``load_optimizer_state`` is only set on the class by
+        # ``configure_data_from_dir`` / ``configure_data_from_mdata`` /
+        # ``load_checkpoint``. Users entering through the simpler
+        # ``configure_data`` path won't have it, so default to False
+        # rather than raising AttributeError on the first ``trainer.fit``.
+        if getattr(self, 'load_optimizer_state', False):
             self.net_optim.load_state_dict(self.loaded_net_optim_state)
             self.dsc_optim.load_state_dict(self.loaded_dsc_optim_state)
 

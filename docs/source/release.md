@@ -6,6 +6,85 @@ All notable changes to this project will be documented in this file.
 
 ## Version 0.1.x
 
+### v0.1.18 (2026-05-02)
+*   **🐛 Bug Fixes (DDP + mosaic data)**
+    *   Default `sampler_type='auto'` now picks the DDP sampler when a
+        process group is initialized. Previously `'auto'` silently fell
+        back to `MultiBatchSampler` (a rank-agnostic sampler), so DDP
+        runs computed each batch on every rank in parallel — correct
+        but with no throughput gain over single-GPU. Users who already
+        passed `sampler_type='ddp'` explicitly are unaffected.
+    *   `MyDistributedSampler` now derives its shuffle order from a
+        seeded `random.Random` instance (cross-rank-consistent for the
+        dataset visit order, rank-specific for the within-dataset
+        shuffle), and properly initialises the base
+        `DistributedSampler`. Previously it used the global Python
+        `random` module, so each DDP rank sampled a different sub-batch
+        at the same step. With non-uniform per-sub-batch modality
+        combinations (mosaic data), this produced different encoder
+        graphs per rank and caused NCCL all-reduce to hang under
+        `find_unused_parameters=False` (Lightning default), eventually
+        triggering a watchdog timeout.
+    *   **Heads-up — DDP reproducibility**: the DDP sampling order has
+        changed as a side-effect of the fix. Existing seeded DDP runs
+        will produce different numerics; checkpoints from prior
+        versions still load and continue training, but the post-fix
+        sampling sequence is not bit-equivalent to the pre-fix one.
+        Single-GPU users (using `MultiBatchSampler`) are unaffected.
+*   **🐛 Bug Fixes (API hardening)**
+    *   `MIDAS.configure_optimizers` no longer raises `AttributeError`
+        when entered through the simpler `configure_data` path
+        (`load_optimizer_state` was only set by
+        `configure_data_from_dir` / `configure_data_from_mdata` /
+        `load_checkpoint`).
+    *   `MIDAS.configure_data` default `batch_names` now use f-string
+        formatting (`f'batch_{i}'`) instead of the literal string
+        `'batch_%d'` repeated `len(datalist)` times.
+    *   Bad ATAC configuration in `configure_data` now raises
+        `ValueError` instead of calling `exit()` (which killed the
+        Jupyter kernel without a traceback).
+    *   `download_file` now accepts both `str` and `pathlib.Path` for
+        `dest_path`. The signature was annotated `str` but the body
+        called `.name`.
+    *   `Encoder.forward` no longer mutates the caller's batch dict.
+        The mask multiply is now out-of-place; the previous in-place
+        `data[m] *= mask` corrupted upstream tensors for any modality
+        without a `trsf_before_enc_*` transform. Mathematically
+        equivalent (the mask is a 0/1 modality-presence indicator, and
+        `calc_recon_loss` already multiplies the loss by the same
+        mask), but makes the encoder safe to re-call on the same
+        batch (e.g. `predict`'s `mod_latent` / `translate` paths).
+    *   `VAE.forward` no longer wraps the PoE call in a bare
+        `try/except` that swallowed real errors with a malformed
+        `logging.debug` call.
+*   **✅ Tests**
+    *   Added `tests/test_invariants.py` pinning down the bugs above
+        plus the DDP sampler determinism fix (cross-rank disjoint
+        indices, `set_epoch` actually changes ordering).
+*   **📚 Documentation**
+    *   Each basics demo now exposes a single `# === GPU configuration ===`
+        block (`GPUS` + `STRATEGY`) at the top so switching from
+        single-GPU to multi-GPU only requires editing two values.
+    *   Removed the redundant standalone `advanced/multi_gpu.rst`
+        tutorial — its contents now live inline in the basics demos
+        where the failure modes would actually be encountered.
+    *   README: removed the duplicated MuData section (the `from_mdata`
+        path is one link away in the docs), corrected the Quick
+        Example comment about input format, and fixed the License
+        badge link.
+*   **⚙️ Packaging**
+    *   Version is now single-sourced from `pyproject.toml`;
+        `scmidas.__version__` and the Sphinx `release` both read it via
+        `importlib.metadata.version("scmidas")` instead of duplicating
+        the literal in three files.
+    *   Relax the `torch` pin from `>=2.5,<2.6` to `>=2.5,<3` (and the
+        matching `torchvision` / `torchaudio` companions). The previous
+        `<2.6` cap was a workaround for a suspected Lightning-DDP
+        incompatibility; torch 2.8 has now been verified end-to-end in
+        the mosaic DDP path (1000-epoch run with UMAP and numerics
+        consistent with the single-GPU baseline), so users on torch 2.6
+        / 2.7 / 2.8 no longer have to manually override the pin.
+
 ### v0.1.17 (2026-03-17)
 *   **🐛 Bug Fixes**
     *   Remove multi-threading for UMAP visualization during training.

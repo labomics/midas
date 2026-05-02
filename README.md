@@ -1,159 +1,93 @@
-# MIDAS: A Deep Generative Model for Mosaic Integration and Knowledge Transfer of Single-Cell Multimodal Data
+# MIDAS
 
 <div align="center">
   <img src="docs/source/_static/img/midas_logo_vertical.png" alt="MIDAS Logo" width="900px">
 </div>
 
 <p align="center">
-  MIDAS turns raw mosaic data into both <strong>imputed</strong>, <strong>batch-corrected data</strong> and <strong>disentangled latent representations</strong>, powering robust downstream analysis.
+  MIDAS turns raw mosaic single-cell multimodal data into <strong>imputed</strong>, <strong>batch-corrected matrices</strong> and <strong>disentangled latent representations</strong>.
 </p>
 
 <p align="center">
-  <a href="https://github.com/labomics/midas/stargazers"><img src="https://img.shields.io/github/stars/labomics/midas?style=social" alt="GitHub Stars"></a>
+  <a href="https://github.com/labomics/midas/actions/workflows/test.yml"><img src="https://github.com/labomics/midas/actions/workflows/test.yml/badge.svg" alt="CI Status"></a>
   <a href="https://pypi.org/project/scmidas/"><img src="https://img.shields.io/pypi/v/scmidas" alt="PyPI version"></a>
   <a href="https://scmidas.readthedocs.io/en/latest/"><img src="https://img.shields.io/readthedocs/scmidas" alt="Documentation Status"></a>
-  <a href="https://github.com/labomics/midas/LICENSE"><img src="https://img.shields.io/github/license/labomics/midas?v=1" alt="License"></a> 
+  <a href="https://github.com/labomics/midas/blob/main/LICENSE"><img src="https://img.shields.io/github/license/labomics/midas?v=1" alt="License"></a>
+  <a href="https://github.com/labomics/midas/stargazers"><img src="https://img.shields.io/github/stars/labomics/midas?style=social" alt="GitHub Stars"></a>
 </p>
 
----
+**Documentation:** [scmidas.readthedocs.io](https://scmidas.readthedocs.io/en/latest/)
 
-**MIDAS** is a powerful deep probabilistic framework designed for the mosaic integration and knowledge transfer of single-cell multimodal data. It addresses key challenges in single-cell analysis, such as modality alignment, batch effect removal, and data imputation. By leveraging self-supervised modality alignment and information-theoretic latent disentanglement, MIDAS transforms fragmented, mosaic data into a complete and harmonized dataset ready for downstream analysis.
+## Key features
 
-Whether you are working with transcriptomics (RNA), proteomics (ADT), or chromatin accessibility (ATAC), MIDAS provides a versatile solution to uncover deeper biological insights from complex, multi-source datasets.
+*   **Mosaic integration** — handle datasets where different batches measure different modality combinations (e.g. some batches have RNA + ATAC, others only RNA).
+*   **Multi-modal support** — RNA, ADT, ATAC out of the box; configurable for additional modalities.
+*   **Imputation** — fill in missing modalities with model-derived values.
+*   **Batch correction** — remove technical variation across batches.
+*   **Knowledge transfer** — fine-tune a pre-trained reference model on a query dataset.
+*   **Multi-GPU training** — built on PyTorch Lightning, with DDP support for mosaic data.
+*   **TensorBoard integration** — live training loss and UMAP visualisations.
 
-- **Documentation:** [**scmidas.readthedocs.io**](https://scmidas.readthedocs.io/en/latest/)
-- **Publication:** [***Nature Biotechnology***](https://www.nature.com/articles/s41587-023-02040-y)
-
-## ✨ Key Features
-
-*   **Mosaic Data Integration**: Seamlessly integrates datasets where different batches measure different sets of modalities (e.g., some samples have RNA and ATAC, while others have only RNA).
-*   **Multi-Modal Support**: Natively supports RNA, ADT, and ATAC data, and can be easily configured to incorporate additional modalities.
-*   **Data Imputation**: Accurately imputes missing modalities, turning incomplete data into a complete multi-modal matrix.
-*   **Batch Correction**: Effectively removes technical variations between different batches, enabling consistent and reliable analysis across datasets.
-*   **Knowledge Transfer**: Leverages a pre-trained reference atlas to enable flexible and accurate knowledge transfer to new query datasets.
-*   **Efficient and Scalable**: Built on PyTorch Lightning for highly efficient model training, with support for advanced strategies like Distributed Data Parallel (DDP).
-*   **Advanced Visualization**: Integrates with TensorBoard for real-time monitoring of training loss and UMAP visualizations.
-
-## 🚀 Installation
-
-Get started with MIDAS by setting up a conda environment.
+## Installation
 
 ```bash
-# 1. Create and activate a new conda environment
 conda create -n scmidas python=3.12
 conda activate scmidas
-
-# 2. Install MIDAS from PyPI
 pip install scmidas
 ```
 
-## ⚡ Getting Started: A Quick Example
+## Quick start
 
-Here is a minimal example to get you started with a mosaic integration task. For more detailed tutorials, please refer to our [documentation](https://scmidas.readthedocs.io/en/latest/).
+The MIDAS workflow is four calls. The snippet below is an API sketch — replace `...` with your data and refer to the [tutorials](https://scmidas.readthedocs.io/en/latest/) for runnable end-to-end examples.
 
 ```python
 from scmidas.config import load_config
 from scmidas.model import MIDAS
-import lightning as L
 
-# 1. Configure and initialize the MIDAS model
-# The configuration file allows you to specify modalities, layers, and other parameters.
-configs = load_config()
+# 1. Build a model bound to a mosaic dataset.
+#    Input is either a directory of per-batch MTX matrices, or a MuData
+#    object via MIDAS.configure_data_from_mdata(...).
+model = MIDAS.configure_data_from_dir(load_config(), ..., transform={'atac': 'binarize'})
 
-# 2. Load your mosaic dataset
-# The input should be an AnnData object where modalities are stored.
-# Different batches can have different combinations of modalities.
-model = MIDAS.configure_data_from_dir(configs, 'path/to/your/data', transform={'atac':'binarize'})
-
-# 3. Train the model on your data
+# 2. Train.
 model.train(max_epochs=2000)
 
-# 4. Obtain the integrated and imputed results
-# The model returns an AnnData object with a unified latent space 
-# and imputed values for the missing modalities.
+# 3. Predict — latent embeddings (z_c, z_u) and imputed counts per batch.
 pred = model.predict()
 
-# 5. Visualize the results
+# 4. (Optional) UMAP of the integrated latent space.
 model.get_emb_umap()
 ```
 
-## ⚡ Update: Load data from MuData
+## Reproducibility
 
-In addition to loading data from a directory, MIDAS also supports direct initialization from a MuData object. This is useful when your multimodal dataset is already organized in memory with modality-specific AnnData objects.
+Code and data to reproduce the results in the paper live on the [`reproducibility`](https://github.com/labomics/midas/tree/reproducibility) branch.
 
-A typical MuData object may look like this:
+## Citation
 
-```python
-# Example MuData:
-# MuData object with n_obs × n_vars = 10000 × 1200
-#   2 modalities
-#     rna: 10000 x 1000
-#       obs: 'batch'
-#       uns: 'mask_batch1', 'mask_batch2'
-#     adt: 8000 x 200
-#       obs: 'batch'
-#       uns: 'mask_batch1', 'mask_batch2'
-```
-You can configure the model from MuData as follows:
-```python
-from scmidas.config import load_config
-from scmidas.model import MIDAS
-import lightning as L
-
-# 1. Load model configuration
-configs = load_config()
-
-# 2. Prepare your MuData object
-# Assume `mdata` is already loaded in memory.
-# Each modality should be stored in mdata.mod, for example:
-#   mdata.mod['rna']
-#   mdata.mod['adt']
-#
-# The `batch_key` specifies the column in .obs that indicates batch membership.
-# The `dims_x` argument defines the input feature dimension for each modality.
-model = MIDAS.configure_data_from_mdata(
-    mdata=mdata,
-    batch_key='batch',
-    dims_x={
-        'rna': [1000],
-        'adt': [200],
-    },
-    configs=configs
-)
-
-# 3. Train the model
-model.train(max_epochs=2000)
-
-# 4. Run prediction
-pred = model.predict()
-```
-
-## 📈 Reproducibility
-
-To reproduce the results from our publication, please visit the `reproducibility` branch of this repository:
-[**github.com/labomics/midas/tree/reproducibility**](https://github.com/labomics/midas/tree/reproducibility/)
-
-## 📜 Citation
-
-If you use MIDAS in your research, please cite our paper:
-
-He, Z., Hu, S., Chen, Y. *et al*. Mosaic integration and knowledge transfer of single-cell multimodal data with MIDAS. *Nat Biotechnol* (2024). https://doi.org/10.1038/s41587-023-02040-y
+If you use MIDAS in your research, please cite:
 
 ```bibtex
 @article{he2024mosaic,
-  title={Mosaic integration and knowledge transfer of single-cell multimodal data with MIDAS},
-  author={He, Zhen and Hu, Shuofeng and Chen, Yaowen and An, Sijing and Zhou, Jiahao and Liu, Runyan and Shi, Junfeng and Wang, Jing and Dong, Guohua and Shi, Jinhui and others},
-  journal={Nature Biotechnology},
-  pages={1--12},
-  year={2024},
-  publisher={Nature Publishing Group US New York}
+  title   = {Mosaic integration and knowledge transfer of single-cell multimodal data with {MIDAS}},
+  author  = {He, Zhen and Hu, Shuofeng and Chen, Yaowen and An, Sijing
+             and Zhou, Jiahao and Liu, Runyan and Shi, Junfeng and Wang, Jing
+             and Dong, Guohua and Shi, Jinhui and Zhao, Jiaxin and Ou-Yang, Le
+             and Zhu, Yuan and Bo, Xiaochen and Ying, Xiaomin},
+  journal = {Nature Biotechnology},
+  volume  = {42},
+  number  = {10},
+  pages   = {1594--1605},
+  year    = {2024},
+  doi     = {10.1038/s41587-023-02040-y},
+  publisher = {Nature Publishing Group}
 }
 ```
 
-## 🙌 Contributing
+## Contributing
 
-We welcome contributions from the community! If you have a suggestion, bug report, or want to contribute to the code, please feel free to open an issue or submit a pull request.
+Bug reports and feature requests: please open a [GitHub issue](https://github.com/labomics/midas/issues). For code contributions, branch from `main`, make sure `pytest tests/` passes, and open a pull request — for non-trivial changes, an issue first to discuss the design is appreciated.
 
-## 📝 License
+## License
 
-MIDAS is available under the [MIT License](https://github.com/labomics/midas/blob/main/LICENSE).
+[MIT](https://github.com/labomics/midas/blob/main/LICENSE).
