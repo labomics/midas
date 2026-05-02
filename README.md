@@ -1,7 +1,7 @@
 # MIDAS
 
 <div align="center">
-  <img src="docs/source/_static/img/midas_logo_vertical.png" alt="MIDAS Logo" width="450px">
+  <img src="docs/source/_static/img/midas_logo_vertical.png" alt="MIDAS Logo" width="900px">
 </div>
 
 <p align="center">
