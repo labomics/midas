@@ -15,24 +15,17 @@
   <a href="https://github.com/labomics/midas/blob/main/LICENSE"><img src="https://img.shields.io/github/license/labomics/midas?v=1" alt="License"></a>
 </p>
 
----
-
-**MIDAS** is a powerful deep probabilistic framework designed for the mosaic integration and knowledge transfer of single-cell multimodal data. It addresses key challenges in single-cell analysis, such as modality alignment, batch effect removal, and data imputation. By leveraging self-supervised modality alignment and information-theoretic latent disentanglement, MIDAS transforms fragmented, mosaic data into a complete and harmonized dataset ready for downstream analysis.
-
-Whether you are working with transcriptomics (RNA), proteomics (ADT), or chromatin accessibility (ATAC), MIDAS provides a versatile solution to uncover deeper biological insights from complex, multi-source datasets.
-
-- **Documentation:** [**scmidas.readthedocs.io**](https://scmidas.readthedocs.io/en/latest/)
-- **Publication:** [***Nature Biotechnology***](https://www.nature.com/articles/s41587-023-02040-y)
+**Documentation:** [scmidas.readthedocs.io](https://scmidas.readthedocs.io/en/latest/)
 
 ## ✨ Key Features
 
-*   **Mosaic Data Integration**: Seamlessly integrates datasets where different batches measure different sets of modalities (e.g., some samples have RNA and ATAC, while others have only RNA).
-*   **Multi-Modal Support**: Natively supports RNA, ADT, and ATAC data, and can be easily configured to incorporate additional modalities.
-*   **Data Imputation**: Accurately imputes missing modalities, turning incomplete data into a complete multi-modal matrix.
-*   **Batch Correction**: Effectively removes technical variations between different batches, enabling consistent and reliable analysis across datasets.
-*   **Knowledge Transfer**: Leverages a pre-trained reference atlas to enable flexible and accurate knowledge transfer to new query datasets.
-*   **Efficient and Scalable**: Built on PyTorch Lightning for highly efficient model training, with support for advanced strategies like Distributed Data Parallel (DDP).
-*   **Advanced Visualization**: Integrates with TensorBoard for real-time monitoring of training loss and UMAP visualizations.
+*   **Mosaic integration** — handle datasets where different batches measure different modality combinations (e.g. some batches have RNA + ATAC, others only RNA).
+*   **Multi-modal support** — RNA, ADT, ATAC out of the box; configurable for additional modalities.
+*   **Imputation** — fill in missing modalities with model-derived values.
+*   **Batch correction** — remove technical variation across batches.
+*   **Knowledge transfer** — fine-tune a pre-trained reference model on a query dataset.
+*   **Multi-GPU training** — built on PyTorch Lightning, with DDP support for mosaic data.
+*   **TensorBoard integration** — live training loss and UMAP visualisations.
 
 ## 🚀 Installation
 
@@ -47,39 +40,28 @@ conda activate scmidas
 pip install scmidas
 ```
 
-## ⚡ Getting Started: A Quick Example
+## ⚡ Quick Start
 
-Here is a minimal example to get you started with a mosaic integration task. For more detailed tutorials, please refer to our [documentation](https://scmidas.readthedocs.io/en/latest/).
+The MIDAS workflow is four calls. The snippet below is an API sketch — replace `...` with your data and refer to the [tutorials](https://scmidas.readthedocs.io/en/latest/) for runnable end-to-end examples.
 
 ```python
 from scmidas.config import load_config
 from scmidas.model import MIDAS
-import lightning as L
 
-# 1. Configure and initialize the MIDAS model
-# The configuration file allows you to specify modalities, layers, and other parameters.
-configs = load_config()
+# 1. Build a model bound to a mosaic dataset.
+#    Input is either a directory of per-batch MTX matrices, or a MuData
+#    object via MIDAS.configure_data_from_mdata(...).
+model = MIDAS.configure_data_from_dir(load_config(), ..., transform={'atac': 'binarize'})
 
-# 2. Load your mosaic dataset from a directory of per-batch matrices
-# (one sub-folder per batch, each holding RNA / ADT / ATAC matrices in
-# 10x MTX layout). Different batches may carry different modality
-# combinations — that is what makes the dataset "mosaic".
-# See the tutorials for the exact directory structure.
-model = MIDAS.configure_data_from_dir(configs, 'path/to/your/data', transform={'atac':'binarize'})
-
-# 3. Train the model on your data
+# 2. Train.
 model.train(max_epochs=2000)
 
-# 4. Obtain the integrated and imputed results
-# The model returns an AnnData object with a unified latent space 
-# and imputed values for the missing modalities.
+# 3. Predict — latent embeddings (z_c, z_u) and imputed counts per batch.
 pred = model.predict()
 
-# 5. Visualize the results
+# 4. (Optional) UMAP of the integrated latent space.
 model.get_emb_umap()
 ```
-
-> **Alternative input formats.** If your data is already in memory as a [MuData](https://mudata.readthedocs.io/) object with modality-specific AnnData entries, use [`MIDAS.configure_data_from_mdata`](https://scmidas.readthedocs.io/en/latest/) instead of `configure_data_from_dir`. See the documentation for parameter details and a worked example.
 
 ## 📈 Reproducibility
 
