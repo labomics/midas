@@ -554,15 +554,18 @@ class MyDistributedSampler(DistributedSampler):
         # max_samples = min(max(self.all_length), self.n_max)
         # return math.ceil(max_samples / self.batch_size) * self.n_dataset * self.batch_size
 
-def download_file(url: str, dest_path: str):
+def download_file(url: str, dest_path):
     """Helper function to download a file from a URL with progress display.
-    
+
     Parameters:
         url : str
             URL for data.
-        dest_path : str
-            Path to save.
+        dest_path : str or pathlib.Path
+            Path to save. Strings are accepted for convenience and converted
+            internally to ``pathlib.Path``; the previous signature only
+            documented ``str`` but called ``dest_path.name``.
     """
+    dest_path = Path(dest_path)
     try:
         # Send HTTP GET request
         response = requests.get(url, stream=True)
@@ -570,7 +573,7 @@ def download_file(url: str, dest_path: str):
 
         # Get the total size of the file from headers
         total_size = int(response.headers.get('Content-Length', 0))
-        
+
         # Open the destination file in write-binary mode
         with open(dest_path, 'wb') as file:
             # Use tqdm to display download progress
