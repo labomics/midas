@@ -4,7 +4,8 @@ import torch.nn as nn
 from typing import Callable, Union, List, Dict
 
 import logging
-logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 
 class DistributionRegistry:
@@ -55,7 +56,7 @@ class DistributionRegistry:
                 If the name is already registered in any of the maps.
         """
         if name in self.loss_map:
-            logging.info(f'Loss function "{name}" is already registered. Override it.')
+            logger.info(f'Loss function "{name}" is already registered. Override it.')
         self.loss_map[name] = loss_fn
         self.sampling_map[name] = sampling_fn
         self.activate_map[name] = activate_fn
@@ -211,7 +212,7 @@ class TransformRegistry:
                 If the transformation or its inverse is already registered.
         """
         if name in self.transform_map:
-            logging.info(f'Transformation "{name}" is already registered. Override it.')
+            logger.info(f'Transformation "{name}" is already registered. Override it.')
 
         self.transform_map[name] = fn
         self.inverse_transform_map[name] = inverse_fn
@@ -389,7 +390,7 @@ class ActivationRegistry:
                 The activation function instance or a factory function.
         """
         if name in self.func_map:
-            logging.info(f'Activation function "{name}" is already registered. Override it.')
+            logger.info(f'Activation function "{name}" is already registered. Override it.')
         
         self.func_map[name] = func
 

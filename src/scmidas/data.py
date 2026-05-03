@@ -13,7 +13,6 @@ import zipfile
 import requests
 from tqdm import tqdm
 import logging
-logging.basicConfig(level=logging.INFO)
 
 import torch
 import torch.distributed as dist
@@ -22,6 +21,8 @@ from torch.utils.data import Dataset, Sampler
 
 from .nn import transform_registry
 from .utils import load_csv
+
+logger = logging.getLogger(__name__)
 
 _T_co = TypeVar('_T_co', covariant=True)
 
@@ -582,10 +583,10 @@ def download_file(url: str, dest_path):
                     if chunk:
                         file.write(chunk)
                         pbar.update(len(chunk))  # Update progress bar with the downloaded chunk size
-        logging.info(f'Downloaded: {url} to {dest_path}')
+        logger.info(f'Downloaded: {url} to {dest_path}')
 
     except requests.exceptions.RequestException as e:
-        logging.error(f'Error downloading {url}: {e}')
+        logger.error(f'Error downloading {url}: {e}')
         raise
 
 def unzip_file(zip_path: str, extract_to: str):
@@ -600,9 +601,9 @@ def unzip_file(zip_path: str, extract_to: str):
     try:
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(extract_to)
-        logging.info(f'Unzipped: {zip_path} to {extract_to}')
+        logger.info(f'Unzipped: {zip_path} to {extract_to}')
     except zipfile.BadZipFile as e:
-        logging.error(f'Error unzipping {zip_path}: {e}')
+        logger.error(f'Error unzipping {zip_path}: {e}')
         raise
 
 def download_models(name: str, des: str = './'):
@@ -630,17 +631,17 @@ def download_models(name: str, des: str = './'):
             # Download and extract the TEADOG mosaic dataset
             urls = urls_dict[name]
             for url, file_path in urls:
-                logging.info(f'Downloading from {url}.')
+                logger.info(f'Downloading from {url}.')
                 download_file(url, file_path)
                 if file_path.suffix == '.zip':
                     unzip_file(file_path, des_path)
                     os.remove(file_path)
         except Exception as e:
-            logging.error(f'An error occurred while downloading the dataset: {e}')
+            logger.error(f'An error occurred while downloading the dataset: {e}')
             raise
 
     else:
-        logging.error(f'Dataset "{name}" is not recognized.')
+        logger.error(f'Dataset "{name}" is not recognized.')
         raise ValueError(f'Dataset "{name}" not supported.')
 
 def download_data(name: str, des: str = './'):
@@ -671,17 +672,17 @@ def download_data(name: str, des: str = './'):
             # Download and extract the TEADOG mosaic dataset
             urls = urls_dict[name]
             for url, file_path in urls:
-                logging.info(f'Downloading from {url}.')
+                logger.info(f'Downloading from {url}.')
                 download_file(url, file_path)
                 if file_path.suffix == '.zip':
                     unzip_file(file_path, des_path)
                     os.remove(file_path)
         except Exception as e:
-            logging.error(f'An error occurred while downloading the dataset: {e}')
+            logger.error(f'An error occurred while downloading the dataset: {e}')
             raise
 
     else:
-        logging.error(f'Dataset "{name}" is not recognized.')
+        logger.error(f'Dataset "{name}" is not recognized.')
         raise ValueError(f'Dataset "{name}" not supported.')
 
 def download_script(name: str, des: str = './'):
@@ -718,5 +719,5 @@ def download_script(name: str, des: str = './'):
         else:
             print(f"'{file_path}' already exists. Skipping download.")           
     else:
-        logging.error(f'Script "{name}" is not recognized.')
+        logger.error(f'Script "{name}" is not recognized.')
         raise ValueError(f'Script "{name}" not supported.')

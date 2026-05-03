@@ -22,11 +22,12 @@ import lightning as L
 from lightning.pytorch.utilities import rank_zero_only
 
 import logging
-logging.basicConfig(level=logging.INFO)
 
 # Project-Specific Imports
 from .data import MyDistributedSampler, MultiBatchSampler, MultiModalDataset
 from .utils import *
+
+logger = logging.getLogger(__name__)
 from .nn import MLP, Layer1D, distribution_registry, transform_registry
 
 class Encoder(nn.Module):
@@ -423,9 +424,9 @@ class VAE(nn.Module):
         self.dims_x = dims_x
         self.dims_s = dims_s
         self.mods = set(dims_x.keys())
-        logging.debug(f'Initializing VAE with modalities: {self.mods}')
-        logging.debug(f'Initializing VAE with dims_s: {self.dims_s}')
-        logging.debug(f'Initializing VAE with dims_x: {self.dims_x}')
+        logger.debug(f'Initializing VAE with modalities: {self.mods}')
+        logger.debug(f'Initializing VAE with dims_s: {self.dims_s}')
+        logger.debug(f'Initializing VAE with dims_x: {self.dims_x}')
 
 
         # Dynamically set additional arguments
@@ -505,8 +506,8 @@ class VAE(nn.Module):
 
         # Encode data
         # check device:
-        logging.debug(f"x device: {next(iter(x.values())).device}")
-        logging.debug(f"model device: {next(self.parameters()).device}")
+        logger.debug(f"x device: {next(iter(x.values())).device}")
+        logger.debug(f"model device: {next(self.parameters()).device}")
         z_x_mu, z_x_logvar = self.encoder(x, e)
         z_s_mu, z_s_logvar = self.encode_batch(s)
 
@@ -733,7 +734,7 @@ class VAE(nn.Module):
         try:
             mus = [torch.zeros_like(mus[0])] + mus
         except:
-            logging.debug(mus)
+            logger.debug(mus)
         logvars = [torch.zeros_like(logvars[0])] + logvars
 
         # Calculate precision and combined precision
@@ -914,7 +915,7 @@ class MIDAS(L.LightningModule):
         # check config
         atac_dims = dims_x.get('atac', None)
         if atac_dims is not None and len(atac_dims) == 1:
-            logging.warning(
+            logger.warning(
                 f"Detected ATAC with only one dimension [{atac_dims[0]}]. "
                 "This will cause the data to be encoded directly instead of by chromosome, as described in our paper. "
                 "We recommend splitting the ATAC data by chromosome."
@@ -952,7 +953,7 @@ class MIDAS(L.LightningModule):
         # Concatenate all datasets
         try:
             dataset = ConcatDataset(self.datalist)
-            logging.info(f'Total number of samples: {len(dataset)} from {len(self.datalist)} datasets.')
+            logger.info(f'Total number of samples: {len(dataset)} from {len(self.datalist)} datasets.')
         except Exception as e:
             raise ValueError('Failed to concatenate datasets. Please check the input datalist.') from e
 
@@ -966,10 +967,10 @@ class MIDAS(L.LightningModule):
             and dist.is_initialized()
         )
         if use_ddp_sampler:
-            logging.info('Using Distributed Data Parallel (DDP) sampler.')
+            logger.info('Using Distributed Data Parallel (DDP) sampler.')
             sampler = MyDistributedSampler(dataset, batch_size=self.batch_size, n_max=self.n_max)
         else:
-            logging.info('Using MultiBatchSampler for data loading.')
+            logger.info('Using MultiBatchSampler for data loading.')
             sampler = MultiBatchSampler(dataset, batch_size=self.batch_size, n_max=self.n_max)
 
         # Create the DataLoader
@@ -982,10 +983,10 @@ class MIDAS(L.LightningModule):
                 pin_memory=self.pin_memory,
                 persistent_workers=self.persistent_workers
             )
-            logging.info(f'DataLoader created with batch size {self.batch_size} and {self.num_workers} workers.')
+            logger.info(f'DataLoader created with batch size {self.batch_size} and {self.num_workers} workers.')
         except Exception as e:
             raise RuntimeError('Failed to create DataLoader. Check DataLoader configuration.') from e
-        logging.debug(f'DataLoader: {len(train_loader)}')
+        logger.debug(f'DataLoader: {len(train_loader)}')
         return train_loader
     
     def configure_optimizers(self) -> List[torch.optim.Optimizer]:
@@ -996,8 +997,8 @@ class MIDAS(L.LightningModule):
             List[torch.optim.Optimizer] : 
                 List of optimizers for the network and discriminator.
         """
-        logging.debug(f'net:{self.net}')
-        logging.debug(f'dsc:{self.dsc}')
+        logger.debug(f'net:{self.net}')
+        logger.debug(f'dsc:{self.dsc}')
         self.net_optim = getattr(torch.optim, self.optim_net)(self.net.parameters(), lr=self.lr_net)
         self.dsc_optim = getattr(torch.optim, self.optim_dsc)(self.dsc.parameters(), lr=self.lr_dsc)
 
@@ -1029,10 +1030,10 @@ class MIDAS(L.LightningModule):
                 Total VAE loss for the current batch.
         """
         # Forward pass through the VAE
-        logging.debug(f"Training step - batch index: {batch_idx}")
-        logging.debug(f"Input: {batch}")
+        logger.debug(f"Training step - batch index: {batch_idx}")
+        logger.debug(f"Input: {batch}")
         x_r_pre, s_r_pre, z_mu, z_logvar, z, c, u, z_uni, c_all = self.net(batch)
-        logging.debug(f"Current batch: {batch['s']['joint'][0]}")
+        logger.debug(f"Current batch: {batch['s']['joint'][0]}")
         c_all['joint'] = c
 
         # Compute reconstruction loss
@@ -1212,7 +1213,7 @@ class MIDAS(L.LightningModule):
         """
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if verbose:
-            logging.info(f"Predicting using device: {device}")
+            logger.info(f"Predicting using device: {device}")
         model = self.net.to(device).eval()
 
         _old_bc = getattr(model, "batch_correction", None)
@@ -1252,7 +1253,7 @@ class MIDAS(L.LightningModule):
                 batch_name = self.batch_names[batch_id]
                 loader = DataLoader(dataset, shuffle=False, batch_size=self.batch_size, num_workers=self.num_workers)
                 if verbose:
-                    logging.info("Processing batch %s: %s", batch_name, str(self.combs[batch_id]))
+                    logger.info("Processing batch %s: %s", batch_name, str(self.combs[batch_id]))
 
                 for i, batch in enumerate(tqdm(loader, desc=f"predict:{batch_name}", disable=not verbose)):
                     batch = convert_tensors_to_cuda(batch, device)
@@ -1372,12 +1373,12 @@ class MIDAS(L.LightningModule):
                     if hasattr(model, "batch_correction"):
                         model.batch_correction = True
                     if verbose:
-                        logging.info("Batch correction (second pass) ...")
+                        logger.info("Batch correction (second pass) ...")
                     for batch_id, dataset in enumerate(self.datalist):
                         batch_name = self.batch_names[batch_id]
                         loader = DataLoader(dataset, shuffle=False, batch_size=self.batch_size, num_workers=self.num_workers)
                         if verbose:
-                            logging.info("Processing batch %s: %s", batch_name, str(self.combs[batch_id]))
+                            logger.info("Processing batch %s: %s", batch_name, str(self.combs[batch_id]))
 
                         for i, batch in enumerate(tqdm(loader, desc=f"batch_correct:{batch_name}", disable=not verbose)):
                             batch = convert_tensors_to_cuda(batch, device)
@@ -1457,7 +1458,7 @@ class MIDAS(L.LightningModule):
             # Save the checkpoint
             self.save_checkpoint(checkpoint_path)
             if self.viz_umap_tb:
-                logging.info('Plotting UMAP...')
+                logger.info('Plotting UMAP...')
                 self.get_emb_umap(save_dir=self.save_model_path, n_obs=20000, verbose=False)
                 self.net.train()
 
@@ -1500,7 +1501,7 @@ class MIDAS(L.LightningModule):
         torch.save(checkpoint_data, checkpoint_path)
 
         # Inform the user of successful save
-        logging.info(f'Checkpoint successfully saved to "{checkpoint_path}".')
+        logger.info(f'Checkpoint successfully saved to "{checkpoint_path}".')
 
     def load_checkpoint(self, checkpoint_path: str, start_epoch: int = 0, **kwargs):
         """
@@ -1640,7 +1641,7 @@ class MIDAS(L.LightningModule):
                 return p["memory"]
             return p
         if verbose:
-            logging.info(f"Loading predicted data from: {pred_dir}")
+            logger.info(f"Loading predicted data from: {pred_dir}")
         if pred_dir is not None:
             # IMPORTANT: adapt this call to your actual loader signature.
             # If you're using the loader we discussed earlier, it would be something like:
@@ -1727,14 +1728,14 @@ class MIDAS(L.LightningModule):
 
         for index, (embedding, file_name) in enumerate(zip(embeddings, file_names)):
             if file_name == "biological_information.png" and drop_c_umap:
-                logging.info("Skipping biological embedding UMAP generation (drop_c_umap=True).")
+                logger.info("Skipping biological embedding UMAP generation (drop_c_umap=True).")
                 continue
             if file_name == "technical_noise.png" and drop_u_umap:
-                logging.info("Skipping technical embedding UMAP generation (drop_u_umap=True).")
+                logger.info("Skipping technical embedding UMAP generation (drop_u_umap=True).")
                 continue
             
             if verbose:
-                logging.info(f"Processing {'biological' if index == 0 else 'technical'} embedding...")
+                logger.info(f"Processing {'biological' if index == 0 else 'technical'} embedding...")
 
             adata = sc.AnnData(embedding)
             adata.obs["batch"] = batch_labels
@@ -1743,25 +1744,25 @@ class MIDAS(L.LightningModule):
 
             # neighbors + umap (use the embedding directly as X)
             if verbose:
-                logging.info(" - Computing neighbors...")
+                logger.info(" - Computing neighbors...")
             if n_obs:
                 sc.pp.subsample(adata, n_obs=min(len(adata), n_obs))
             sc.pp.neighbors(adata, n_neighbors=30, use_rep="X")  # X is already embedding
             if verbose:
-                logging.info(" - Computing UMAP...")
+                logger.info(" - Computing UMAP...")
             sc.tl.umap(adata)
 
             # pick color
             plot_color = color_by
             if plot_color is not None and plot_color not in adata.obs.columns:
-                logging.warning(
+                logger.warning(
                     f"color_by='{plot_color}' not found in adata.obs. "
                     f"Available: {list(adata.obs.columns)}. Falling back to 'batch'."
                 )
                 plot_color = "batch"
 
             if verbose:
-                logging.info(f" - Generating UMAP plot for {file_name}...")
+                logger.info(f" - Generating UMAP plot for {file_name}...")
             fig = sc.pl.umap(
                 adata,
                 title=file_name[:-4],
@@ -1777,14 +1778,14 @@ class MIDAS(L.LightningModule):
                 os.makedirs(os.path.dirname(fig_save_path), exist_ok=True)
                 fig.savefig(fig_save_path, dpi=200, bbox_inches="tight")
                 if verbose:
-                    logging.info(f" - UMAP plot saved to: {fig_save_path}")
+                    logger.info(f" - UMAP plot saved to: {fig_save_path}")
 
             if getattr(self, "logger", None) is not None and getattr(self, "viz_umap_tb", False):
                 self.logger.experiment.add_figure(file_name, fig, self.current_epoch + self.start_epoch)
 
             all_adata.append(adata)
         if verbose:
-            logging.info("UMAP generation completed.")
+            logger.info("UMAP generation completed.")
         return all_adata, all_figures
 
     def log_losses(self, 
@@ -2487,4 +2488,4 @@ class MIDAS(L.LightningModule):
         feature.index = batch_names
         data = pd.concat([cell_number, feature, valid_feature], axis=1)
         # Print summary
-        logging.info('Input data: \n' + data.to_string())
+        logger.info('Input data: \n' + data.to_string())
