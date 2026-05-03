@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "scmidas"
-version = '0.1.18'
+version = '0.1.19'
 description = "A torch-based integration method for single-cell multi-omic data."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,14 +26,15 @@ classifiers = [
 # --- Runtime dependencies (minimal but complete for your current imports) ---
 dependencies = [
   # PyTorch.
-  # The previous <2.6 cap was a workaround for a suspected Lightning
-  # DDP incompatibility, but torch 2.8 has since been verified end-to-end
-  # in the mosaic DDP path (UMAP / numerics consistent with single-GPU).
-  # Keeping a major-version cap (<3) so a hypothetical breaking 3.x
-  # release does not silently land for users.
-  "torch>=2.5,<3",
-  "torchvision>=0.20,<1",
-  "torchaudio>=2.5,<3",
+  # Upper bound is <2.11 because torch 2.11 dropped Volta (V100, CC 7.0)
+  # and Pascal (P100, GTX 10xx, CC 6.x) from its CUDA 12.8/12.9 wheels
+  # to ship cuDNN 9.15.1 (which is incompatible with those archs).
+  # On those GPUs, `pip install scmidas` would silently install a torch
+  # that fails at the first CUDA op with "no kernel image is available".
+  # Newer-GPU users (Ampere+) can manually upgrade past this cap.
+  "torch>=2.5,<2.11",
+  "torchvision>=0.20,<0.26",
+  "torchaudio>=2.5,<2.11",
 
   # Lightning (uses lightning.pytorch.utilities.rank_zero_only)
   "lightning>=2.4,<2.7",

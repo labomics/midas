@@ -7,11 +7,38 @@ on:
 
 jobs:
   test:
+    name: ${{ matrix.label }} / py${{ matrix.python-version }}
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        include:
+          # Lower bound — pinned torch 2.5.1 across all supported Python versions.
+          - python-version: "3.10"
+            label: "torch 2.5"
+            torch-pip-args: "torch==2.5.1+cpu torchvision==0.20.1+cpu torchaudio==2.5.1+cpu"
+            experimental: false
+          - python-version: "3.11"
+            label: "torch 2.5"
+            torch-pip-args: "torch==2.5.1+cpu torchvision==0.20.1+cpu torchaudio==2.5.1+cpu"
+            experimental: false
+          - python-version: "3.12"
+            label: "torch 2.5"
+            torch-pip-args: "torch==2.5.1+cpu torchvision==0.20.1+cpu torchaudio==2.5.1+cpu"
+            experimental: false
+          # Verified — torch 2.8 was validated end-to-end in the mosaic DDP path
+          # (1000-epoch run, UMAP and numerics consistent with single-GPU baseline).
+          - python-version: "3.12"
+            label: "torch 2.8"
+            torch-pip-args: "torch==2.8.* torchvision==0.23.* torchaudio==2.8.*"
+            experimental: false
+          # Upper bound — torch 2.10 is the latest within our <2.11 cap.
+          # 2.11 was excluded because its default CUDA wheels dropped Volta/Pascal.
+          - python-version: "3.12"
+            label: "torch 2.10"
+            torch-pip-args: "torch==2.10.* torchvision==0.25.* torchaudio==2.10.*"
+            experimental: false
 
     steps:
       - uses: actions/checkout@v4
@@ -25,14 +52,14 @@ jobs:
       - name: Install torch (CPU build)
         run: |
           python -m pip install --upgrade pip
-          pip install \
-            torch==2.5.1+cpu \
-            torchvision==0.20.1+cpu \
-            torchaudio==2.5.1+cpu \
+          pip install ${{ matrix.torch-pip-args }} \
             --index-url https://download.pytorch.org/whl/cpu
 
       - name: Install scmidas with dev extras
         run: pip install -e ".[dev]"
+
+      - name: Show installed torch
+        run: python -c "import torch; print('torch', torch.__version__)"
 
       - name: Lint (non-blocking)
         run: ruff check . || true
