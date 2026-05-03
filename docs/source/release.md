@@ -6,6 +6,32 @@ All notable changes to this project will be documented in this file.
 
 ## Version 0.1.x
 
+### v0.1.19 (2026-05-03)
+*   **📦 Packaging — narrow torch upper bound to `<2.11`**
+    *   torch 2.11 dropped Volta (V100, CC 7.0) and Pascal (P100, GTX
+        10xx, CC 6.x) from its default `cu128` / `cu129` wheels (to
+        ship cuDNN 9.15.1, which is incompatible with those archs). On
+        those GPUs `pip install scmidas==0.1.18` would silently install
+        a torch that fails at the first CUDA op with
+        `no kernel image is available for execution on the device`.
+    *   The pin now reads `torch>=2.5,<2.11` (with matching
+        `torchvision<0.26` / `torchaudio<2.11`). Users on
+        Ampere/Hopper/Ada/Blackwell GPUs can manually upgrade past the
+        cap; users on Volta/Pascal stay on a working default install.
+    *   No source-code change — same scmidas as 0.1.18.
+*   **✨ Enhancements**
+    *   `import scmidas` now runs a one-time GPU self-check: if the
+        local torch wheel has no kernels for the local GPU, scmidas
+        emits a `UserWarning` with actionable guidance (downgrade torch
+        or use the cu126 wheel) instead of the user later seeing a raw
+        `no kernel image is available` error from somewhere deep in
+        their training loop. The check no-ops on CPU-only environments
+        and on working GPU setups.
+*   **⚙️ CI**
+    *   Test matrix gained a `torch 2.10` job (the new upper bound) and
+        dropped the previous experimental `torch latest` job. Lower
+        bound remains `torch 2.5.1` across Python 3.10 / 3.11 / 3.12.
+
 ### v0.1.18 (2026-05-02)
 *   **🐛 Bug Fixes (DDP + mosaic data)**
     *   Default `sampler_type='auto'` now picks the DDP sampler when a
