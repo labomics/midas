@@ -13,6 +13,7 @@
   <a href="https://pypi.org/project/scmidas/"><img src="https://img.shields.io/pypi/v/scmidas" alt="PyPI version"></a>
   <a href="https://scmidas.readthedocs.io/en/latest/"><img src="https://img.shields.io/readthedocs/scmidas" alt="Documentation Status"></a>
   <a href="https://github.com/labomics/midas/blob/main/LICENSE"><img src="https://img.shields.io/github/license/labomics/midas?v=1" alt="License"></a>
+  <a href="https://colab.research.google.com/github/labomics/midas/blob/main/examples/quickstart.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
   <a href="https://github.com/labomics/midas/stargazers"><img src="https://img.shields.io/github/stars/labomics/midas?style=social" alt="GitHub Stars"></a>
 </p>
 
@@ -38,26 +39,23 @@ pip install scmidas
 
 ## Quick start
 
-The MIDAS workflow is four calls. The snippet below is an API sketch — replace `...` with your data and refer to the [tutorials](https://scmidas.readthedocs.io/en/latest/) for runnable end-to-end examples.
+A bundled 1600-cell PBMC RNA+ADT mosaic dataset lets you go from `pip install` to a UMAP in about a minute on a single GPU — no extra downloads, no config files. Click the [Colab badge](https://colab.research.google.com/github/labomics/midas/blob/main/examples/quickstart.ipynb) to run it without installing anything, or copy the snippet:
 
 ```python
-from scmidas.config import load_config
-from scmidas.model import MIDAS
+import scmidas
 
-# 1. Build a model bound to a mosaic dataset.
-#    Input is either a directory of per-batch MTX matrices, or a MuData
-#    object via MIDAS.configure_data_from_mdata(...).
-model = MIDAS.configure_data_from_dir(load_config(), ..., transform={'atac': 'binarize'})
-
-# 2. Train.
-model.train(max_epochs=2000)
-
-# 3. Predict — latent embeddings (z_c, z_u) and imputed counts per batch.
-pred = model.predict()
-
-# 4. (Optional) UMAP of the integrated latent space.
-model.get_emb_umap()
+mdata = scmidas.datasets.quickstart()      # bundled toy MuData
+model = scmidas.integrate(mdata)           # ~1 min on a mid-range GPU
+out   = model.predict(joint_latent=True)   # latent embeddings per batch
 ```
+
+This produces lineage-separated clusters that mix freely across batches:
+
+<div align="center">
+  <img src="docs/source/_static/img/quickstart_umap.png" alt="quickstart UMAP" width="850px">
+</div>
+
+> ⚠️ **`scmidas.integrate()` defaults are tuned for the bundled toy dataset.** For your own data, override `max_epochs` (1000-2000 is typical) and consider letting `batch_size` default back to 256, e.g. `scmidas.integrate(my_mdata, max_epochs=2000, batch_size=256)`. See the [full demos](https://scmidas.readthedocs.io/en/latest/) for end-to-end pipelines on real-sized data, including imputation, batch correction, and cross-modality translation.
 
 ## Reproducibility
 

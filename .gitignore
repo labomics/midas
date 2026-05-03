@@ -18,5 +18,8 @@ auto_ver.sh
 *.yaml
 *.png
 *.jpg
+# whitelist images committed to the docs static dir
+!docs/source/_static/img/*.png
+!docs/source/_static/img/*.jpg
 .venv*
 .nfs*

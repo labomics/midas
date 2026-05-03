@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "scmidas"
-version = '0.1.19'
+version = '0.2.0'
 description = "A torch-based integration method for single-cell multi-omic data."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -101,7 +101,7 @@ include = ["scmidas*"]
 # Ship the PEP 561 type-info marker so type checkers (mypy / pyright)
 # treat scmidas as a typed package.
 [tool.setuptools.package-data]
-scmidas = ["py.typed"]
+scmidas = ["py.typed", "data/*.h5mu"]
 
 # --- Ruff (optional) ---
 [tool.ruff]

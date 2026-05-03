@@ -3,6 +3,8 @@ from .data import *
 from .nn import *
 from .utils import *
 from .config import *
+from . import datasets
+from .api import integrate
 
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
 try:
