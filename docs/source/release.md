@@ -4,6 +4,44 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## Version 0.2.x
+
+### v0.2.0 (2026-05-03)
+*   **🚀 New — `scmidas.integrate(mdata)` one-line entry point**
+    *   A thin top-level wrapper around `MIDAS.configure_data_from_mdata`
+        + `train()` with toy-tuned defaults (`batch_size=128`,
+        `max_epochs=65`, `lr=3e-4`) so that the bundled quickstart
+        dataset converges in roughly one minute on a single mid-range
+        GPU. The full `MIDAS` class API is unchanged for users who
+        need control.
+    *   ⚠️ The defaults are tuned for the toy quickstart only. For
+        real datasets, override `max_epochs` (1000-2000) and consider
+        `batch_size=256`.
+*   **🚀 New — bundled quickstart dataset**
+    *   `scmidas.datasets.quickstart()` returns a 1600-cell PBMC RNA+ADT
+        mosaic MuData (4 batches, full mosaic structure: one RNA-only,
+        one ADT-only, two paired). 500 RNA HVGs + 224 ADT features,
+        2.66 MB shipped inside the wheel.
+    *   Source: hand-tuned subset of `wnn_mosaic_8batch_mtx`. Build
+        script: `scripts/build_quickstart_demo.py`.
+*   **📚 Documentation**
+    *   New `examples/quickstart.ipynb` — pre-rendered notebook that
+        users can open in Colab via the new badge in the README, no
+        local install required.
+    *   README quickstart rewritten: replaces the previous `...` API
+        sketch with a runnable five-line snippet using
+        `scmidas.datasets.quickstart()` + `scmidas.integrate()`,
+        followed by the rendered UMAP image.
+*   **⚙️ Packaging**
+    *   `pyproject.toml` ships `data/*.h5mu` as package data so the
+        quickstart dataset travels with the wheel.
+    *   Module-level `logging.basicConfig(level=INFO)` removed from
+        five files (`config`, `data`, `model`, `nn`, `utils`); each
+        now does the canonical `logger = logging.getLogger(__name__)`
+        instead. Demo notebooks call `logging.basicConfig` themselves
+        so visible output is unchanged. Libraries should not call
+        `basicConfig` — it overrides the user's own logging config.
+
 ## Version 0.1.x
 
 ### v0.1.19 (2026-05-03)
