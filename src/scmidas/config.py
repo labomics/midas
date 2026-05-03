@@ -1,5 +1,6 @@
 import logging
-logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 configs_all = {}
 configs_all["default"] = {
@@ -76,5 +77,5 @@ def load_config(config_name :str = "default"):
         config_name : str
             Item name from the configuration.
     """
-    logging.info(f'The model is initialized with the {config_name} configurations.')
+    logger.info(f'The model is initialized with the {config_name} configurations.')
     return configs_all[config_name]

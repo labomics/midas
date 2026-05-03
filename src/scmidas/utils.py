@@ -20,7 +20,9 @@ import numpy as np
 import torch
 from tqdm import tqdm
 import logging
-logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger(__name__)
+
 
 def load_csv(filename: str) -> list:
     """
@@ -491,7 +493,7 @@ def rmdir(directory: str):
             Path to the directory to remove.
     """
     if os.path.exists(directory):
-        logging.warning(f'Removing directory "{directory}"')
+        logger.warning(f'Removing directory "{directory}"')
         shutil.rmtree(directory)
 
 
