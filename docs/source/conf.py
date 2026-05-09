@@ -10,10 +10,15 @@ project = 'midas'
 copyright = '2024, labomics'
 author = 'labomics'
 
-from importlib.metadata import PackageNotFoundError, version as _pkg_version
+# Read the version from pyproject.toml so the docs build does not require
+# scmidas to be pip-installed (readthedocs only installs the requirements
+# in docs/source/requirements.txt).
+import pathlib
+import toml as _toml
+_pyproject = pathlib.Path(__file__).parents[2] / 'pyproject.toml'
 try:
-    release = _pkg_version('scmidas')
-except PackageNotFoundError:
+    release = _toml.load(_pyproject)['project']['version']
+except Exception:
     release = '0.0.0+unknown'
 
 # -- General configuration ---------------------------------------------------
