@@ -1,7 +1,7 @@
 import os
 import datetime
 
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from anndata import AnnData
 from mudata import MuData
 
@@ -845,8 +845,48 @@ class MIDAS(L.LightningModule):
             Controls whether optimization is automatic or manually defined. Always True.
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+        mdata: Optional["MuData"] = None,
+        *,
+        save_model_path: str = './saved_models/scmidas',
+        configs: Optional[Dict[str, Any]] = None,
+        batch_size: int = 256,
+        n_save: int = 500,
+        sampler_type: str = 'auto',
+        viz_umap_tb: bool = False,
+        transform: Optional[Dict[str, str]] = None,
+    ):
+        """Construct a MIDAS model.
+
+        Two construction paths are supported:
+
+        - **Recommended (v0.3+):** ``MIDAS(mdata, ...)`` — pass a MuData that
+          has already been registered via :func:`MIDAS.setup_mudata`. The
+          model reads ``mdata.uns['_scmidas']`` and builds its internal
+          datalist directly. Instance state is fully encapsulated.
+
+        - **Legacy:** ``MIDAS()`` (no args) — relies on class-level
+          attributes previously set by :meth:`configure_data` /
+          :meth:`configure_data_from_mdata` /
+          :meth:`configure_data_from_dir`. Kept for backwards compatibility;
+          will be removed in 0.4.0.
+        """
         super(MIDAS, self).__init__()
+        self.start_epoch = 0
+        self.load_optimizer_state = False
+
+        if mdata is not None:
+            self._init_from_mdata(
+                mdata,
+                save_model_path=save_model_path,
+                configs=configs,
+                batch_size=batch_size,
+                n_save=n_save,
+                sampler_type=sampler_type,
+                viz_umap_tb=viz_umap_tb,
+                transform=transform,
+            )
 
         # Initialize VAE and Discriminator
         self.net = VAE(self.dims_x, self.dims_s, **self.configs)
@@ -858,6 +898,163 @@ class MIDAS(L.LightningModule):
 
         # Disable automatic optimization to manually control training steps. Always True.
         self.automatic_optimization = False
+
+    def _init_from_mdata(
+        self,
+        mdata: "MuData",
+        *,
+        save_model_path: str,
+        configs: Optional[Dict[str, Any]],
+        batch_size: int,
+        n_save: int,
+        sampler_type: str,
+        viz_umap_tb: bool,
+        transform: Optional[Dict[str, str]],
+    ) -> None:
+        """Populate instance state from a registered MuData object."""
+        if '_scmidas' not in mdata.uns:
+            raise RuntimeError(
+                "mdata has not been registered with MIDAS. Call "
+                "scmidas.MIDAS.setup_mudata(mdata, batch_key=...) first."
+            )
+        setup = dict(mdata.uns['_scmidas'])
+
+        if configs is None:
+            from .config import load_config
+            configs = dict(load_config())
+        else:
+            configs = dict(configs)
+
+        batch_key = setup['batch_key']
+        dims_x = {m: list(map(int, v)) for m, v in setup['dims_x'].items()}
+
+        atac_dims = dims_x.get('atac')
+        if atac_dims is not None and len(atac_dims) == 1:
+            logger.warning(
+                f"Detected ATAC with only one dimension [{atac_dims[0]}]. "
+                "This will cause the data to be encoded directly instead of by chromosome, as described in our paper. "
+                "We recommend splitting the ATAC data by chromosome."
+            )
+            if 'dims_before_enc_atac' in configs and 'dims_after_dec_atac' in configs:
+                raise ValueError(
+                    'Invalid ATAC configuration: both "dims_before_enc_atac" and '
+                    '"dims_after_dec_atac" are present in configs, but '
+                    'len(dims_x["atac"]) == 1.'
+                )
+
+        # ATAC is binarized by default — that is the recommended setting and
+        # the one used in our published results. Users who need raw counts
+        # can override by passing ``transform={'atac': None}`` or by
+        # supplying their own dict with a different value for ``'atac'``.
+        effective_transform: Dict[str, Any] = {}
+        if 'atac' in mdata.mod:
+            effective_transform['atac'] = 'binarize'
+        if transform is not None:
+            for k, v in transform.items():
+                if v is None:
+                    effective_transform.pop(k, None)
+                else:
+                    effective_transform[k] = v
+        transform_arg = effective_transform if effective_transform else None
+
+        data, mask, batch_names = self.get_info_from_mdata(mdata, batch_key)
+        datalist, dims_s, s_joint, combs = self.get_datasets_from_adata(
+            data, mask, batch_names, transform=transform_arg,
+        )
+
+        self.configs = configs
+        self.dims_x = dims_x
+        self.dims_s = dims_s
+        self.batch_names = list(batch_names)
+        self.datalist = datalist
+        self.s_joint = s_joint
+        self.combs = combs
+        self.mods = list(dims_x.keys())
+        self.save_model_path = save_model_path
+        self.batch_size = batch_size
+        self.n_save = n_save
+        self.sampler_type = sampler_type
+        self.viz_umap_tb = viz_umap_tb
+        self._mdata = mdata
+
+    @staticmethod
+    def setup_mudata(
+        mdata: "MuData",
+        batch_key: str = 'batch',
+        dims_x: Optional[Dict[str, list]] = None,
+    ) -> None:
+        """Register a MuData object for use with MIDAS.
+
+        Stores the data-setup metadata (batch key, modality names, feature
+        dimensions, batch list) under ``mdata.uns['_scmidas']``. After this
+        call, the MuData can be passed directly to :class:`MIDAS`.
+
+        Parameters:
+            mdata : MuData
+                Multi-modal data. Each modality (``mdata[m]``) must contain
+                ``batch_key`` in its ``.obs``.
+            batch_key : str
+                Column in each modality's ``.obs`` that identifies the
+                source batch.
+            dims_x : dict, optional
+                Per-modality feature dimensions, e.g.
+                ``{'rna': [4045], 'adt': [224], 'atac': [2897, 2007, ...]}``.
+                Provide this for ATAC data that should be encoded by
+                chromosome chunks (the published architecture). If omitted,
+                each modality is treated as a single chunk equal to its
+                full feature count.
+
+        Notes:
+            Mutates ``mdata`` in-place; returns ``None``.
+        """
+        if not hasattr(mdata, 'mod') or len(mdata.mod) == 0:
+            raise ValueError("mdata must be a MuData with at least one modality.")
+
+        missing = [m for m in mdata.mod if batch_key not in mdata[m].obs.columns]
+        if missing:
+            avail = {m: list(mdata[m].obs.columns) for m in missing}
+            raise ValueError(
+                f"batch_key='{batch_key}' not found in .obs of modalities {missing}. "
+                f"Available columns per modality: {avail}"
+            )
+
+        if dims_x is None:
+            dims_x = {m: [int(mdata[m].n_vars)] for m in mdata.mod}
+        else:
+            extra = set(dims_x) - set(mdata.mod)
+            if extra:
+                raise ValueError(
+                    f"dims_x has modalities {sorted(extra)} not present in mdata.mod={list(mdata.mod)}"
+                )
+            dims_x = dict(dims_x)
+            for m in mdata.mod:
+                if m not in dims_x:
+                    dims_x[m] = [int(mdata[m].n_vars)]
+            for m, chunks in dims_x.items():
+                total = int(sum(chunks))
+                actual = int(mdata[m].n_vars)
+                if total != actual:
+                    raise ValueError(
+                        f"dims_x[{m!r}] sums to {total} but mdata[{m!r}].n_vars={actual}."
+                    )
+                dims_x[m] = list(map(int, chunks))
+
+        batch_names = []
+        for m in mdata.mod:
+            batch_names.extend(mdata[m].obs[batch_key].astype(str).unique().tolist())
+        batch_names = sorted(set(batch_names))
+
+        mdata.uns['_scmidas'] = {
+            'batch_key': batch_key,
+            'dims_x': dims_x,
+            'batch_names': batch_names,
+            'mods': list(mdata.mod.keys()),
+            'version': 1,
+        }
+        logger.info(
+            "setup_mudata: batch_key='%s', batches=%s, modalities=%s, dims_x=%s",
+            batch_key, batch_names, list(mdata.mod.keys()), dims_x,
+        )
 
     @classmethod
     def configure_data(
@@ -1424,7 +1621,7 @@ class MIDAS(L.LightningModule):
             if "mask" in d:
                 pred_b[batch_name]["mask"] = d["mask"]
 
-            if not joint_latent:
+            if not joint_latent and "z_c" in pred_b[batch_name]:
                 pred_b[batch_name]["z_c"].pop("joint", None)
                 pred_b[batch_name]["z_u"].pop("joint", None)
 
@@ -1438,7 +1635,196 @@ class MIDAS(L.LightningModule):
             model.u_centroid = _old_uc
 
         return pred_b
-        
+
+    @rank_zero_only
+    def get_latent_representation(
+        self,
+        mdata: Optional["MuData"] = None,
+        *,
+        kind: str = 'c',
+        verbose: bool = False,
+    ) -> 'np.ndarray':
+        """Return the joint latent representation aligned to ``mdata.obs_names``.
+
+        This is the convenience wrapper around :meth:`predict` that most
+        users want: it runs the joint latent forward pass, stitches the
+        per-batch outputs, and reorders the result so each row matches
+        ``mdata.obs_names`` — ready to drop straight into
+        ``mdata.obsm['X_midas']``.
+
+        Parameters:
+            mdata : MuData, optional
+                MuData to align against. Defaults to the MuData used at
+                construction time. Must include the same cells as the
+                registered MuData (same ``obs_names``).
+            kind : {'c', 'u', 'joint'}
+                Which latent to return:
+
+                - ``'c'`` (default): biological latent ``z_c`` of shape
+                  ``(n_obs, dim_c)``. Recommended for clustering /
+                  visualization.
+                - ``'u'``: technical latent ``z_u`` of shape
+                  ``(n_obs, dim_u)``.
+                - ``'joint'``: concatenation ``[z_c, z_u]``.
+            verbose : bool
+                Whether to show prediction progress bars.
+
+        Returns:
+            np.ndarray:
+                Array of shape ``(mdata.n_obs, dim)`` aligned to
+                ``mdata.obs_names``. Cells absent from training data
+                yield NaN rows (a warning is logged).
+        """
+        if kind not in ('c', 'u', 'joint'):
+            raise ValueError(f"kind must be 'c', 'u', or 'joint'; got {kind!r}")
+
+        target = mdata if mdata is not None else getattr(self, '_mdata', None)
+        if target is None:
+            raise RuntimeError(
+                "No MuData available. Either construct the model via "
+                "MIDAS(mdata, ...) or pass mdata= to get_latent_representation."
+            )
+        if '_scmidas' not in target.uns:
+            raise RuntimeError(
+                "mdata is not registered. Call MIDAS.setup_mudata(mdata, ...) first."
+            )
+
+        out = self.predict(joint_latent=True, verbose=verbose)
+
+        pieces: List['np.ndarray'] = []
+        cell_ids: List[str] = []
+        batch_key = target.uns['_scmidas']['batch_key']
+        for batch_id, batch_name in enumerate(self.batch_names):
+            block = out[batch_name]
+            if kind == 'c':
+                z = block['z_c']['joint']
+            elif kind == 'u':
+                z = block['z_u']['joint']
+            else:
+                z = np.concatenate([block['z_c']['joint'], block['z_u']['joint']], axis=1)
+            pieces.append(z)
+            # cell IDs: first modality in this batch's combs (matches MultiModalDataset
+            # iteration order, which sets per-batch sample order via `len(first mod)`)
+            first_mod = self.combs[batch_id][0]
+            mask = target[first_mod].obs[batch_key].astype(str) == str(batch_name)
+            ids = target[first_mod].obs_names[mask].tolist()
+            if len(ids) != z.shape[0]:
+                raise RuntimeError(
+                    f"Latent stitching mismatch for batch {batch_name!r}: "
+                    f"expected {len(ids)} cells from modality {first_mod!r}, "
+                    f"got latent of shape {z.shape}."
+                )
+            cell_ids.extend(ids)
+
+        z_full = np.vstack(pieces)
+        id_to_row = {cid: i for i, cid in enumerate(cell_ids)}
+        n_obs = target.n_obs
+        out_arr = np.full((n_obs, z_full.shape[1]), np.nan, dtype=z_full.dtype)
+        missing: List[str] = []
+        for i, cid in enumerate(target.obs_names):
+            row = id_to_row.get(cid)
+            if row is None:
+                missing.append(cid)
+            else:
+                out_arr[i] = z_full[row]
+        if missing:
+            logger.warning(
+                "%d cells in mdata.obs_names have no latent representation "
+                "(first few: %s). Their rows are NaN.",
+                len(missing), missing[:3],
+            )
+        return out_arr
+
+    @rank_zero_only
+    def get_imputed_values(
+        self,
+        mdata: Optional["MuData"] = None,
+        *,
+        modality: str = 'rna',
+        verbose: bool = False,
+    ) -> 'np.ndarray':
+        """Return imputed expression values for a single modality.
+
+        For mosaic data, this fills in cells that originally lacked the
+        modality with model-inferred values. Cells that already had real
+        observations also get the model's reconstruction (useful for
+        denoising).
+
+        Parameters:
+            mdata : MuData, optional
+                MuData to align against. Defaults to the MuData used at
+                construction time.
+            modality : str
+                Modality name (e.g. ``'rna'``, ``'adt'``, ``'atac'``).
+                Must be one of ``self.mods``.
+            verbose : bool
+                Whether to show prediction progress bars.
+
+        Returns:
+            np.ndarray:
+                Array of shape ``(mdata.n_obs, n_features[modality])``,
+                aligned to ``mdata.obs_names``. Cells absent from training
+                data yield NaN rows (a warning is logged).
+        """
+        if modality not in self.mods:
+            raise ValueError(
+                f"modality={modality!r} not in registered modalities {self.mods}."
+            )
+
+        target = mdata if mdata is not None else getattr(self, '_mdata', None)
+        if target is None:
+            raise RuntimeError(
+                "No MuData available. Either construct via MIDAS(mdata, ...) "
+                "or pass mdata= to get_imputed_values."
+            )
+        if '_scmidas' not in target.uns:
+            raise RuntimeError(
+                "mdata is not registered. Call MIDAS.setup_mudata(mdata, ...) first."
+            )
+
+        out = self.predict(joint_latent=False, impute=True, verbose=verbose)
+
+        pieces: List['np.ndarray'] = []
+        cell_ids: List[str] = []
+        batch_key = target.uns['_scmidas']['batch_key']
+        for batch_id, batch_name in enumerate(self.batch_names):
+            block = out[batch_name].get('x_impt', {})
+            if modality not in block:
+                raise RuntimeError(
+                    f"predict(impute=True) did not write x_impt[{modality!r}] "
+                    f"for batch {batch_name!r}; cannot stitch."
+                )
+            x = block[modality]
+            pieces.append(x)
+            first_mod = self.combs[batch_id][0]
+            mask = target[first_mod].obs[batch_key].astype(str) == str(batch_name)
+            ids = target[first_mod].obs_names[mask].tolist()
+            if len(ids) != x.shape[0]:
+                raise RuntimeError(
+                    f"Imputation stitching mismatch for batch {batch_name!r}: "
+                    f"expected {len(ids)} cells from modality {first_mod!r}, "
+                    f"got x_impt of shape {x.shape}."
+                )
+            cell_ids.extend(ids)
+
+        x_full = np.vstack(pieces)
+        id_to_row = {cid: i for i, cid in enumerate(cell_ids)}
+        out_arr = np.full((target.n_obs, x_full.shape[1]), np.nan, dtype=x_full.dtype)
+        missing: List[str] = []
+        for i, cid in enumerate(target.obs_names):
+            row = id_to_row.get(cid)
+            if row is None:
+                missing.append(cid)
+            else:
+                out_arr[i] = x_full[row]
+        if missing:
+            logger.warning(
+                "%d cells in mdata.obs_names have no imputed value "
+                "(first few: %s). Their rows are NaN.",
+                len(missing), missing[:3],
+            )
+        return out_arr
+
     def on_train_epoch_end(self):
         """
         Save a model checkpoint at the end of each training epoch with a meaningful filename.
@@ -1472,6 +1858,121 @@ class MIDAS(L.LightningModule):
         checkpoint_path = os.path.join(self.save_model_path, checkpoint_filename)
         self.save_checkpoint(checkpoint_path)
         
+    @rank_zero_only
+    def save(self, dir_path: str, *, overwrite: bool = False) -> None:
+        """Save this MIDAS model to a directory.
+
+        Writes two files:
+
+        - ``model.pt`` — VAE / Discriminator weights and optimizer states.
+        - ``setup.json`` — minimal data-setup metadata so the model can be
+          reloaded on a fresh process.
+
+        This is the recommended user-facing save API (v0.3+); pair with
+        :meth:`MIDAS.load`. The legacy :meth:`save_checkpoint` /
+        :meth:`load_checkpoint` flat-file API still works.
+
+        Parameters:
+            dir_path : str
+                Directory path. Created if missing.
+            overwrite : bool
+                Replace ``dir_path`` if it already exists.
+        """
+        import json
+        from pathlib import Path
+        p = Path(dir_path)
+        if p.exists() and any(p.iterdir()) and not overwrite:
+            raise FileExistsError(
+                f"{p} already exists and is non-empty. "
+                "Pass overwrite=True to replace it."
+            )
+        p.mkdir(parents=True, exist_ok=True)
+
+        state = {
+            'net': self.net.state_dict(),
+            'dsc': self.dsc.state_dict(),
+            'optim_net': self.net_optim.state_dict() if hasattr(self, 'net_optim') else None,
+            'optim_dsc': self.dsc_optim.state_dict() if hasattr(self, 'dsc_optim') else None,
+            'configs': self.configs,
+            'epoch': int(getattr(self, 'current_epoch', 0)) + int(getattr(self, 'start_epoch', 0)),
+        }
+        torch.save(state, str(p / 'model.pt'))
+
+        # batch_key may have been recorded on the registered mdata
+        batch_key = None
+        if getattr(self, '_mdata', None) is not None:
+            batch_key = self._mdata.uns.get('_scmidas', {}).get('batch_key')
+
+        setup = {
+            'dims_x': {m: list(map(int, v)) for m, v in self.dims_x.items()},
+            'dims_s': {m: int(v) for m, v in self.dims_s.items()},
+            'batch_names': list(map(str, self.batch_names)),
+            'mods': list(self.mods),
+            'batch_key': batch_key,
+            'scmidas_version': '0.3',
+        }
+        with open(p / 'setup.json', 'w') as f:
+            json.dump(setup, f, indent=2)
+        logger.info('MIDAS saved to %s', str(p))
+
+    @classmethod
+    def load(
+        cls,
+        dir_path: str,
+        mdata: "MuData",
+        **kwargs: Any,
+    ) -> 'MIDAS':
+        """Load a MIDAS model previously saved via :meth:`save`.
+
+        If ``mdata`` has not been registered (no ``_scmidas`` in
+        ``mdata.uns``), this method auto-registers it using the
+        ``batch_key`` saved alongside the model.
+
+        Parameters:
+            dir_path : str
+                Directory written by :meth:`save`.
+            mdata : MuData
+                Multi-modal data the model was trained on (or a query
+                dataset with the same modality structure).
+            **kwargs : Any
+                Forwarded to :class:`MIDAS` (e.g. ``batch_size``,
+                ``save_model_path``).
+
+        Returns:
+            MIDAS:
+                A model with the saved weights loaded.
+        """
+        import json
+        from pathlib import Path
+        p = Path(dir_path)
+        model_pt = p / 'model.pt'
+        setup_json = p / 'setup.json'
+        if not model_pt.exists():
+            raise FileNotFoundError(f"Missing {model_pt}; not a MIDAS save directory.")
+
+        if '_scmidas' not in mdata.uns:
+            if not setup_json.exists():
+                raise RuntimeError(
+                    f"mdata is not registered and {setup_json} is missing. "
+                    "Call scmidas.MIDAS.setup_mudata(mdata, batch_key=...) "
+                    "before MIDAS.load(...)."
+                )
+            with open(setup_json) as f:
+                saved = json.load(f)
+            cls.setup_mudata(mdata, batch_key=saved.get('batch_key', 'batch'))
+
+        state = torch.load(str(model_pt), weights_only=False)
+        model = cls(mdata, configs=state.get('configs'), **kwargs)
+        model.net.load_state_dict(state['net'])
+        model.dsc.load_state_dict(state['dsc'])
+        if state.get('optim_net') is not None:
+            model.load_optimizer_state = True
+            model.loaded_net_optim_state = state['optim_net']
+            model.loaded_dsc_optim_state = state['optim_dsc']
+        model.start_epoch = int(state.get('epoch', 0))
+        logger.info('MIDAS loaded from %s (epoch=%d)', str(p), model.start_epoch)
+        return model
+
     @rank_zero_only
     def save_checkpoint(self, checkpoint_path: str):
         """
@@ -2201,6 +2702,14 @@ class MIDAS(L.LightningModule):
             MIDAS:
                 An initialized instance of the MIDAS class, ready for training or inference.
         """
+        import warnings
+        warnings.warn(
+            "MIDAS.configure_data_from_mdata is deprecated; use "
+            "MIDAS.setup_mudata(mdata, batch_key=...) followed by "
+            "MIDAS(mdata, ...) instead. configure_data_from_mdata will be "
+            "removed in 0.4.0.",
+            DeprecationWarning, stacklevel=2,
+        )
         # Note: get_info_from_mdata is expected to return:
         # data: List[Dict[str, AnnData]], mask: List[Dict[str, np.ndarray]], batch_names: List[str]
         data, mask, batch_names = cls.get_info_from_mdata(mdata, batch_key)
