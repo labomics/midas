@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## Version 0.3.x
+
+### v0.3.0 (2026-05-09)
+
+Major refresh of the user-facing API around a single :class:`MuData`. The new entry points (`setup_mudata`, `MIDAS(mdata)`, `get_latent_representation`, `get_imputed_values`, `save` / `load`) compose directly with `mdata.obsm`, `sc.pp.neighbors(use_rep=...)`, and the rest of the standard single-cell stack. A new plotting namespace `scmidas.pl` and a data-prep tutorial round out the package for users coming straight from raw 10x output.
+
+*   **🚀 New — `MIDAS` entry points centred on `MuData`**
+    *   `MIDAS.setup_mudata(mdata, batch_key=...)` — register a MuData (writes config to `mdata.uns['_scmidas']`).
+    *   `MIDAS(mdata, ...)` — construct directly from a registered MuData; instance state instead of class-level state (fixes a multi-instance interference bug).
+    *   `model.get_latent_representation(kind='c'|'u'|'joint')` — returns the joint latent aligned to `mdata.obs_names`. Drop straight into `mdata.obsm['X_midas']`.
+    *   `model.get_imputed_values(modality='rna')` — returns imputed counts aligned to `mdata.obs_names`.
+    *   `model.save(dir)` / `MIDAS.load(dir, mdata)` — symmetric save/load (writes `model.pt` + `setup.json`).
+    *   `MIDAS(mdata)` now defaults to `transform={'atac': 'binarize'}` whenever `'atac'` is among the modalities (override by passing your own `transform` dict).
+*   **🚀 New — `scmidas.pl` plotting namespace**
+    *   `scmidas.pl.umap(mdata, basis='X_midas', color=[...])` — one-line UMAP that works around the current scanpy + MuData plotting limitations via a thin AnnData wrapper.
+    *   `scmidas.pl.modality_grid(model, mdata, label_key=...)` — collapses the per-modality vs per-batch grid (~22 lines in the previous demos) into one call. Modality columns are ordered ATAC, RNA, ADT, Joint when present.
+*   **🚀 New — `scmidas.datasets.from_dir`**
+    *   Loads the directory-format datasets (`mat/<m>.mtx`, `mask/<m>.csv`, `feat/feat_dims.toml`) into a `MuData`, including masks, labels, and ATAC chunk dims.
+*   **📚 New tutorial — Preparing your data**
+    *   `docs/source/tutorials/basics/preparing_your_data.ipynb` walks from a public 10x Genomics 5k PBMC CITE-seq sample through QC, HVG selection, MuData wrap, MIDAS integration, Leiden clustering, and a synthetic mosaic example.
+*   **📚 Docs cleanup**
+    *   `inputs.rst` + `outputs.rst` merged into `data_layout.rst` — a single page describing the MuData input/output contract. The directory format is moved to an "advanced" section.
+    *   All three demos (`demo1`, `demo2`, `demo3`) rewritten to use the new API: `from_dir` → `setup_mudata` → `MIDAS(mdata)` → `get_latent_representation`. The 22-line per-modality grid block became `scmidas.pl.modality_grid(model, mdata)`. Each demo gained a 6.4 "After integration" section (Leiden + UMAP).
+    *   README adds a "Bring your own data" section linking the new tutorial and the data-layout reference.
+*   **🛠 Backwards compatibility**
+    *   `MIDAS.configure_data_from_mdata` and `MIDAS.configure_data_from_dir` still work — they emit a `DeprecationWarning` and will be removed in 0.4.0.
+    *   `save_checkpoint` / `load_checkpoint` still work; new code should use `save` / `load`.
+*   **🐛 Fixes**
+    *   `predict(joint_latent=False)` no longer raises `KeyError: 'z_c'`.
+    *   Multiple `MIDAS()` instances in one process now have independent state (was previously class-level — a second instance would clobber the first).
+
+---
+
 ## Version 0.2.x
 
 ### v0.2.0 (2026-05-03)

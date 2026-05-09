@@ -42,11 +42,12 @@ pip install scmidas
 A bundled 1600-cell PBMC RNA+ADT mosaic dataset lets you go from `pip install` to a UMAP in about a minute on a single GPU — no extra downloads, no config files. Click the [Colab badge](https://colab.research.google.com/github/labomics/midas/blob/main/examples/quickstart.ipynb) to run it without installing anything, or copy the snippet:
 
 ```python
+import scanpy as sc
 import scmidas
 
-mdata = scmidas.datasets.quickstart()      # bundled toy MuData
-model = scmidas.integrate(mdata)           # ~1 min on a mid-range GPU
-out   = model.predict(joint_latent=True)   # latent embeddings per batch
+mdata = scmidas.datasets.quickstart()       # bundled toy MuData
+model = scmidas.integrate(mdata)            # ~1 min on a mid-range GPU; writes mdata.obsm['X_midas']
+sc.pp.neighbors(mdata, use_rep='X_midas')   # any scanpy downstream works directly
 ```
 
 This produces lineage-separated clusters that mix freely across batches:
@@ -56,6 +57,23 @@ This produces lineage-separated clusters that mix freely across batches:
 </div>
 
 > ⚠️ **`scmidas.integrate()` defaults are tuned for the bundled toy dataset.** For your own data, override `max_epochs` (1000-2000 is typical) and consider letting `batch_size` default back to 256, e.g. `scmidas.integrate(my_mdata, max_epochs=2000, batch_size=256)`. See the [full demos](https://scmidas.readthedocs.io/en/latest/) for end-to-end pipelines on real-sized data, including imputation, batch correction, and cross-modality translation.
+
+## Bring your own data
+
+If you already have an :class:`AnnData` per modality, the bridge to MIDAS is one cell:
+
+```python
+import mudata as mu
+import scmidas
+
+mdata = mu.MuData({'rna': adata_rna, 'adt': adata_adt})  # share a 'batch' obs column
+scmidas.MIDAS.setup_mudata(mdata, batch_key='batch')
+model = scmidas.MIDAS(mdata)
+model.train(max_epochs=2000)
+mdata.obsm['X_midas'] = model.get_latent_representation()
+```
+
+For a full scanpy-native walkthrough (download a 10x CITE-seq sample → QC → HVG → MuData → MIDAS), see [Preparing your data](https://scmidas.readthedocs.io/en/latest/tutorials/basics/preparing_your_data.html). For the data contract (what goes where in the MuData), see [Data layout](https://scmidas.readthedocs.io/en/latest/tutorials/basics/data_layout.html).
 
 ## Reproducibility
 

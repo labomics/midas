@@ -4,6 +4,8 @@ from .nn import *
 from .utils import *
 from .config import *
 from . import datasets
+from . import plot
+from . import plot as pl  # short alias: scmidas.pl.umap(...)
 from .api import integrate
 
 from importlib.metadata import PackageNotFoundError, version as _pkg_version

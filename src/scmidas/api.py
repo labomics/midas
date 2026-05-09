@@ -36,20 +36,17 @@ def integrate(
     strategy: str = 'auto',
     save_model_path: str = './saved_models/scmidas',
     seed: Optional[int] = 42,
+    key_added: str = 'X_midas',
     **kwargs: Any,
 ) -> MIDAS:
     """One-call MIDAS pipeline for users who want a sensible default.
 
-    Internally this is just::
+    Equivalent to::
 
-        configs = load_config()
-        configs.update(quickstart_defaults)
-        MIDAS.configure_data_from_mdata(...).train(...)
-
-    so the surface and behaviour are identical to the longhand
-    pipeline; ``integrate`` simply fills in the easy-to-get-wrong
-    parameters with values that we know work on the bundled
-    ``scmidas.datasets.quickstart()`` data.
+        scmidas.MIDAS.setup_mudata(mdata, batch_key=batch_key)
+        model = scmidas.MIDAS(mdata, configs=..., batch_size=..., ...)
+        model.train(max_epochs=..., accelerator=..., ...)
+        mdata.obsm[key_added] = model.get_latent_representation()
 
     .. warning::
         The default training hyperparameters (``batch_size=128``,
@@ -61,10 +58,10 @@ def integrate(
 
     Parameters:
         mdata : MuData
-            Multi-modal single-cell data. Must have a top-level
-            ``mdata.obs[batch_key]`` column identifying batches.
+            Multi-modal single-cell data.
         batch_key : str
-            Column in ``mdata.obs`` that identifies the source batch.
+            Column in each modality's ``.obs`` that identifies the
+            source batch.
         max_epochs : int, optional
             Training epochs. Default 65 (quickstart-tuned). For real
             data, override with 1000-2000.
@@ -78,15 +75,19 @@ def integrate(
             Where to write checkpoints during training.
         seed : int, optional
             If not None, calls ``lightning.seed_everything(seed)``
-            before configuring data, so the run is reproducible.
+            before setup, so the run is reproducible.
+        key_added : str
+            Key under which the biological latent ``z_c`` is written
+            to ``mdata.obsm``. Defaults to ``'X_midas'`` so that
+            ``sc.pp.neighbors(mdata, use_rep='X_midas')`` works
+            without further arguments.
         **kwargs
-            Additional keyword arguments forwarded to
-            ``MIDAS.configure_data_from_mdata``.
+            Additional keyword arguments forwarded to ``MIDAS(...)``.
 
     Returns:
         MIDAS:
-            A trained MIDAS model. Call ``.predict(...)`` to obtain
-            latent embeddings and/or imputed counts.
+            A trained MIDAS model. The biological latent has already
+            been written to ``mdata.obsm[key_added]``.
     """
     if seed is not None:
         import lightning as L
@@ -99,8 +100,6 @@ def integrate(
     bsz = batch_size if batch_size is not None else _QUICKSTART_DEFAULTS['batch_size']
     eps = max_epochs if max_epochs is not None else _QUICKSTART_DEFAULTS['max_epochs']
 
-    dims_x = {m: [mdata[m].n_vars] for m in mdata.mod}
-
     logger.info(
         'scmidas.integrate(): toy-tuned defaults — '
         'batch_size=%d, max_epochs=%d, lr=%g. '
@@ -109,11 +108,10 @@ def integrate(
         bsz, eps, _QUICKSTART_DEFAULTS['lr_net'],
     )
 
-    model = MIDAS.configure_data_from_mdata(
+    MIDAS.setup_mudata(mdata, batch_key=batch_key)
+    model = MIDAS(
+        mdata,
         configs=configs,
-        mdata=mdata,
-        dims_x=dims_x,
-        batch_key=batch_key,
         batch_size=bsz,
         save_model_path=save_model_path,
         **kwargs,
@@ -124,4 +122,5 @@ def integrate(
         devices=devices,
         strategy=strategy,
     )
+    mdata.obsm[key_added] = model.get_latent_representation()
     return model
