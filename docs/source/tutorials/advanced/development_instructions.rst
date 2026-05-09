@@ -1,95 +1,107 @@
-Development Instructions
-========================
+Extending MIDAS
+===============
 
-MIDAS currently supports integration of RNA, ADT, and ATAC data. If you'd like to develop the model, follow the instructions below.
+MIDAS ships with built-in support for RNA, ADT, and ATAC. If you want to
+extend the model — add a new modality, swap a transformation, plug in a
+new output distribution — this page walks you through the framework and
+the extension points.
 
-Framework Overview
-~~~~~~~~~~~~~~~~~~~
+Framework overview
+~~~~~~~~~~~~~~~~~~
 
-MIDAS is configured via the ``scmidas.config()`` and primarily employs Multi-Layer Perceptrons (MLPs). Below are the key components of the MIDAS framework:
+MIDAS is configured via ``scmidas.load_config()`` and is built on
+multi-layer perceptrons (MLPs). The model has five components:
 
-Key Components
------------------------
+Components
+----------
 
-1. **Data Encoder**: Encodes each modality into Gaussian-distributed latent features, including the means and log-transformed variances.
-2. **Data Decoder**: Reconstructs counts for each modality using the joint latent features as input.
-3. **Batch ID Encoder**: Encodes batch ID for each modality into Gaussian-distributed latent features.
-4. **Batch ID Decoder**: Reconstructs batch ID for each modality using the joint latent features.
-5. **Discriminator**: A group of classifiers that categorizes modality-specific latents and joint latents. Only the biological part of the latents is used for this classification.
+1. **Data encoder** — encodes each modality into a Gaussian latent (mean and log-variance).
+2. **Data decoder** — reconstructs each modality's counts from the joint latent.
+3. **Batch ID encoder** — encodes batch indices into a Gaussian latent.
+4. **Batch ID decoder** — reconstructs batch indices from the joint latent.
+5. **Discriminator** — classifiers operating on modality-specific and joint latents (only the biological part ``c`` is fed to the discriminator).
 
-.. Note:
+.. note::
 
-  MIDAS currently supports MLP-based architectures. While more complex structures, such as convolutional neural networks (CNNs), are not yet supported, they can be incorporated with custom modifications.
-  
-Neural network architecture for MIDAS:
+  MIDAS currently uses MLP-based encoders/decoders. Other architectures
+  (CNN, transformer) are not built in but can be plugged in with custom
+  modifications.
+
+Network architecture:
 
 .. figure:: ../../_static/img/midas_structure.png
-   :alt: midas_structure.png
+   :alt: MIDAS architecture
    :align: center
 
 
-Transformation and Distribution Functions
------------------------------------------
+Transformations and distributions
+---------------------------------
 
-MIDAS includes a range of pre-defined transformation and distribution functions. 
-These can be customized or extended to support new modalities, providing flexibility for various data types and workflows.
+MIDAS comes with a small registry of input transformations and output
+distributions. Both registries are extensible for new modalities.
 
-Transformation Functions
-^^^^^^^^^^^^^^^^^^^^^^^^
+Transformations
+^^^^^^^^^^^^^^^
 
-MIDAS provides several transformation pairs designed to prepare data for training. These include:
+A transformation is a pair ``(forward, inverse)`` applied around the
+encoder/decoder so the model sees a numerically convenient
+representation while still reconstructing the original counts.
+
+Built-in pairs:
 
 - **binarize**
 
-  - **Input Transformation**: Converts data into binary form.
-
-  - **Output Transformation**: None.
+  - Forward: ``x > 0`` (cast to binary).
+  - Inverse: identity.
+  - Default for ATAC.
 
 - **log1p**
 
-  - **Input Transformation**: Apply ``log1p`` (log(x + 1)) transformation.
-
-  - **Output Transformation**: Apply the exponential function (``exp``).
+  - Forward: ``log(x + 1)``.
+  - Inverse: ``exp(x) - 1``.
+  - Default for RNA and ADT (via ``trsf_before_enc_rna`` /
+    ``trsf_before_enc_adt`` in the configs).
 
 .. note::
-  Transformation functions specified via the ``transform`` parameter in ``scmidas.MIDAS.configure_data_from_dir()``
-  are applied exclusively when retrieving items from the dataset (via ``get_item()``).
-  If transformations are defined using ``trsf_before_enc_{mod}`` in the ``configs``,
-  both the transformation and its inverse are applied, ensuring consistency throughout the training process.
 
-Distribution Functions
-^^^^^^^^^^^^^^^^^^^^^^
+  Two places consume transformation names:
 
-Distribution functions in MIDAS are defined using a combination of the loss function, sampling function, and activation function. 
-These functions enable the modeling of data distributions during training:
+  - ``transform=`` argument to :class:`scmidas.MIDAS` — applied per
+    minibatch in ``__getitem__`` and **not** inverted on the output side
+    (used e.g. for ATAC binarization).
+  - ``configs['trsf_before_enc_<mod>']`` — applied inside the encoder
+    forward pass; the inverse is applied after the decoder, so the loss
+    is computed in the original count space.
 
-- **Loss Function**: Defines the reconstruction loss function.
-- **Sampling**: Specifies how to sample from parameters.
-- **Activation**: Configures the output layer's activation function in the decoder.
+Distributions
+^^^^^^^^^^^^^
 
-Pre-defined distribution functions include:
+A distribution registry entry bundles three pieces:
 
-- **POISSON**
+- **Loss function** — the reconstruction loss.
+- **Sampling** — how to sample from the decoder's output parameters.
+- **Activation** — the activation applied to the decoder's final layer.
 
-  - **Loss Function**: Poisson loss
+Built-in distributions:
 
-  - **Sampling**: Poisson sampling
-
-  - **Activation**: None
-
-- **BERNOULLI**
-
-  - **Loss Function**: Binary cross-entropy loss
-
-  - **Sampling**: Bernoulli sampling
-
-  - **Activation**: Sigmoid
+- **POISSON** — Poisson NLL loss; Poisson sampling; no output activation.
+  Default for RNA and ADT counts.
+- **BERNOULLI** — binary cross-entropy loss; Bernoulli sampling; sigmoid
+  output. Default for ATAC.
 
 
-Default Configurations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Default configurations
+~~~~~~~~~~~~~~~~~~~~~~
 
-Here, we show the default settings of the model:
+The defaults below are loaded by ``scmidas.load_config()``. Override any
+key by mutating the dict before passing it to :class:`scmidas.MIDAS`:
+
+.. code-block:: python
+
+    from scmidas.config import load_config
+    configs = load_config()
+    configs['lam_dsc'] = 30          # tweak a single hyperparameter
+    model = scmidas.MIDAS(mdata, configs=configs)
 
 Embeddings
 -----------
@@ -332,107 +344,103 @@ Data Loader
       - 10000
       - Maximum number of samples per batch.
 
-Extending MIDAS to More Modalities
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding a new modality
+~~~~~~~~~~~~~~~~~~~~~
 
-Step 1: Defining New Modality
------------------------------
+Adding a modality means telling MIDAS how to encode it, how to decode
+it, and how to score its reconstruction. The work is mostly
+configuration; you only write code if your modality needs a
+transformation or output distribution that isn't in the registry yet.
 
-To integrate new modalities into the MIDAS framework, 
-you need to define several key components, 
-including the **Data Encoder**, **Data Decoder**, **Loss** and **Distribution functions** that are specific to the new modality. 
-This allows MIDAS to process and reconstruct data from diverse biological data types.
+Step 1 — declare the modality in the configs
+---------------------------------------------
 
-Before making any modifications, you need to load the model configurations. You can do this using the following command:
-
-.. code-block:: python
-
-   from scmidas.config import load_config
-   configs = load_config()
-
-Once the configuration is loaded, you can customize the encoder, decoder, and other settings for the new modality.
-
-Data Encoder
-^^^^^^^^^^^^
-
-The data encoder transforms input data through modality-specific and shared layers to produce latent representations. Configure it as follows:
-
-1. **(Optional) Transformation Before Encoding**: Specify the transformation function to be applied before encoding.
-
-   Example:
-
-   .. code-block:: python
-      
-      configs['trsf_before_enc_{new_mod}'] = 'log1p'
-
-.. attention::
-      If the specified transformation is not registered, an error will occur. Refer to Registering Transformations for details.
-
-2. **(Optional) Dimensionality Reduction Layer**: If the data is split into chunks, define the modality-specific layers for encoding each chunk individually before merging them.
-
-   Example:
-
-   .. code-block:: python
-      
-      configs['dims_before_enc_{new_mod}'] = [512, 128]  # First encode to 512 dimensions, then to 128
-   
-Data Decoder
-^^^^^^^^^^^^
-
-The data decoder reconstructs original data from latent features. Configure the shared layers and dimensionality expansion layers as follows:
-
-1. **(Optional) Dimensionality Expansion Layer**: If the data is split into chunks, define the dimensionality expansion layers after the shared layers.
-
-   Example:
-
-   .. code-block:: python
-      
-      configs['dims_after_dec_{new_mod}'] = [128, 512]
-
-2. **Output Distribution**: Set the output distribution for each modality.
-
-   Example:
-
-   .. code-block:: python
-      
-      configs['distribution_dec_{new_mod}'] = 'POISSON'
-
-.. attention::
-      If the specified distribution is not registered, an error will occur. Refer to Registering Distributions for guidance.
-
-Reconstruction Loss Weight
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Adjust the weight for reconstruction loss as needed:
+Load the defaults, set the per-modality keys, and pass the dict to
+:class:`scmidas.MIDAS`:
 
 .. code-block:: python
 
-   configs['lam_recon_{new_mod}'] = 1  # Adjust as needed
+    import scmidas
+    from scmidas.config import load_config
 
-Step 2: (Optional) Registering New Functions
-----------------------------------------------
+    configs = load_config()
 
-To add new functionalities, register transformation and distribution functions as follows:
+    # Optional: a forward/inverse transformation pair applied around the
+    # encoder/decoder. Must already be in transform_registry (see Step 2).
+    configs['trsf_before_enc_<mod>'] = 'log1p'
 
-Registering New Transformation Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    # Optional: per-chunk encoder dimensions, e.g. when splitting by
+    # chromosome (as ATAC does).
+    configs['dims_before_enc_<mod>'] = [512, 128]
+    configs['dims_after_dec_<mod>']  = [128, 512]
+
+    # Required: output distribution. Must already be in
+    # distribution_registry (see Step 2).
+    configs['distribution_dec_<mod>'] = 'POISSON'
+
+    # Optional: reconstruction-loss weight (default 1).
+    configs['lam_recon_<mod>'] = 1
+
+Then provide your data on the MuData and pass ``dims_x`` to
+:func:`scmidas.MIDAS.setup_mudata` if the modality is split into chunks:
 
 .. code-block:: python
 
-   from scmidas.nn import transform_registry
-   transform_registry.register(name, fn, inverse_fn)
+    scmidas.MIDAS.setup_mudata(
+        mdata,
+        batch_key='batch',
+        dims_x={'<mod>': [512, 512, 256]},   # only needed for chunked modalities
+    )
+    model = scmidas.MIDAS(mdata, configs=configs)
 
+If the transformation or distribution name doesn't exist in the registry
+the constructor raises an error — register it first (Step 2).
 
-Registering New Distribution Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Step 2 — register a new transformation or distribution (if needed)
+------------------------------------------------------------------
+
+Both registries live in :mod:`scmidas.nn`.
+
+Transformation:
 
 .. code-block:: python
 
-   from scmidas.nn import distribution_registry
-   distribution_registry.register(name, loss_fn, sampling_fn, activate_fn)
+    from scmidas.nn import transform_registry
+
+    def asinh5(x):
+        import torch
+        return torch.asinh(x / 5)
+
+    def asinh5_inv(x):
+        import torch
+        return 5 * torch.sinh(x)
+
+    transform_registry.register('asinh5', asinh5, asinh5_inv)
+
+Distribution:
+
+.. code-block:: python
+
+    from scmidas.nn import distribution_registry
+
+    def my_loss(pred, target):
+        ...
+    def my_sampler(params):
+        ...
+    def my_activation(x):
+        ...
+
+    distribution_registry.register('my_dist', my_loss, my_sampler, my_activation)
+
+Once registered, the names are usable from ``configs`` exactly like the
+built-in ``'log1p'`` / ``'POISSON'`` / ``'BERNOULLI'``.
 
 
-Calling for Contributions
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Contributing
+~~~~~~~~~~~~
 
-We encourage you to contribute to MIDAS by submitting pull requests for new features, enhancements, or bug fixes. Contributions will be reviewed and, if suitable, integrated into the main repository. Thank you for helping us improve MIDAS!
+Bug reports and feature requests are welcome via
+`GitHub issues <https://github.com/labomics/midas/issues>`_. For code
+contributions, branch from ``main``, make sure ``pytest tests/`` passes,
+and open a pull request — for non-trivial changes, please open an issue
+first to discuss the design.

@@ -1,34 +1,60 @@
-Visualizing Training Process with TensorBoard
+Visualizing the training process with TensorBoard
 ==================================================
 
-To visualize the training progress, you first need to integrate TensorBoard logging into the model in the training code snippet:
+PyTorch Lightning emits scalar logs for every training metric (recon, KLD,
+discriminator, adversarial, alignment, ...). MIDAS hooks into this stream
+through ``L.Trainer(logger=...)``, so you can pipe the metrics into
+TensorBoard without modifying MIDAS itself.
+
+Logging scalars
+~~~~~~~~~~~~~~~
+
+Pass a ``TensorBoardLogger`` to ``L.Trainer``, then forward the trainer
+to ``model.train`` via ``logger=`` (which itself is forwarded to
+``Trainer``). With the v0.3 API:
 
 .. code-block:: python
 
+    import scmidas
     from lightning.pytorch import loggers as pl_loggers
-    
-    # Initialize TensorBoard logging
+
+    scmidas.MIDAS.setup_mudata(mdata, batch_key='batch')
+    model = scmidas.MIDAS(mdata)
+
     tb_logger = pl_loggers.TensorBoardLogger(
-        save_dir='./logs/', 
-        version='task_version'  # Replace with a descriptive version name
+        save_dir='./logs/',
+        version='my_run',  # any descriptive name
     )
+    model.train(max_epochs=2000, logger=tb_logger)
 
-    # Configure the trainer for single-device training
-    trainer = L.Trainer(
-        logger=tb_logger,              # Attach the logger
-    )
+Then in a terminal:
 
-Next, to monitor the training process, run the following command in your terminal:
+.. code-block:: bash
 
-.. code-block:: python
+    tensorboard --logdir ./logs/lightning_logs
 
-    tensorboard --logdir './logs/lightning_logs'
-
-Finally, open the URL displayed in your terminal (e.g., http://localhost:6006) in a web browser to visualize the training loss and results.
+Open the URL (e.g. ``http://localhost:6006``) in a browser to watch the
+loss curves update live.
 
 .. figure:: ../../_static/img/tensorboard.png
-   :alt: midas_structure.png
+   :alt: TensorBoard scalar dashboard
    :align: center
 
-To visualize the embedding umap during training, you can set ``viz_umap_tb=True`` and ``n_save=your_desired_number_of_saves`` in  ``MIDAS.configure_data_from_dir()``.
-This will enable the UMAP visualization in TensorBoard, allowing you to see how the embeddings evolve during training.
+Logging UMAPs of the joint latent during training
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To also watch the joint biological latent ``z_c`` evolve as training
+proceeds, pass ``viz_umap_tb=True`` (and a checkpointing interval) to
+:class:`scmidas.MIDAS`:
+
+.. code-block:: python
+
+    model = scmidas.MIDAS(
+        mdata,
+        viz_umap_tb=True,
+        n_save=200,           # write a UMAP every 200 epochs
+    )
+    model.train(max_epochs=2000, logger=tb_logger)
+
+The UMAP image is added to the TensorBoard ``Images`` tab on each save
+boundary.
